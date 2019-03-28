@@ -56,9 +56,12 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void onLogin(String email){
-        loginRepository.login(email);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        loginRepository.login(email).subscribe(user -> {
+            if(user != null) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+        }, Throwable::printStackTrace);
     }
 
     @Override
@@ -361,7 +364,7 @@ public class LoginActivity extends BaseActivity {
                 }
                 /* Successfully got a token, call graph now */
                 Log.d(TAG, "Successfully authenticated");
-                Log.d(TAG, "ID Token: " + authenticationResult.getIdToken());
+                Log.d(TAG, "ID Login: " + authenticationResult.getIdToken());
 
                 /* Store the auth result */
                 mAuthResult = authenticationResult;

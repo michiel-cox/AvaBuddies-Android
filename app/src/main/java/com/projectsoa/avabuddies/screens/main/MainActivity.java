@@ -2,8 +2,6 @@ package com.projectsoa.avabuddies.screens.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -17,8 +15,6 @@ import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
-import dagger.multibindings.IntKey;
 
 public class MainActivity extends BaseActivity {
 
