@@ -5,6 +5,7 @@ package com.projectsoa.avabuddies;
 
 import com.projectsoa.avabuddies.core.dagger.components.DaggerAppComponent;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
+import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.data.services.AuthService;
 
 import javax.inject.Inject;
@@ -21,11 +22,16 @@ public class App extends DaggerApplication  {
     @Inject
     protected LoginRepository loginRepository;
 
+    @Inject
+    protected UserRepository userRepository;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
         loginRepository.setAuthService(authService);
+        loginRepository.setUserRepository(userRepository);
     }
 
     public static synchronized App getInstance() {

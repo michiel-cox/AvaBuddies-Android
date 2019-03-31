@@ -1,32 +1,21 @@
 package com.projectsoa.avabuddies.data.repositories;
 
-import com.projectsoa.avabuddies.App;
 import com.projectsoa.avabuddies.Constants;
 import com.projectsoa.avabuddies.data.models.LoggedInUser;
-import com.projectsoa.avabuddies.data.models.responses.LoginResponse;
+import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.services.AuthService;
-
-import java.io.IOException;
-import java.util.concurrent.Future;
-import java.util.function.Supplier;
+import com.projectsoa.avabuddies.data.services.UserService;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import dagger.android.DaggerApplication;
-import dagger.android.DaggerService;
-import dagger.android.support.DaggerAppCompatActivity;
-import io.reactivex.Flowable;
+import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginRepository {
     private LoggedInUser loggedInUser;
 
-    protected AuthService authService;
+    private AuthService authService;
+    private UserRepository userRepository;
 
     public boolean isLoggedIn() {
         return loggedInUser != null;
@@ -40,15 +29,32 @@ public class LoginRepository {
         loggedInUser = null;
     }
 
-    public Single<LoggedInUser> login(String email) {
+    public Completable login(String email) {
         return authService.doLogin(email, Constants.SECRET)
-                .map(loginResponse ->
-                        new LoggedInUser(email, loginResponse.token))
-                .doOnSuccess(user ->
-                        loggedInUser = user);
+                .map(loginResponse ->  {
+                    loggedInUser = new LoggedInUser(loginResponse.token);
+                    loggedInUser.setUser(userRepository.getProfile().blockingGet());
+                    return loggedInUser;
+                })
+                .ignoreElement();
+    }
+
+    public Completable register(String email, String name, boolean sharelocation) {
+        return
+                authService.doSignup(email, Constants.SECRET, name, sharelocation)
+                .ignoreElement()
+                .concatWith(login(email));
     }
 
     public void setAuthService(AuthService authService) {
         this.authService = authService;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

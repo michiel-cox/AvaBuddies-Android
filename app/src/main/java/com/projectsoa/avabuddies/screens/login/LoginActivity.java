@@ -31,6 +31,7 @@ import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseActivity;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.register.RegisterActivity;
 
 import org.json.JSONObject;
 
@@ -55,13 +56,21 @@ public class LoginActivity extends BaseActivity {
         onCallGraphClicked();
     }
 
-    public void onLogin(String email){
-        loginRepository.login(email).subscribe(user -> {
-            if(user != null) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            }
-        }, Throwable::printStackTrace);
+    public void onLogin(String email, String name){
+        loginRepository.login(email).subscribe(() -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }, throwable -> {
+            throwable.printStackTrace();
+            register(email, name);
+        });
+    }
+
+    public void register(String email, String name){
+        Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("email",email);
+        intent.putExtra("name",name);
+        startActivity(intent);
     }
 
     @Override
@@ -255,7 +264,7 @@ public class LoginActivity extends BaseActivity {
     @SuppressLint("SetTextI18n")
     private void onLogin() {
         UserInfo userInfo = mAuthResult.getUserInfo();
-        onLogin(userInfo.getDisplayableId());
+        onLogin(userInfo.getDisplayableId(),  String.format("%s %s",  userInfo.getGivenName(), userInfo.getFamilyName()));
     }
 
     @SuppressLint("SetTextI18n")
