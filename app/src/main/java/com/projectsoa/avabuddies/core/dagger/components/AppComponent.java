@@ -3,7 +3,8 @@ package com.projectsoa.avabuddies.core.dagger.components;
 import com.projectsoa.avabuddies.App;
 import com.projectsoa.avabuddies.core.dagger.builders.ActivityBuilder;
 import com.projectsoa.avabuddies.core.dagger.modules.AppModule;
-import com.projectsoa.avabuddies.data.DataModule;
+import com.projectsoa.avabuddies.core.dagger.modules.RepositoryModule;
+import com.projectsoa.avabuddies.core.dagger.modules.ServiceModule;
 
 import javax.inject.Singleton;
 
@@ -16,7 +17,8 @@ import dagger.android.AndroidInjector;
         AndroidInjectionModule.class,
         AppModule.class,
         ActivityBuilder.class,
-        DataModule.class
+        ServiceModule.class,
+        RepositoryModule.class
 })
 public interface AppComponent extends AndroidInjector<App> {
     @Component.Builder

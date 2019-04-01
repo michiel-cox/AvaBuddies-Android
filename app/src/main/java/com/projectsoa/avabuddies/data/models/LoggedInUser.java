@@ -1,14 +1,24 @@
 package com.projectsoa.avabuddies.data.models;
 
 public class LoggedInUser {
-    private final String email;
+    private User user;
+    private final String token;
 
-    public LoggedInUser(String email) {
-        this.email = email;
+    public LoggedInUser(String token) {
+        this.token = token;
     }
 
-    public String getEmail() {
-        return email;
+
+    public String getToken() {
+        return token;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 
