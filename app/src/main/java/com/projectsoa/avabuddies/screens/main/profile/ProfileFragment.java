@@ -44,4 +44,5 @@ public class ProfileFragment extends BaseFragment {
         startActivity(intent);
     }
 
+
 }

@@ -74,6 +74,11 @@ public abstract class BaseFragment extends DaggerFragment {
         }
     }
 
+    // Return whether or it has been handled.
+    public boolean onBackPressed(){
+        return false;
+    }
+
     @Subscribe
     public void dummyEvent(BaseActivity event){  }
 
