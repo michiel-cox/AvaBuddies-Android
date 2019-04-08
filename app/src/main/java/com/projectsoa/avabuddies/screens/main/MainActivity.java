@@ -11,6 +11,7 @@ import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
+import com.projectsoa.avabuddies.screens.main.search.SearchFragment;
 
 import javax.inject.Inject;
 
@@ -32,6 +33,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    protected BaseFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,11 +51,22 @@ public class MainActivity extends BaseActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.frame_container, fragment)
+                    .runOnCommit(() -> this.fragment = fragment)
                     .commit();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(fragment != null){
+            fragment.onBackPressed();
         }
     }
 
     public void onClickProfile(MenuItem item) {
         loadFragment(new ProfileFragment());
+    }
+    public void onClickSearch(MenuItem item) {
+        loadFragment(new SearchFragment());
     }
 }

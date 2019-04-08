@@ -3,6 +3,7 @@ package com.projectsoa.avabuddies.core.dagger.builders;
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
+import com.projectsoa.avabuddies.screens.main.search.SearchFragment;
 import com.projectsoa.avabuddies.screens.register.RegisterActivity;
 
 import dagger.Module;
@@ -25,5 +26,9 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector()
     abstract ProfileFragment contributeProfileFragment();
+
+    @ContributesAndroidInjector()
+    abstract SearchFragment contributeSearchFragment();
+
 
 }
