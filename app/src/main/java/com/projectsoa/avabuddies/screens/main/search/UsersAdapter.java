@@ -77,30 +77,35 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         return userList == null || userListFiltered == null ? 0 : userListFiltered.size();
     }
 
+    public List<User> filter(CharSequence charSequence){
+
+        List<User> filteredList;
+        String charString = charSequence.toString();
+        if (charString.isEmpty()) {
+            filteredList = userList;
+        } else {
+            filteredList = new ArrayList<>();
+            for (User user : userList) {
+
+                // name match condition. this might differ depending on your requirement
+                // here we are looking for name or phone number match
+                if (user.getName().toLowerCase().contains(charString.toLowerCase()) || user.getEmail().contains(charSequence)) {
+                    filteredList.add(user);
+                }
+            }
+        }
+
+        return filteredList;
+
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    userListFiltered = userList;
-                } else {
-                    List<User> filteredList = new ArrayList<>();
-                    for (User user : userList) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
-                        if (user.getName().toLowerCase().contains(charString.toLowerCase()) || user.getEmail().contains(charSequence)) {
-                            filteredList.add(user);
-                        }
-                    }
-
-                    userListFiltered = filteredList;
-                }
-
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = userListFiltered;
+                filterResults.values = UsersAdapter.this.filter(charSequence);
                 return filterResults;
             }
 
