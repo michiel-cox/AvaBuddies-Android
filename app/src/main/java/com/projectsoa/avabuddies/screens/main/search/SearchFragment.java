@@ -19,7 +19,11 @@ import android.view.ViewGroup;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.User;
+import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
+import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
+import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
 import java.util.ArrayList;
@@ -41,6 +45,9 @@ public class SearchFragment extends BaseFragment implements UsersAdapter.UsersIn
 
     @Inject
     protected UserRepository userRepository;
+
+    @Inject
+    protected LoginRepository loginRepository;
 
     @Inject
     protected Utils utils;
@@ -77,7 +84,7 @@ public class SearchFragment extends BaseFragment implements UsersAdapter.UsersIn
                 usersAdapter.setUserList(users);
                 usersAdapter.notifyDataSetChanged();
             });
-        }, throwable -> utils.showToastError(getString(R.string.error_users)));
+        }, throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.error_users))));
 
         searchView.setOnQueryTextListener(this);
         searchView.setOnClickListener(v -> searchView.setIconified(false));
@@ -94,8 +101,13 @@ public class SearchFragment extends BaseFragment implements UsersAdapter.UsersIn
 
     @Override
     public void onUserListInteract(User user) {
+        if(loginRepository.isLoggedIn() && loginRepository.getLoggedInUser().getUser().getId().equals(user.getId())){
+            ((MainActivity)getActivity()).loadFragment(new ProfileFragment());
+            return;
+        }
         // Go to profile
-        utils.showToastError("You should go to their profile page, but that is still work in progress.");
+        PublicProfileFragment fragment = PublicProfileFragment.newInstance(user);
+        ((MainActivity)getActivity()).loadFragment(fragment);
     }
 
     @Override

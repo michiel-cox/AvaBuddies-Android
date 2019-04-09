@@ -7,4 +7,9 @@
     <string name="user_image">User image</string>
     <string name="profile">Profile</string>
     <string name="error_users">Could not load users</string>
+    <string name="send_connection_request">Send connection request</string>
+    <string name="cancel_connection_request">Cancel connection request</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="friend_request_send">You have send a request.</string>
+    <string name="friend_request_cancel">You have canceled the request</string>
 </resources>

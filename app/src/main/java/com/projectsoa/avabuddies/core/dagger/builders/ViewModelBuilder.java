@@ -5,6 +5,8 @@ import com.projectsoa.avabuddies.screens.login.LoginViewModel;
 import com.projectsoa.avabuddies.screens.main.MainViewModel;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileViewModel;
+import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragment;
+import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileViewModel;
 import com.projectsoa.avabuddies.screens.register.RegisterViewModel;
 
 import javax.inject.Singleton;
@@ -39,4 +41,9 @@ public abstract class ViewModelBuilder {
     @IntoMap
     @ViewModelKey(RegisterViewModel.class)
     abstract ViewModel bindRegisterViewModel(RegisterViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PublicProfileViewModel.class)
+    abstract ViewModel bindPublicProfileViewModel(PublicProfileViewModel viewModel);
 }

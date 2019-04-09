@@ -1,12 +1,10 @@
 package com.projectsoa.avabuddies;
 
-import com.projectsoa.avabuddies.data.models.LoggedInUser;
-import com.projectsoa.avabuddies.data.models.User;
-import com.projectsoa.avabuddies.data.models.responses.LoginResponse;
-import com.projectsoa.avabuddies.data.models.responses.ProfileResponse;
-import com.projectsoa.avabuddies.data.models.responses.SignupResponse;
-import com.projectsoa.avabuddies.data.models.responses.UserListResponse;
-import com.projectsoa.avabuddies.data.models.responses.UserResponse;
+import com.projectsoa.avabuddies.data.models.responses.auth.LoginResponse;
+import com.projectsoa.avabuddies.data.models.responses.user.ProfileResponse;
+import com.projectsoa.avabuddies.data.models.responses.auth.SignupResponse;
+import com.projectsoa.avabuddies.data.models.responses.user.UserListResponse;
+import com.projectsoa.avabuddies.data.models.responses.user.UserResponse;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.data.services.AuthService;
@@ -14,8 +12,6 @@ import com.projectsoa.avabuddies.data.services.UserService;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import java.net.PasswordAuthentication;
 
 import io.reactivex.Single;
 
@@ -61,6 +57,11 @@ public class LoginUnitTest extends BaseUnitTest {
             }
 
             @Override
+            public Single<ProfileResponse> fetchUser(String id) {
+                return null;
+            }
+
+            @Override
             public Single<UserListResponse> fetchList() {
                 return null;
             }
@@ -95,6 +96,11 @@ public class LoginUnitTest extends BaseUnitTest {
             @Override
             public Single<ProfileResponse> fetchProfile() {
                 return Single.error(new Exception());
+            }
+
+            @Override
+            public Single<ProfileResponse> fetchUser(String id) {
+                return null;
             }
 
             @Override

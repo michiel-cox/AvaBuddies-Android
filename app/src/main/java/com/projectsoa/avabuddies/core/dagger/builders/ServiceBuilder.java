@@ -1,6 +1,7 @@
 package com.projectsoa.avabuddies.core.dagger.builders;
 
 import com.projectsoa.avabuddies.data.services.AuthService;
+import com.projectsoa.avabuddies.data.services.FriendService;
 import com.projectsoa.avabuddies.data.services.UserService;
 
 import dagger.Module;
@@ -18,6 +19,11 @@ public class ServiceBuilder {
     @Provides
     UserService getUserService(Retrofit retroFit) {
         return retroFit.create(UserService.class);
+    }
+
+    @Provides
+    FriendService getFriendService(Retrofit retroFit) {
+        return retroFit.create(FriendService.class);
     }
 
 }

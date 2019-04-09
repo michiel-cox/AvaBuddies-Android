@@ -1,17 +1,12 @@
 package com.projectsoa.avabuddies.data.repositories;
 
-import com.projectsoa.avabuddies.Constants;
-import com.projectsoa.avabuddies.data.models.LoggedInUser;
 import com.projectsoa.avabuddies.data.models.User;
-import com.projectsoa.avabuddies.data.models.responses.UserResponse;
-import com.projectsoa.avabuddies.data.services.AuthService;
+import com.projectsoa.avabuddies.data.models.responses.user.UserResponse;
 import com.projectsoa.avabuddies.data.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class UserRepository {
@@ -26,6 +21,9 @@ public class UserRepository {
         return userService.fetchProfile().map(profileResponse -> new User(profileResponse.user));
     }
 
+    public Single<User> getUser(String id){
+        return userService.fetchUser(id).map(profileResponse -> new User(profileResponse.user));
+    }
     public Single<List<User>> getList(){
         return userService.fetchList().map(userListResponse -> {
             List<User> users = new ArrayList<>();

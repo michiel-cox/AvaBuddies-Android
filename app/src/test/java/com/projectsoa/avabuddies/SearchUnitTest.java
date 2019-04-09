@@ -1,14 +1,6 @@
 package com.projectsoa.avabuddies;
 
 import com.projectsoa.avabuddies.data.models.User;
-import com.projectsoa.avabuddies.data.models.responses.LoginResponse;
-import com.projectsoa.avabuddies.data.models.responses.ProfileResponse;
-import com.projectsoa.avabuddies.data.models.responses.SignupResponse;
-import com.projectsoa.avabuddies.data.models.responses.UserResponse;
-import com.projectsoa.avabuddies.data.repositories.LoginRepository;
-import com.projectsoa.avabuddies.data.repositories.UserRepository;
-import com.projectsoa.avabuddies.data.services.AuthService;
-import com.projectsoa.avabuddies.data.services.UserService;
 import com.projectsoa.avabuddies.screens.main.search.UsersAdapter;
 
 import org.junit.Before;
@@ -16,9 +8,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
-import io.reactivex.Single;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
