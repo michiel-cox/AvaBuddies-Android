@@ -18,7 +18,7 @@ import io.reactivex.Single;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
-public class LoginUnitTest extends BaseUnitTest {
+public class LoginUnitTest {
 
     private LoginRepository loginRepository;
 

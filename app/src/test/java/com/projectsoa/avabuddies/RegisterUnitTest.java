@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class RegisterUnitTest extends BaseUnitTest {
+public class RegisterUnitTest {
 
     private LoginRepository loginRepository;
 
