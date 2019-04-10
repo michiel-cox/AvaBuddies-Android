@@ -1,5 +1,7 @@
 package com.projectsoa.avabuddies.data.models;
 
+import android.text.Editable;
+
 import com.projectsoa.avabuddies.data.models.responses.user.UserResponse;
 
 import org.parceler.Parcel;
@@ -14,7 +16,10 @@ public class User {
    protected boolean isAdmin;
    protected String image;
    protected String password;
-   protected String aboutme;
+
+
+
+    protected String aboutme;
 
    public User(){}
    public User(UserResponse response){
@@ -46,6 +51,11 @@ public class User {
         return name;
     }
 
+    public String getAboutme() { return aboutme; }
+
+    public void setSharelocation(boolean sharelocation) { this.sharelocation = sharelocation; }
+
+    public void setAboutme(Editable aboutme) { this.aboutme = aboutme; }
 
     public boolean isSharelocation() {
         return sharelocation;
@@ -54,7 +64,6 @@ public class User {
     public boolean isAdmin() {
         return isAdmin;
     }
-
 
     public String getImage() {
         return image;

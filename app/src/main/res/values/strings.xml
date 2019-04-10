@@ -12,4 +12,14 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="friend_request_send">You have send a request.</string>
     <string name="friend_request_cancel">You have canceled the request</string>
+    <string name="errorDeleteUser">Could not delete user</string>
+    <string name="locationSharing">Ik wil mijn locatie delen</string>
+    <string name="ProfileText">Profile</string>
+    <string name="profileGeneral">General</string>
+    <string name="profilePrivacy">Privacy</string>
+    <string name="profileConnections">Connections</string>
+    <string name="profileShowFriends">Show Friends</string>
+    <string name="profileRemoveAccount">remove my account</string>
+    <string name="profileActions">Actions</string>
+    <string name="profileUpdate">Update this user</string>
 </resources>

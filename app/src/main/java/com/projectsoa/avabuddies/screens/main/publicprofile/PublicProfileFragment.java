@@ -1,9 +1,14 @@
 package com.projectsoa.avabuddies.screens.main.publicprofile;
 
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.User;
@@ -13,6 +18,7 @@ import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.utils.Utils;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
@@ -43,6 +49,15 @@ public class PublicProfileFragment extends BaseFragment {
 
     @BindView(R.id.buttonRequestCancel)
     protected Button buttonRequestCancel;
+
+    @BindView(R.id.PublicName)
+    protected TextView name;
+    @BindView(R.id.PublicEmail)
+    protected TextView email;
+    @BindView(R.id.PublicInfo)
+    protected TextView info;
+    @BindView(R.id.publicProfile)
+    protected ImageView profile;
 
     @Inject
     protected Utils utils;
@@ -77,6 +92,23 @@ public class PublicProfileFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel= getViewModel(PublicProfileViewModel.class);
         hideFriendRequest();
+
+        if(!user.getImage().isEmpty()) {
+            try {
+                byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
+                Glide.with(this)
+                        .asBitmap()
+                        .apply(RequestOptions.circleCropTransform())
+                        .load(imageByteArray)
+                        .into(profile);
+            } catch (IllegalArgumentException ignored) {
+
+            }
+        }
+
+        name.setText(user.getName());
+        email.setText(user.getEmail());
+        info.setText(user.getAboutme());
 
         friendRepository.getConnectionStatus(user.getId()).subscribe(connectionStatus -> {
             getActivity().runOnUiThread(() -> updateFriendRequest(connectionStatus));

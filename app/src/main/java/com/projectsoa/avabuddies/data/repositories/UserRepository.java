@@ -7,6 +7,7 @@ import com.projectsoa.avabuddies.data.services.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class UserRepository {
@@ -32,5 +33,12 @@ public class UserRepository {
             }
             return users;
         });
+    }
+    public Completable delete(User user){
+        return userService.deleteUser(user.getId());
+    }
+
+    public Completable update(User user){
+        return userService.updateProfile(user.getAboutme(),user.isSharelocation());
     }
 }
