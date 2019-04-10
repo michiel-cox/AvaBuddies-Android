@@ -16,10 +16,7 @@ public class User {
    protected boolean isAdmin;
    protected String image;
    protected String password;
-
-
-
-    protected String aboutme;
+   protected String aboutme;
 
    public User(){}
    public User(UserResponse response){
@@ -55,7 +52,7 @@ public class User {
 
     public void setSharelocation(boolean sharelocation) { this.sharelocation = sharelocation; }
 
-    public void setAboutme(Editable aboutme) { this.aboutme = aboutme; }
+    public void setAboutme(String aboutme) { this.aboutme = aboutme; }
 
     public boolean isSharelocation() {
         return sharelocation;
