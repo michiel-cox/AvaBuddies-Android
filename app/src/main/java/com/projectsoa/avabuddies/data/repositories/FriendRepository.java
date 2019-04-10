@@ -46,22 +46,27 @@ public class FriendRepository {
     }
 
     private Single<List<User>> getUsersFromIds(Single<List<String>> single){
-        return single.flatMap(friendIds -> {
-            // Retrieve user objects
-            List<Single<User>> singles = new ArrayList<>();
-            for (String friendId : friendIds) {
-                singles.add(userRepository.getUser(friendId));
+        return single.flatMap(friendIds -> userRepository.getList().map(users -> {
+            // Retrieve user objects from friend Ids
+            List<User> output = new ArrayList<>();
+            for (User user : users) {
+                if(friendIds.contains(user.getId())){
+                    output.add(user);
+                }
             }
-            return Single.mergeDelayError(singles).toList();
-        });
+            return output;
+        }));
     }
 
     public Single<List<User>> getFriends(){
         return getUsersFromIds(getIdsFromFriends(friendService.fetchFriends().map(friendsResponse -> friendsResponse.friends)));
     }
 
-    public Single<List<User>> getRequests(){
+    public Single<List<User>> getReceivedRequests(){
         return getUsersFromIds(getIdsFromFriends(friendService.fetchRequests().map(requestsResponse -> requestsResponse.requests)));
+    }
+    public Single<List<User>> getSendRequests(){
+        return getUsersFromIds(getIdsFromFriends(friendService.fetchRequests().map(requestsResponse -> requestsResponse.ownRequests)));
     }
 
     public Single<ConnectionStatus> getConnectionStatus(String friendId){
@@ -75,7 +80,6 @@ public class FriendRepository {
                     friendResponse = response;
                 }
             }
-
             if(friendResponse == null) return ConnectionStatus.UNKNOWN;
             if(friendResponse.confirmed) return ConnectionStatus.ACCEPTED;
             if(friendId.equals(friendResponse.friend1)) return ConnectionStatus.RECEIVED;

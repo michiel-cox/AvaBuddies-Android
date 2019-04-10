@@ -3,12 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".screens.main.MainActivity">
+    <item android:id="@+id/btn_nearby"
+        android:title="@string/nearby"
+        android:onClick="onClickNearby"
+        android:icon="@drawable/icon_nearby"/>
+    <item android:id="@+id/btn_search"
+        android:title="@string/search"
+        android:onClick="onClickSearch"
+        android:icon="@drawable/icon_search"/>
     <item android:id="@+id/btn_profile"
         android:title="@string/profile"
         android:onClick="onClickProfile"
         android:icon="@drawable/icon_person"/>
-    <item android:id="@+id/btn_search"
-        android:title="Search"
-        android:onClick="onClickSearch"
-        android:icon="@drawable/icon_search"/>
 </menu>

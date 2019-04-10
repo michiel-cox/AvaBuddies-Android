@@ -8,4 +8,7 @@ import java.util.List;
 public class RequestsResponse extends MessageResponse {
     @SerializedName("requests")
     public List<FriendResponse> requests;
+
+    @SerializedName("own_requests")
+    public List<FriendResponse> ownRequests;
 }

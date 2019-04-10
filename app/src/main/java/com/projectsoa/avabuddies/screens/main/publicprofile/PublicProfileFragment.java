@@ -115,7 +115,7 @@ public class PublicProfileFragment extends BaseFragment {
     @OnClick(R.id.buttonRequestCancel)
     public void onFriendRequestCancel(){
         hideFriendRequest();
-        friendRepository.request(user.getId()).subscribe(() -> {
+        friendRepository.cancelRequest(user.getId()).subscribe(() -> {
             getActivity().runOnUiThread(() -> {
                 utils.showToastMessage(getString(R.string.friend_request_cancel));
                 updateFriendRequest(FriendRepository.ConnectionStatus.UNKNOWN);

@@ -10,6 +10,7 @@ import com.projectsoa.avabuddies.core.base.BaseActivity;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
+import com.projectsoa.avabuddies.screens.main.nearby.NearbyFragment;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
 import com.projectsoa.avabuddies.screens.main.search.SearchFragment;
 
@@ -68,5 +69,9 @@ public class MainActivity extends BaseActivity {
     }
     public void onClickSearch(MenuItem item) {
         loadFragment(new SearchFragment());
+    }
+
+    public void onClickNearby(MenuItem item) {
+        loadFragment(new NearbyFragment());
     }
 }
