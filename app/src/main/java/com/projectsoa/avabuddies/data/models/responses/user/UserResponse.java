@@ -1,4 +1,4 @@
-package com.projectsoa.avabuddies.data.models.responses;
+package com.projectsoa.avabuddies.data.models.responses.user;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -23,4 +23,7 @@ public class UserResponse {
 
     @SerializedName("password")
     public String password;
+
+    @SerializedName("aboutme")
+    public String aboutme;
 }

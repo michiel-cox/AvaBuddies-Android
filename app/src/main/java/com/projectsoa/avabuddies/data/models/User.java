@@ -1,16 +1,22 @@
 package com.projectsoa.avabuddies.data.models;
 
-import com.projectsoa.avabuddies.data.models.responses.UserResponse;
+import com.projectsoa.avabuddies.data.models.responses.user.UserResponse;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class User {
-    private final String _id;
-    private String email;
-   private String name;
-   private boolean sharelocation;
-   private boolean isAdmin;
-   private String image;
-   private String password;
+    // Fields needs to be protected to be used as an Parcel
+   protected String _id;
+   protected String email;
+   protected String name;
+   protected boolean sharelocation;
+   protected boolean isAdmin;
+   protected String image;
+   protected String password;
+   protected String aboutme;
 
+   public User(){}
    public User(UserResponse response){
        _id = response._id;
        email = response.email;
@@ -19,17 +25,8 @@ public class User {
        isAdmin = response.isAdmin;
        image = response.image;
        password = response.password;
+       aboutme = response.aboutme;
    }
-
-    public User(String id, String email, String name, boolean sharelocation, boolean isAdmin, String image, String password) {
-        _id = id;
-        this.email = email;
-        this.name = name;
-        this.sharelocation = sharelocation;
-        this.isAdmin = isAdmin;
-        this.image = image;
-        this.password = password;
-    }
 
     public User(String id, String email, String name){
         _id = id;

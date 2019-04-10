@@ -45,6 +45,7 @@ repositories {
     maven {
         url = "https://oss.sonatype.org/content/repositories/snapshots/"
     }
+    maven { url "https://jitpack.io" }
 }
 
 
@@ -96,4 +97,8 @@ dependencies {
 
     testImplementation "org.mockito:mockito-core:2.25.1"
     androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+
+
+    testImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.5'
+    androidTestImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.5'
 }

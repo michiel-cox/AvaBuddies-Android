@@ -1,4 +1,4 @@
-package com.projectsoa.avabuddies.data.models.responses;
+package com.projectsoa.avabuddies.data.models.responses.user;
 
 import com.google.gson.annotations.SerializedName;
 

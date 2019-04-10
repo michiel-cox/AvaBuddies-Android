@@ -1,7 +1,7 @@
 package com.projectsoa.avabuddies.data.services;
 
-import com.projectsoa.avabuddies.data.models.responses.LoginResponse;
-import com.projectsoa.avabuddies.data.models.responses.SignupResponse;
+import com.projectsoa.avabuddies.data.models.responses.auth.LoginResponse;
+import com.projectsoa.avabuddies.data.models.responses.auth.SignupResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.Field;

@@ -19,13 +19,13 @@ public class AppModule {
 
     @Singleton
     @Provides
-    Context provideContext(App application){
+    public  Context provideContext(App application){
         return application;
     }
 
     @Singleton
     @Provides
-    Utils provideUtils(Context context){
+    public Utils provideUtils(Context context){
         return new Utils(context);
     }
 /*
