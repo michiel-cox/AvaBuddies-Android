@@ -13,6 +13,7 @@ import com.projectsoa.avabuddies.data.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 import static org.junit.Assert.assertEquals;
@@ -79,6 +80,16 @@ public class RegisterUnitTest {
             public Single<UserListResponse> fetchList() {
                 return null;
             }
+
+            @Override
+            public Completable deleteUser(String id) {
+                return null;
+            }
+
+            @Override
+            public Completable updateProfile(String aboutMe, boolean sharelocation) {
+                return null;
+            }
         }));
 
 
@@ -124,6 +135,16 @@ public class RegisterUnitTest {
 
             @Override
             public Single<UserListResponse> fetchList() {
+                return null;
+            }
+
+            @Override
+            public Completable deleteUser(String id) {
+                return null;
+            }
+
+            @Override
+            public Completable updateProfile(String aboutMe, boolean sharelocation) {
                 return null;
             }
         }));

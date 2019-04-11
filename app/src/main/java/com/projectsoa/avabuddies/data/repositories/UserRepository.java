@@ -33,4 +33,11 @@ public class UserRepository {
             return users;
         });
     }
+    public Completable delete(User user){
+        return userService.deleteUser(user.getId());
+    }
+
+    public Completable update(User user){
+        return userService.updateProfile(user.getAboutme(),user.isSharelocation());
+    }
 }

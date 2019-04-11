@@ -17,6 +17,61 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#eee"
+                android:padding="10dp"
+                android:text="@string/profileGeneral"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/publicProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:minHeight="200dp"
+                android:contentDescription="@string/ProfileText"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/PublicName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/PublicEmail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/PublicInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#eee"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/profileActions"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/buttonRequest"
