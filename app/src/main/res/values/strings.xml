@@ -14,6 +14,6 @@
     <string name="friend_request_cancel">You have canceled the request</string>
     <string name="search">Search</string>
     <string name="nearby">Nearby</string>
-    <string name="send_requests">Send requests</string>
+    <string name="sent_requests">Sent requests</string>
     <string name="received_requests">Received requests</string>
 </resources>
