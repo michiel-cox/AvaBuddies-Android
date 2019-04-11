@@ -3,6 +3,7 @@ package com.projectsoa.avabuddies.screens.main.profile;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -73,7 +74,7 @@ public class ProfileChangeFragment extends BaseFragment {
     @OnClick(R.id.removeThisUser)
     public void removeThisUser() {
 
-        new AlertDialog.Builder(getContext()).setTitle("Confirm").setMessage("Are you sure?").setPositiveButton("YES", (dialogInterface, i) -> {
+        new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogCustom)).setTitle("Confirm").setMessage("Are you sure?").setPositiveButton("YES", (dialogInterface, i) -> {
             userRepository.delete(this.user).subscribe(() -> logout(), throwable -> {
                 getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.errorDeleteUser)));
             });
