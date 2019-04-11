@@ -22,4 +22,5 @@
     <string name="profileRemoveAccount">remove my account</string>
     <string name="profileActions">Actions</string>
     <string name="profileUpdate">Update this user</string>
+    <string name="error_terms_and_conditions">You need to accept the terms and conditions to use AvaBuddies.</string>
 </resources>

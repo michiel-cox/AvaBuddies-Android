@@ -35,7 +35,7 @@ public class ProfileChangeFragment extends BaseFragment {
     protected UserRepository userRepository;
     @Inject
     protected Utils utils;
-    @BindView(R.id.aboutMe)
+    @BindView(R.id.aboutme)
     protected EditText aboutme;
     @BindView(R.id.location)
     protected Switch location;

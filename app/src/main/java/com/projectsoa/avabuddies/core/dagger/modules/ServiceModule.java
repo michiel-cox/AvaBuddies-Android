@@ -21,7 +21,7 @@ public class ServiceModule {
     @Singleton
     @Provides
     static Retrofit provideRetrofit(OkHttpClient client) {
-        return  new Retrofit.Builder().baseUrl(Constants.API_URL)
+        return new Retrofit.Builder().baseUrl(Constants.API_URL)
                 .client(client)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -30,7 +30,7 @@ public class ServiceModule {
 
     @Singleton
     @Provides
-    static OkHttpClient provideOkHttpClient(LoginRepository loginRepository){
+    static OkHttpClient provideOkHttpClient(LoginRepository loginRepository) {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
 
 
@@ -38,7 +38,7 @@ public class ServiceModule {
             okhttp3.Request request = chain.request();
 
             Headers.Builder headersBuilder = request.headers().newBuilder();
-            if(loginRepository.isLoggedIn()) {
+            if (loginRepository.isLoggedIn()) {
                 headersBuilder.add("Authorization", String.format("Bearer %s", loginRepository.getLoggedInUser().getToken())).build();
             }
 

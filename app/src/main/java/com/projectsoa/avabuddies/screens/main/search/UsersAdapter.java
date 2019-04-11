@@ -1,8 +1,5 @@
 package com.projectsoa.avabuddies.screens.main.search;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -21,11 +18,14 @@ import com.projectsoa.avabuddies.data.models.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> implements Filterable {
 
     private final Context context;
-    private List<User> userList;
     private final UsersInteractionListener listener;
+    private List<User> userList;
     private List<User> userListFiltered;
 
     public UsersAdapter(Context context, UsersInteractionListener listener) {
@@ -55,7 +55,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         holder.detail.setText(user.getEmail());
 
         boolean hasImage = false;
-        if(!user.getImage().isEmpty()) {
+        if (!user.getImage().isEmpty()) {
             try {
                 byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
                 Glide.with(context)
@@ -77,7 +77,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         return userList == null || userListFiltered == null ? 0 : userListFiltered.size();
     }
 
-    public List<User> filter(CharSequence charSequence){
+    public List<User> filter(CharSequence charSequence) {
 
         List<User> filteredList;
         String charString = charSequence.toString();
@@ -121,6 +121,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         return userListFiltered;
     }
 
+    public interface UsersInteractionListener {
+        void onUserListInteract(User user);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView name, detail;
         public final ImageView thumbnail;
@@ -132,14 +136,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             detail = view.findViewById(R.id.textDetail);
             thumbnail = view.findViewById(R.id.imageThumbnail);
 
-            if(listener != null) {
+            if (listener != null) {
                 view.setOnClickListener(v -> listener.onUserListInteract(user));
             }
         }
-    }
-
-
-    public interface UsersInteractionListener {
-        void onUserListInteract(User user);
     }
 }

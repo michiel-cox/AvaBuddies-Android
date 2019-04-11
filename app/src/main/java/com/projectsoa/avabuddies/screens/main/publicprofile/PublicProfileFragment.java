@@ -18,7 +18,6 @@ import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.utils.Utils;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
@@ -41,26 +40,21 @@ public class PublicProfileFragment extends BaseFragment {
 
 
     protected PublicProfileViewModel viewModel;
-
-    private User user;
-
-    @BindView(R.id.buttonRequest)
+    @BindView(R.id.button_request)
     protected Button buttonRequest;
-
-    @BindView(R.id.buttonRequestCancel)
+    @BindView(R.id.button_request_cancel)
     protected Button buttonRequestCancel;
-
-    @BindView(R.id.PublicName)
+    @BindView(R.id.public_name)
     protected TextView name;
-    @BindView(R.id.PublicEmail)
+    @BindView(R.id.public_email)
     protected TextView email;
-    @BindView(R.id.PublicInfo)
+    @BindView(R.id.public_info)
     protected TextView info;
-    @BindView(R.id.publicProfile)
+    @BindView(R.id.public_profile)
     protected ImageView profile;
-
     @Inject
     protected Utils utils;
+    private User user;
 
     public PublicProfileFragment() {
 
@@ -90,10 +84,10 @@ public class PublicProfileFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel= getViewModel(PublicProfileViewModel.class);
+        viewModel = getViewModel(PublicProfileViewModel.class);
         hideFriendRequest();
 
-        if(!user.getImage().isEmpty()) {
+        if (!user.getImage().isEmpty()) {
             try {
                 byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
                 Glide.with(this)
@@ -116,11 +110,12 @@ public class PublicProfileFragment extends BaseFragment {
     }
 
 
-    private void hideFriendRequest(){
+    private void hideFriendRequest() {
         buttonRequest.setVisibility(View.GONE);
         buttonRequestCancel.setVisibility(View.GONE);
     }
-    private void updateFriendRequest(FriendRepository.ConnectionStatus status){
+
+    private void updateFriendRequest(FriendRepository.ConnectionStatus status) {
         switch (status) {
             case SEND:
                 buttonRequestCancel.setVisibility(View.VISIBLE);
@@ -132,8 +127,8 @@ public class PublicProfileFragment extends BaseFragment {
 
     }
 
-    @OnClick(R.id.buttonRequest)
-    public void onFriendRequest(){
+    @OnClick(R.id.button_request)
+    public void onFriendRequest() {
         hideFriendRequest();
         friendRepository.request(user.getId()).subscribe(() -> {
             getActivity().runOnUiThread(() -> {
@@ -144,8 +139,8 @@ public class PublicProfileFragment extends BaseFragment {
 
     }
 
-    @OnClick(R.id.buttonRequestCancel)
-    public void onFriendRequestCancel(){
+    @OnClick(R.id.button_request_cancel)
+    public void onFriendRequestCancel() {
         hideFriendRequest();
         friendRepository.request(user.getId()).subscribe(() -> {
             getActivity().runOnUiThread(() -> {

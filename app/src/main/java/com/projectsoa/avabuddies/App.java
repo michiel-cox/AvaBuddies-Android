@@ -1,8 +1,6 @@
 package com.projectsoa.avabuddies;
 
 
-
-
 import com.projectsoa.avabuddies.core.dagger.components.DaggerAppComponent;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
@@ -13,7 +11,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.support.DaggerApplication;
 
-public class App extends DaggerApplication  {
+public class App extends DaggerApplication {
     private static App instance;
 
     @Inject
@@ -25,6 +23,9 @@ public class App extends DaggerApplication  {
     @Inject
     protected UserRepository userRepository;
 
+    public static synchronized App getInstance() {
+        return instance;
+    }
 
     @Override
     public void onCreate() {
@@ -32,10 +33,6 @@ public class App extends DaggerApplication  {
         instance = this;
         loginRepository.setAuthService(authService);
         loginRepository.setUserRepository(userRepository);
-    }
-
-    public static synchronized App getInstance() {
-        return instance;
     }
 
     @Override

@@ -1,14 +1,9 @@
 package com.projectsoa.avabuddies.screens.main.profile;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Base64;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,15 +19,11 @@ import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
 import com.projectsoa.avabuddies.utils.Utils;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import butterknife.BindView;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 public class ProfileFragment extends BaseFragment {
@@ -46,19 +37,18 @@ public class ProfileFragment extends BaseFragment {
     @Inject
     protected Utils utils;
 
-    @BindView(R.id.Name)
+    @BindView(R.id.name)
     protected TextView name;
-    @BindView(R.id.Email)
+    @BindView(R.id.email)
     protected TextView email;
-    @BindView(R.id.Info)
+    @BindView(R.id.info)
     protected TextView info;
-    @BindView(R.id.fullName)
+    @BindView(R.id.full_name)
     protected TextView fullName;
     @BindView(R.id.profile)
     protected ImageView profile;
     @BindView(R.id.location)
     protected Switch location;
-
 
 
     public ProfileFragment() {
@@ -75,9 +65,7 @@ public class ProfileFragment extends BaseFragment {
         this.user = loginRepository.getLoggedInUser().getUser();
 
 
-
-
-        if(!user.getImage().isEmpty()) {
+        if (!user.getImage().isEmpty()) {
             try {
                 byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
                 Glide.with(this)
@@ -108,7 +96,7 @@ public class ProfileFragment extends BaseFragment {
 
 
     @OnClick(R.id.btn_logout)
-    public void logout(){
+    public void logout() {
         Intent intent = new Intent(getBaseActivity(), LoginActivity.class);
         intent.putExtra("logout", true);
         startActivity(intent);
@@ -116,8 +104,8 @@ public class ProfileFragment extends BaseFragment {
 
 
     @OnClick(R.id.updateThisUser)
-    public void goToUpdate(){
-        ((MainActivity)getActivity()).loadFragment(new ProfileChangeFragment());
+    public void goToUpdate() {
+        ((MainActivity) getActivity()).loadFragment(new ProfileChangeFragment());
     }
 
 }

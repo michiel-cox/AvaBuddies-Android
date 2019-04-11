@@ -1,8 +1,5 @@
 package com.projectsoa.avabuddies.data.services;
 
-import com.projectsoa.avabuddies.data.models.responses.auth.SignupResponse;
-import com.projectsoa.avabuddies.data.models.responses.user.ProfileResponse;
-import com.projectsoa.avabuddies.data.models.responses.user.UserListResponse;
 import com.projectsoa.avabuddies.data.models.responses.user.ProfileResponse;
 import com.projectsoa.avabuddies.data.models.responses.user.UserListResponse;
 
@@ -31,6 +28,6 @@ public interface UserService {
 
     @POST("user/updateprofile")
     @FormUrlEncoded
-    Completable updateProfile(@Field("aboutme") String aboutMe,  @Field("sharelocation") boolean sharelocation);
+    Completable updateProfile(@Field("aboutme") String aboutMe, @Field("sharelocation") boolean sharelocation);
 
 }
