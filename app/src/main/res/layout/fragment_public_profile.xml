@@ -53,6 +53,7 @@
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"
                 android:textSize="14sp" />
+
             <TextView
                 android:id="@+id/PublicInfo"
                 android:layout_width="match_parent"
@@ -60,7 +61,7 @@
                 android:layout_gravity="center_vertical"
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"
-                android:textSize="30sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="match_parent"
