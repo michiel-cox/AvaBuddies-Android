@@ -62,7 +62,7 @@
                 android:layout_gravity="center_vertical"
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"
-                android:textSize="30sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/Function"
@@ -112,6 +112,7 @@
                 android:id="@+id/showFriends"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="10dp"
                 android:text="@string/profileShowFriends" />
             <TextView
                 android:layout_width="match_parent"
@@ -126,16 +127,14 @@
                 android:id="@+id/updateThisUser"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="10dp"
                 android:text="@string/profileUpdate" />
-            <Button
-                android:id="@+id/removeThisUser"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/profileRemoveAccount" />
+
             <Button
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="10dp"
                 android:text="Logout" />
         </LinearLayout>
     </ScrollView>

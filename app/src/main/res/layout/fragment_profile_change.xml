@@ -58,6 +58,12 @@
                 android:layout_height="wrap_content"
                 android:text="Update" />
 
+            <Button
+                android:id="@+id/removeThisUser"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="@string/profileRemoveAccount" />
         </LinearLayout>
     </ScrollView>
 

@@ -1,4 +1,7 @@
 package com.projectsoa.avabuddies.screens.main.profile;
+
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -9,6 +12,8 @@ import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
+import com.projectsoa.avabuddies.screens.login.LoginActivity;
+import com.projectsoa.avabuddies.screens.main.MainActivity;
 import com.projectsoa.avabuddies.utils.Utils;
 
 import javax.inject.Inject;
@@ -33,33 +38,50 @@ public class ProfileChangeFragment extends BaseFragment {
     protected EditText aboutme;
     @BindView(R.id.location)
     protected Switch location;
-    protected User updatedUser;
-
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         this.user = loginRepository.getLoggedInUser().getUser();
-
         aboutme.setText(user.getAboutme());
         location.setChecked(user.isSharelocation());
-
         viewModel = getViewModel(ProfileChangeViewModel.class);
     }
 
     @OnClick(R.id.updateProfile)
-    public void updateProfile(){
-        this.updatedUser = this.user;
-        this.updatedUser.setAboutme(aboutme.getText());
-        this.updatedUser.setSharelocation(location.isChecked());
-        this.userRepository.update(updatedUser);
+    public void updateProfile() {
+        this.user.setAboutme(aboutme.getText().toString());
+        this.user.setSharelocation(location.isChecked());
+        this.userRepository.update(user).subscribe(() -> {
+                    ((MainActivity) getActivity()).loadFragment(new ProfileFragment());
+                },
+                throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
     }
+
+    public void logout() {
+        Intent intent = new Intent(getBaseActivity(), LoginActivity.class);
+        intent.putExtra("logout", true);
+        startActivity(intent);
+    }
+
     @Override
-    protected int layoutRes() { return R.layout.fragment_profile_change; }
+    protected int layoutRes() {
+        return R.layout.fragment_profile_change;
+    }
+
+    @OnClick(R.id.removeThisUser)
+    public void removeThisUser() {
+
+        new AlertDialog.Builder(getContext()).setTitle("Confirm").setMessage("Are you sure?").setPositiveButton("YES", (dialogInterface, i) -> {
+            userRepository.delete(this.user).subscribe(() -> logout(), throwable -> {
+                getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.errorDeleteUser)));
+            });
+            dialogInterface.dismiss();
+        }).setNegativeButton("NO", (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        }).create().show();
+
+
+    }
 }

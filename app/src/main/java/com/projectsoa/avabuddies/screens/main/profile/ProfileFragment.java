@@ -74,6 +74,9 @@ public class ProfileFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         this.user = loginRepository.getLoggedInUser().getUser();
 
+
+
+
         if(!user.getImage().isEmpty()) {
             try {
                 byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
@@ -89,6 +92,7 @@ public class ProfileFragment extends BaseFragment {
 
         // Set values of user account
         location.setChecked(user.isSharelocation());
+        location.setClickable(false);
         name.setText(user.getName());
         fullName.setText(user.getName());
         email.setText(user.getEmail());
@@ -110,19 +114,10 @@ public class ProfileFragment extends BaseFragment {
         startActivity(intent);
     }
 
-    @OnCheckedChanged(R.id.location)
-    public void setLocationStatus(){
-
-    }
 
     @OnClick(R.id.updateThisUser)
     public void goToUpdate(){
         ((MainActivity)getActivity()).loadFragment(new ProfileChangeFragment());
     }
 
-
-    @OnClick(R.id.removeThisUser)
-    public void removeThisUser(){
-        userRepository.delete(this.user).subscribe(() -> logout(), throwable -> {getActivity().runOnUiThread(()-> utils.showToastError(getString(R.string.errorDeleteUser)));});
-    }
 }

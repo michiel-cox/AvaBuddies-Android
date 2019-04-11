@@ -27,7 +27,7 @@ public interface UserService {
     @DELETE("user/destroy/{id}")
     Completable deleteUser(@Path("id") String id);
 
-    @POST("/updateprofile")
+    @POST("user/updateprofile")
     @FormUrlEncoded
     Completable updateProfile(@Field("aboutme") String aboutMe,  @Field("sharelocation") boolean sharelocation);
 
