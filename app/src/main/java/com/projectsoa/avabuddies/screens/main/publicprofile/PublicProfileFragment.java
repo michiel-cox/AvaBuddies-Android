@@ -18,7 +18,6 @@ import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.utils.Utils;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
@@ -44,19 +43,19 @@ public class PublicProfileFragment extends BaseFragment {
 
     private User user;
 
-    @BindView(R.id.buttonRequest)
+    @BindView(R.id.button_request)
     protected Button buttonRequest;
 
-    @BindView(R.id.buttonRequestCancel)
+    @BindView(R.id.button_request_cancel)
     protected Button buttonRequestCancel;
 
-    @BindView(R.id.PublicName)
+    @BindView(R.id.public_name)
     protected TextView name;
-    @BindView(R.id.PublicEmail)
+    @BindView(R.id.public_email)
     protected TextView email;
-    @BindView(R.id.PublicInfo)
+    @BindView(R.id.public_info)
     protected TextView info;
-    @BindView(R.id.publicProfile)
+    @BindView(R.id.public_profile)
     protected ImageView profile;
 
     @Inject
@@ -132,7 +131,7 @@ public class PublicProfileFragment extends BaseFragment {
 
     }
 
-    @OnClick(R.id.buttonRequest)
+    @OnClick(R.id.button_request)
     public void onFriendRequest(){
         hideFriendRequest();
         friendRepository.request(user.getId()).subscribe(() -> {
@@ -144,7 +143,7 @@ public class PublicProfileFragment extends BaseFragment {
 
     }
 
-    @OnClick(R.id.buttonRequestCancel)
+    @OnClick(R.id.button_request_cancel)
     public void onFriendRequestCancel(){
         hideFriendRequest();
         friendRepository.request(user.getId()).subscribe(() -> {

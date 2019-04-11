@@ -49,7 +49,7 @@ public class LoginActivity extends BaseActivity {
 
     @Inject
     protected LoginRepository loginRepository;
-    private LoginViewModel mViewModel;
+    private LoginViewModel viewModel;
 
     @OnClick(R.id.btn_login)
     public void login() {
@@ -132,7 +132,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = getViewModel(LoginViewModel.class);
+        viewModel = getViewModel(LoginViewModel.class);
 
         mAuthContext = new AuthenticationContext(getApplicationContext(), AUTHORITY, false);
 

@@ -55,7 +55,7 @@ public class RegisterActivity extends BaseActivity {
     public void register(){
         if(!switchTerms.isChecked())
         {
-            utils.showToastError("You need to accept the terms and conditions to use AvaBuddies.");
+            utils.showToastError(getString(R.string.error_terms_and_conditions));
             return;
         }
         loginRepository.register(email, name, switchLocation.isChecked()).subscribe(() ->  {
