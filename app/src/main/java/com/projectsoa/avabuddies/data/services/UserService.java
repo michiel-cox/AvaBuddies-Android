@@ -3,6 +3,8 @@ package com.projectsoa.avabuddies.data.services;
 import com.projectsoa.avabuddies.data.models.responses.auth.SignupResponse;
 import com.projectsoa.avabuddies.data.models.responses.user.ProfileResponse;
 import com.projectsoa.avabuddies.data.models.responses.user.UserListResponse;
+import com.projectsoa.avabuddies.data.models.responses.user.ProfileResponse;
+import com.projectsoa.avabuddies.data.models.responses.user.UserListResponse;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
