@@ -47,40 +47,8 @@ import butterknife.OnClick;
 public class LoginActivity extends BaseActivity {
 
 
-    @Inject
-    protected LoginRepository loginRepository;
-    private LoginViewModel viewModel;
-
-    @OnClick(R.id.btn_login)
-    public void login() {
-        onCallGraphClicked();
-    }
-
-    public void onLogin(String email, String name){
-        loginRepository.login(email).subscribe(() -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }, throwable -> {
-            throwable.printStackTrace();
-            register(email, name);
-        });
-    }
-
-    public void register(String email, String name){
-        Intent intent = new Intent(this, RegisterActivity.class);
-        intent.putExtra("email",email);
-        intent.putExtra("name",name);
-        startActivity(intent);
-    }
-
-    @Override
-    protected int layoutRes() {
-        return R.layout.activity_login;
-    }
-
     /* UI & Debugging Variables */
     private static final String TAG = LoginActivity.class.getSimpleName();
-
     /* Azure AD Constants */
     /* Authority is in the form of https://login.microsoftonline.com/yourtenant.onmicrosoft.com */
     private static final String AUTHORITY = "https://login.microsoftonline.com/common";
@@ -90,29 +58,19 @@ public class LoginActivity extends BaseActivity {
     private static final String RESOURCE_ID = "https://graph.microsoft.com/";
     /* The Redirect URI of the application (Optional) */
     private static final String REDIRECT_URI = "http://localhost";
-
     /* Microsoft Graph Constants */
     private final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-
-    /* Azure AD Variables */
-    private AuthenticationContext mAuthContext;
-    private AuthenticationResult mAuthResult;
-
-    /* Handler to do an interactive sign in and acquire token */
-    private Handler mAcquireTokenHandler;
-    /* Boolean variable to ensure invocation of interactive sign-in only once in case of multiple  acquireTokenSilent call failures */
-    private static AtomicBoolean sIntSignInInvoked = new AtomicBoolean();
     /* Constant to send message to the mAcquireTokenHandler to do acquire token with Prompt.Auto*/
     private static final int MSG_INTERACTIVE_SIGN_IN_PROMPT_AUTO = 1;
     /* Constant to send message to the mAcquireTokenHandler to do acquire token with Prompt.Always */
     private static final int MSG_INTERACTIVE_SIGN_IN_PROMPT_ALWAYS = 2;
-
     /* Constant to store user id in shared preferences */
     private static final String USER_ID = "user_id";
-
     /* Telemetry variables */
     // Flag to turn event aggregation on/off
     private static final boolean sTelemetryAggregationIsRequired = true;
+    /* Boolean variable to ensure invocation of interactive sign-in only once in case of multiple  acquireTokenSilent call failures */
+    private static AtomicBoolean sIntSignInInvoked = new AtomicBoolean();
 
     /* Telemetry dispatcher registration */
     static {
@@ -127,7 +85,41 @@ public class LoginActivity extends BaseActivity {
         }, sTelemetryAggregationIsRequired);
     }
 
+    @Inject
+    protected LoginRepository loginRepository;
+    private LoginViewModel viewModel;
+    /* Azure AD Variables */
+    private AuthenticationContext mAuthContext;
+    private AuthenticationResult mAuthResult;
+    /* Handler to do an interactive sign in and acquire token */
+    private Handler mAcquireTokenHandler;
 
+    @OnClick(R.id.btn_login)
+    public void login() {
+        onCallGraphClicked();
+    }
+
+    public void onLogin(String email, String name) {
+        loginRepository.login(email).subscribe(() -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }, throwable -> {
+            throwable.printStackTrace();
+            register(email, name);
+        });
+    }
+
+    public void register(String email, String name) {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("email", email);
+        intent.putExtra("name", name);
+        startActivity(intent);
+    }
+
+    @Override
+    protected int layoutRes() {
+        return R.layout.activity_login;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,11 +211,11 @@ public class LoginActivity extends BaseActivity {
         }
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL,
                 parameters, response -> {
-                    /* Successfully called graph, process data and send to UI */
-                    Log.d(TAG, "Response: " + response.toString());
+            /* Successfully called graph, process data and send to UI */
+            Log.d(TAG, "Response: " + response.toString());
 
-                    updateGraphUI(response);
-                }, error -> Log.d(TAG, "Error: " + error.toString())) {
+            updateGraphUI(response);
+        }, error -> Log.d(TAG, "Error: " + error.toString())) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -264,7 +256,7 @@ public class LoginActivity extends BaseActivity {
     @SuppressLint("SetTextI18n")
     private void onLogin() {
         UserInfo userInfo = mAuthResult.getUserInfo();
-        onLogin(userInfo.getDisplayableId(),  String.format("%s %s",  userInfo.getGivenName(), userInfo.getFamilyName()));
+        onLogin(userInfo.getDisplayableId(), String.format("%s %s", userInfo.getGivenName(), userInfo.getFamilyName()));
     }
 
     @SuppressLint("SetTextI18n")

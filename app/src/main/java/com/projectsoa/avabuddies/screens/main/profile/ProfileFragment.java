@@ -51,7 +51,6 @@ public class ProfileFragment extends BaseFragment {
     protected Switch location;
 
 
-
     public ProfileFragment() {
     }
 
@@ -66,9 +65,7 @@ public class ProfileFragment extends BaseFragment {
         this.user = loginRepository.getLoggedInUser().getUser();
 
 
-
-
-        if(!user.getImage().isEmpty()) {
+        if (!user.getImage().isEmpty()) {
             try {
                 byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
                 Glide.with(this)
@@ -99,7 +96,7 @@ public class ProfileFragment extends BaseFragment {
 
 
     @OnClick(R.id.btn_logout)
-    public void logout(){
+    public void logout() {
         Intent intent = new Intent(getBaseActivity(), LoginActivity.class);
         intent.putExtra("logout", true);
         startActivity(intent);
@@ -107,8 +104,8 @@ public class ProfileFragment extends BaseFragment {
 
 
     @OnClick(R.id.updateThisUser)
-    public void goToUpdate(){
-        ((MainActivity)getActivity()).loadFragment(new ProfileChangeFragment());
+    public void goToUpdate() {
+        ((MainActivity) getActivity()).loadFragment(new ProfileChangeFragment());
     }
 
 }

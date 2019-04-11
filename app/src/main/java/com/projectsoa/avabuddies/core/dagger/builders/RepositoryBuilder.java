@@ -23,11 +23,13 @@ public class RepositoryBuilder {
     @Singleton
     @Provides
     static UserRepository provideUserRepository(UserService userService) {
-        return new UserRepository(userService); }
+        return new UserRepository(userService);
+    }
 
     @Singleton
     @Provides
     static FriendRepository provideFriendRepository(FriendService friendService, LoginRepository loginRepository, UserRepository userRepository) {
-        return new FriendRepository(friendService, loginRepository, userRepository); }
+        return new FriendRepository(friendService, loginRepository, userRepository);
+    }
 
 }

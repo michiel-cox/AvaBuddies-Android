@@ -12,15 +12,13 @@ import javax.inject.Inject;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 import icepick.Icepick;
 
-public abstract class BaseActivity  extends DaggerAppCompatActivity {
+public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     @Inject
     protected ViewModelFactory viewModelFactory;
@@ -57,14 +55,15 @@ public abstract class BaseActivity  extends DaggerAppCompatActivity {
     /**
      * Returns an instance of a view model
      */
-    public <T extends ViewModel> T getViewModel(Class<T> viewModelClass){
+    public <T extends ViewModel> T getViewModel(Class<T> viewModelClass) {
         return ViewModelProviders.of(this, viewModelFactory).get(viewModelClass);
     }
 
     /**
-     *   Required for EventBus (Throws an error when there are no Subscribed events.)
+     * Required for EventBus (Throws an error when there are no Subscribed events.)
      */
     @Subscribe
-    public void dummyEvent(BaseActivity event){  }
+    public void dummyEvent(BaseActivity event) {
+    }
 
 }

@@ -40,15 +40,10 @@ public class PublicProfileFragment extends BaseFragment {
 
 
     protected PublicProfileViewModel viewModel;
-
-    private User user;
-
     @BindView(R.id.button_request)
     protected Button buttonRequest;
-
     @BindView(R.id.button_request_cancel)
     protected Button buttonRequestCancel;
-
     @BindView(R.id.public_name)
     protected TextView name;
     @BindView(R.id.public_email)
@@ -57,9 +52,9 @@ public class PublicProfileFragment extends BaseFragment {
     protected TextView info;
     @BindView(R.id.public_profile)
     protected ImageView profile;
-
     @Inject
     protected Utils utils;
+    private User user;
 
     public PublicProfileFragment() {
 
@@ -89,10 +84,10 @@ public class PublicProfileFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel= getViewModel(PublicProfileViewModel.class);
+        viewModel = getViewModel(PublicProfileViewModel.class);
         hideFriendRequest();
 
-        if(!user.getImage().isEmpty()) {
+        if (!user.getImage().isEmpty()) {
             try {
                 byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
                 Glide.with(this)
@@ -115,11 +110,12 @@ public class PublicProfileFragment extends BaseFragment {
     }
 
 
-    private void hideFriendRequest(){
+    private void hideFriendRequest() {
         buttonRequest.setVisibility(View.GONE);
         buttonRequestCancel.setVisibility(View.GONE);
     }
-    private void updateFriendRequest(FriendRepository.ConnectionStatus status){
+
+    private void updateFriendRequest(FriendRepository.ConnectionStatus status) {
         switch (status) {
             case SEND:
                 buttonRequestCancel.setVisibility(View.VISIBLE);
@@ -132,7 +128,7 @@ public class PublicProfileFragment extends BaseFragment {
     }
 
     @OnClick(R.id.button_request)
-    public void onFriendRequest(){
+    public void onFriendRequest() {
         hideFriendRequest();
         friendRepository.request(user.getId()).subscribe(() -> {
             getActivity().runOnUiThread(() -> {
@@ -144,7 +140,7 @@ public class PublicProfileFragment extends BaseFragment {
     }
 
     @OnClick(R.id.button_request_cancel)
-    public void onFriendRequestCancel(){
+    public void onFriendRequestCancel() {
         hideFriendRequest();
         friendRepository.request(user.getId()).subscribe(() -> {
             getActivity().runOnUiThread(() -> {

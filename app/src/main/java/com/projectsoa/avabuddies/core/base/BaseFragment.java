@@ -68,19 +68,20 @@ public abstract class BaseFragment extends DaggerFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(mUnbinder != null) {
+        if (mUnbinder != null) {
             mUnbinder.unbind();
             mUnbinder = null;
         }
     }
 
     // Return whether or it has been handled.
-    public boolean onBackPressed(){
+    public boolean onBackPressed() {
         return false;
     }
 
     @Subscribe
-    public void dummyEvent(BaseActivity event){  }
+    public void dummyEvent(BaseActivity event) {
+    }
 
 
     public BaseActivity getBaseActivity() {
@@ -88,7 +89,7 @@ public abstract class BaseFragment extends DaggerFragment {
     }
 
 
-    public <T extends ViewModel> T getViewModel(Class<T> viewModelClass){
+    public <T extends ViewModel> T getViewModel(Class<T> viewModelClass) {
         return ViewModelProviders.of(this, viewModelFactory).get(viewModelClass);
     }
 

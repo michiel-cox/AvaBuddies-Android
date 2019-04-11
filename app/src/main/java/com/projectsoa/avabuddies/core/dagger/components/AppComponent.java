@@ -22,6 +22,7 @@ import dagger.android.AndroidInjector;
 })
 public interface AppComponent extends AndroidInjector<App> {
     @Component.Builder
-    abstract class Builder extends AndroidInjector.Builder<App> {}
+    abstract class Builder extends AndroidInjector.Builder<App> {
+    }
 }
 

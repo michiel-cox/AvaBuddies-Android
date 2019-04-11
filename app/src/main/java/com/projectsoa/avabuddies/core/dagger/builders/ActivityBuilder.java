@@ -8,8 +8,6 @@ import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragmen
 import com.projectsoa.avabuddies.screens.main.search.SearchFragment;
 import com.projectsoa.avabuddies.screens.register.RegisterActivity;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -39,7 +37,6 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector()
     abstract ProfileChangeFragment contributeProfileChangeFragment();
-
 
 
 }
