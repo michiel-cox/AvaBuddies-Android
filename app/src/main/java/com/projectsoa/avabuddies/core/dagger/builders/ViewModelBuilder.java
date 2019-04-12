@@ -3,13 +3,10 @@ package com.projectsoa.avabuddies.core.dagger.builders;
 import com.projectsoa.avabuddies.core.dagger.utils.ViewModelKey;
 import com.projectsoa.avabuddies.screens.login.LoginViewModel;
 import com.projectsoa.avabuddies.screens.main.MainViewModel;
-import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
+import com.projectsoa.avabuddies.screens.main.profile.ProfileChangeViewModel;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileViewModel;
-import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragment;
 import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileViewModel;
 import com.projectsoa.avabuddies.screens.register.RegisterViewModel;
-
-import javax.inject.Singleton;
 
 import androidx.lifecycle.ViewModel;
 import dagger.Binds;
@@ -46,4 +43,10 @@ public abstract class ViewModelBuilder {
     @IntoMap
     @ViewModelKey(PublicProfileViewModel.class)
     abstract ViewModel bindPublicProfileViewModel(PublicProfileViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileChangeViewModel.class)
+    abstract ViewModel bindProfileChangeViewModel(ProfileChangeViewModel viewModel);
+
 }

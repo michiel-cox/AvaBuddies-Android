@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".screens.main.profile.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,68 +16,128 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/full_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:background="#eee"
-                android:padding="10px"
-                android:text="General"
+                android:padding="10dp"
+                android:textAlignment="center"
                 android:textColor="@color/colorBlack"
-                android:textSize="30sp" />
+                android:background="#dddddd"
+                android:textSize="16sp" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:minHeight="200dp"
+                android:contentDescription="@string/ProfileText"
                 tools:src="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/Name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:padding="10dp"
-                android:text="Naam"
-                android:textColor="@color/colorBlack"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/Email"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:padding="10dp"
-                android:text="Email"
-                android:textColor="@color/colorBlack"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/AboutMe"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:padding="5dp"
-                android:text="Over profiel"
-                android:textColor="@color/colorBlack"
-                android:textSize="24sp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="22dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="#eee"
                 android:padding="10dp"
-                android:text="Privacy"
+                android:text="@string/profileGeneral"
                 android:textColor="@color/colorBlack"
-                android:textSize="30sp" />
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/Function"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#eee"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/profilePrivacy"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp" />
+            <Switch
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/locationSharing"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#eee"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/profileConnections"
+                android:textSize="16sp" />
+            <Button
+                android:id="@+id/showFriends"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="@string/profileShowFriends" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#eee"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/profileActions"
+                android:textSize="16sp" />
+            <Button
+                android:id="@+id/updateThisUser"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="@string/profileUpdate" />
 
             <Button
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Logout" />
+                android:padding="10dp"
+                android:text="@string/logout" />
         </LinearLayout>
     </ScrollView>
+
 
 
 

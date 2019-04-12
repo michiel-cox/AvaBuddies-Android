@@ -27,19 +27,18 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.frame_container)
     protected FrameLayout frameLayout;
+    protected BaseFragment fragment;
 
     @Override
     protected int layoutRes() {
         return R.layout.activity_main;
     }
 
-
-    protected BaseFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = getViewModel(MainViewModel.class);
-        if(!loginRepository.isLoggedIn()){
+        if (!loginRepository.isLoggedIn()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
@@ -59,7 +58,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(fragment != null){
+        if (fragment != null) {
             fragment.onBackPressed();
         }
     }
@@ -67,6 +66,7 @@ public class MainActivity extends BaseActivity {
     public void onClickProfile(MenuItem item) {
         loadFragment(new ProfileFragment());
     }
+
     public void onClickSearch(MenuItem item) {
         loadFragment(new SearchFragment());
     }

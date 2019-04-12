@@ -1,8 +1,8 @@
 package com.projectsoa.avabuddies.data.models;
 
 public class LoggedInUser {
-    private User user;
     private final String token;
+    private User user;
 
     public LoggedInUser(String token) {
         this.token = token;

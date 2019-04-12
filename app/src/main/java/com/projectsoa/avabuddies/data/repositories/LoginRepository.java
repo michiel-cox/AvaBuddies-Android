@@ -2,14 +2,9 @@ package com.projectsoa.avabuddies.data.repositories;
 
 import com.projectsoa.avabuddies.Constants;
 import com.projectsoa.avabuddies.data.models.LoggedInUser;
-import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.services.AuthService;
-import com.projectsoa.avabuddies.data.services.UserService;
-
-import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.Single;
 
 public class LoginRepository {
     private LoggedInUser loggedInUser;
@@ -31,7 +26,7 @@ public class LoginRepository {
 
     public Completable login(String email) {
         return authService.doLogin(email, Constants.SECRET)
-                .map(loginResponse ->  {
+                .map(loginResponse -> {
                     loggedInUser = new LoggedInUser(loginResponse.token);
                     loggedInUser.setUser(userRepository.getProfile().blockingGet());
                     return loggedInUser;
@@ -42,8 +37,8 @@ public class LoginRepository {
     public Completable register(String email, String name, boolean sharelocation) {
         return
                 authService.doSignup(email, Constants.SECRET, name, sharelocation)
-                .ignoreElement()
-                .concatWith(login(email));
+                        .ignoreElement()
+                        .concatWith(login(email));
     }
 
     public void setAuthService(AuthService authService) {
