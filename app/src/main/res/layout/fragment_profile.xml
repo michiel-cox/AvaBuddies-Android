@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".screens.main.profile.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -135,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-                android:text="Logout" />
+                android:text="@string/logout" />
         </LinearLayout>
     </ScrollView>
 

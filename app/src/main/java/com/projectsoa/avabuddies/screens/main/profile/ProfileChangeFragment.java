@@ -74,12 +74,15 @@ public class ProfileChangeFragment extends BaseFragment {
     @OnClick(R.id.removeThisUser)
     public void removeThisUser() {
 
-        new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogCustom)).setTitle("Confirm").setMessage("Are you sure?").setPositiveButton("YES", (dialogInterface, i) -> {
+        new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogCustom))
+                .setTitle(getString(R.string.confirm))
+                .setMessage(getString(R.string.confirm_message))
+                .setPositiveButton(getString(R.string.positive_button), (dialogInterface, i) -> {
             userRepository.delete(this.user).subscribe(() -> logout(), throwable -> {
                 getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.errorDeleteUser)));
             });
             dialogInterface.dismiss();
-        }).setNegativeButton("NO", (dialogInterface, i) -> {
+        }).setNegativeButton(getString(R.string.negative_button), (dialogInterface, i) -> {
             dialogInterface.dismiss();
         }).create().show();
 

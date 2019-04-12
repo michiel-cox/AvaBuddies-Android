@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="AvaBuddies"
+                android:text="@string/app_name"
                 android:textColor="@color/colorWhite"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginTop="100dp"
-            android:text="Welcome to AvaBuddies!"
+            android:text="@string/welcome_to_avabuddies"
             android:textAlignment="textStart"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +66,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="145dp"
             android:layout_marginEnd="25dp"
-            android:text="Before we can create your profile, you have to accept our terms and conditions."
+            android:text="@string/before_we_can_create_your_profile_you_have_to_accept_our_terms_and_conditions"
             android:textAlignment="textStart"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
@@ -93,14 +93,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="I accept that AvaBuddies uses my location in the background." />
+                android:text="@string/i_accept_that_avabuddies_uses_my_location_in_the_background" />
 
             <Switch
                 android:id="@+id/switch_terms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="I accept these terms and conditions" />
+                android:text="@string/i_accept_these_terms_and_conditions" />
 
         </LinearLayout>
 
@@ -111,7 +111,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
-            android:text="Continue"
+            android:text="@string/message_continue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
