@@ -51,6 +51,8 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Default dependencies
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.1.0-alpha05'
@@ -60,45 +62,57 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha03'
 
+    // For connection with the api
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 
+    // Dependency injection
     implementation 'com.google.dagger:dagger-android:2.21'
     implementation 'com.google.dagger:dagger-android-support:2.21'
-    // if you use the support libraries
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.21'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
 
+    // For everything image related
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
+    // No more findViewById(R.id.blabla) but instead you can use annotations.
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
+    // For sending objects from fragment to fragment easily.
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
 
-    testImplementation 'org.robolectric:robolectric:4.2'
-
-    implementation 'org.greenrobot:eventbus:3.1.1'
-
-    implementation 'frankiesardo:icepick:3.2.0'
-    annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
-
+    // For asynchronous functions and the API (retrofit2)
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
 
 
+    // For Microsoft Sign-in
     implementation 'com.microsoft.aad:adal:1.15.1'
     implementation 'com.android.volley:volley:1.1.1'
 
+    // Mock objects in unit tests
     testImplementation "org.mockito:mockito-core:2.25.1"
     androidTestImplementation 'org.mockito:mockito-android:2.7.22'
 
+    // QR reading
+    implementation 'com.google.android.gms:play-services-vision:17.0.2'
+    // QR generating
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
 
+
+    // Unused but likely useful in the future.
     testImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.5'
     androidTestImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.5'
+    testImplementation 'org.robolectric:robolectric:4.2'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'frankiesardo:icepick:3.2.0'
+    annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
+
+
 }

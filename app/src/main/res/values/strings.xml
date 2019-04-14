@@ -9,13 +9,13 @@
     <string name="cancel_connection_request">Cancel connection request</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="friend_request_send">You have send a request.</string>
-    <string name="friend_request_cancel">You have canceled the request</string>
+    <string name="friend_request_cancel">You have canceled the request.</string>
     <string name="search">Search</string>
     <string name="nearby">Nearby</string>
     <string name="sent_requests">Sent requests</string>
     <string name="received_requests">Received requests</string>
     <string name="errorDeleteUser">Could not delete user</string>
-    <string name="locationSharing">Ik wil mijn locatie delen</string>
+    <string name="locationSharing">I want to share my location</string>
     <string name="ProfileText">Profile</string>
     <string name="profileGeneral">General</string>
     <string name="profilePrivacy">Privacy</string>
@@ -39,4 +39,19 @@
     <string name="confirm_message">Are you sure?</string>
     <string name="confirm">Confirm</string>
     <string name="login">Login</string>
+    <string name="qr">QR</string>
+    <string name="deny">Deny</string>
+    <string name="accept">Accept</string>
+    <string name="friend_request_deny">You have denied the request.</string>
+    <string name="permission_title">Permission request</string>
+    <string name="qr_invalid">This QR code is invalid.</string>
+    <string name="friend_request_accept">You have accepted the request.</string>
+    <string name="request_qr_validated">You have validated the request from %s.</string>
+    <string name="success">Success</string>
+    <string name="validate">Validate</string>
+    <string name="qr_code">QR code</string>
+    <string name="qr_error_unknown">You have not send a request to this person.</string>
+    <string name="qr_error_validated">This friend is already validated.</string>
+    <string name="qr_error_accepted">You are already friends.</string>
+    <string name="qr_error_received">You shouldn\'t be scanning your own code.</string>
 </resources>

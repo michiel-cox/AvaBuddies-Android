@@ -11,4 +11,7 @@ public class FriendResponse {
 
     @SerializedName("confirmed")
     public boolean confirmed;
+
+    @SerializedName("validated")
+    public boolean validated;
 }

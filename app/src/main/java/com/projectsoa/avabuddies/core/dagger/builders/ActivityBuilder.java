@@ -7,6 +7,8 @@ import com.projectsoa.avabuddies.screens.main.nearby.list.NearbyListFragment;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileChangeFragment;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
 import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragment;
+import com.projectsoa.avabuddies.screens.main.qrread.QRReadFragment;
+import com.projectsoa.avabuddies.screens.main.qrshow.QRShowFragment;
 import com.projectsoa.avabuddies.screens.main.search.SearchFragment;
 import com.projectsoa.avabuddies.screens.register.RegisterActivity;
 
@@ -46,6 +48,12 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector()
     abstract NearbyListFragment contributeNearbyListFragment();
+
+    @ContributesAndroidInjector()
+    abstract QRReadFragment contributeQRReadFragment();
+
+    @ContributesAndroidInjector()
+    abstract QRShowFragment contributeQRShowFragment();
 
 
 

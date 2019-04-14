@@ -82,16 +82,16 @@ public class NearbyListFragment extends BaseFragment implements UsersAdapter.Use
         initUsersList(listReceived, adapterReceived);
 
         friendRepository.getSendRequests().subscribe(users -> {
-            getActivity().runOnUiThread(() -> {
+            runOnUiThread(() -> {
                 this.updateSendRequests(users);
             });
-        }, throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
+        }, throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
 
         friendRepository.getReceivedRequests().subscribe(users -> {
-            getActivity().runOnUiThread(() -> {
+            runOnUiThread(() -> {
                 this.updateReceivedRequests(users);
             });
-        }, throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
+        }, throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
 
 
     }

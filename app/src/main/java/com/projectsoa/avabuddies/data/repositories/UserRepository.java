@@ -22,9 +22,21 @@ public class UserRepository {
         return userService.fetchProfile().map(profileResponse -> new User(profileResponse.user));
     }
 
+    // This is temporary.
+    public Single<User> getUser(String id) {
+        return userService.fetchList().map(userListResponse -> {
+            for (UserResponse user : userListResponse.users) {
+                if(user._id.equals(id)) return user;
+            }
+            throw new Exception("User not found.");
+        }).map(User::new);
+    }
+    /*
+    TODO: Enable when backend has fixed getting a single user
     public Single<User> getUser(String id) {
         return userService.fetchUser(id).map(profileResponse -> new User(profileResponse.user));
     }
+    */
 
     public Single<List<User>> getList() {
         return userService.fetchList().map(userListResponse -> {

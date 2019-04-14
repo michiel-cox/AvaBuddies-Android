@@ -1,10 +1,13 @@
 package com.projectsoa.avabuddies.data.repositories;
 
+import com.projectsoa.avabuddies.Constants;
 import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.models.responses.friend.FriendResponse;
 import com.projectsoa.avabuddies.data.services.FriendService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -82,8 +85,9 @@ public class FriendRepository {
             }
             if(friendResponse == null) return ConnectionStatus.UNKNOWN;
             if(friendResponse.confirmed) return ConnectionStatus.ACCEPTED;
-            if(friendId.equals(friendResponse.friend1)) return ConnectionStatus.RECEIVED;
-            return ConnectionStatus.SEND;
+            if(!friendId.equals(friendResponse.friend1)) return ConnectionStatus.SEND;
+            if(friendResponse.validated) return ConnectionStatus.VALIDATED;
+            return ConnectionStatus.RECEIVED;
         });
     }
 
@@ -95,6 +99,10 @@ public class FriendRepository {
         return friendService.doCancelRequest(friendId).ignoreElement();
     }
 
+    public Completable validateRequest(String friendId){
+        return friendService.doValidateRequest(friendId).ignoreElement();
+    }
+
     public Completable denyRequest(String friendId){
         return friendService.doDenyRequest(friendId).ignoreElement();
     }
@@ -103,10 +111,30 @@ public class FriendRepository {
         return friendService.doAcceptRequest(friendId).ignoreElement();
     }
 
+    public Completable isValidRequest(String friendId, Date dateTime) {
+
+        // Validate Time
+        long msNow = new Date().getTime();
+        long msThen = dateTime.getTime();
+        long msDiff = msNow - msThen;
+        if(msDiff > Constants.QR_VALID_SECONDS  * 1000){
+            return Completable.error(new Exception("This QR code is invalid.")); // The QR Code is only an x amount of time valid.
+        }
+
+        // Validate user
+        return getSendRequests().map(users -> {
+            for (User user : users) {
+                if(user.getId().equals(friendId)) return user;
+            }
+            return new Exception("This QR code is invalid.");
+        }).ignoreElement();
+    }
+
     public enum ConnectionStatus {
         SEND,
         RECEIVED,
         ACCEPTED,
+        VALIDATED,
         UNKNOWN,
     }
 }
