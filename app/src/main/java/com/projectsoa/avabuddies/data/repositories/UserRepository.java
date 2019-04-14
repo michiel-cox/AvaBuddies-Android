@@ -55,4 +55,8 @@ public class UserRepository {
     public Completable update(User user) {
         return userService.updateProfile(user.getAboutme(), user.isSharelocation());
     }
+
+    public Completable updateProfilePicture(User user) {
+        return userService.updateProfilePicture(user.getImage());
+    }
 }
