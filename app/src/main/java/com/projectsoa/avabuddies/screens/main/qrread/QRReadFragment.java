@@ -206,7 +206,7 @@ public class QRReadFragment extends BaseFragment {
     // else it will show an error.
     private Single<User> validateAndReturnUser(String friendId, Date dateTime){
         return friendRepository
-            .isValidRequest(friendId, dateTime)
+            .isValidRequest(friendId, dateTime, new Date())
             .andThen(friendRepository.validateRequest(friendId))
             .andThen(userRepository.getUser(friendId))
             .subscribeOn(Schedulers.newThread())

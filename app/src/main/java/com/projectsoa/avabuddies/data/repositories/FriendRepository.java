@@ -111,10 +111,10 @@ public class FriendRepository {
         return friendService.doAcceptRequest(friendId).ignoreElement();
     }
 
-    public Completable isValidRequest(String friendId, Date dateTime) {
+    public Completable isValidRequest(String friendId, Date dateTime, Date now) {
 
         // Validate Time
-        long msNow = new Date().getTime();
+        long msNow = now.getTime();
         long msThen = dateTime.getTime();
         long msDiff = msNow - msThen;
         if(msDiff > Constants.QR_VALID_SECONDS  * 1000){

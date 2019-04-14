@@ -106,7 +106,7 @@ public class QRShowFragment extends BaseFragment {
         qrInterval = Observable.interval(Constants.QR_VALID_SECONDS / 2, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-                .map(l -> createQRValue())
+                .map(l -> createQRValue(new Date(), currentUser))
                 .map(this::createQRImage)
                 .subscribe(bitmap -> {
                     imageQR.setImageBitmap(bitmap);
@@ -114,7 +114,7 @@ public class QRShowFragment extends BaseFragment {
                     utils.showToastError(getString(R.string.something_went_wrong));
                 });
 
-        imageQR.setImageBitmap(createQRImage(createQRValue()));
+        imageQR.setImageBitmap(createQRImage(createQRValue(new Date(), currentUser)));
 
         statusInterval =  Observable.interval(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
@@ -155,11 +155,11 @@ public class QRShowFragment extends BaseFragment {
         }, throwable -> utils.showToastError(getString(R.string.something_went_wrong)));
     }
 
-    private String createQRValue(){
-        String dateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
+    public static String createQRValue(Date now, User friend){
+        String dateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(now);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("dateTime", dateTime);
-        jsonObject.addProperty("id", currentUser.getId());
+        jsonObject.addProperty("id", friend.getId());
         return jsonObject.toString();
     }
 
