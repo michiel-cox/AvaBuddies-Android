@@ -64,6 +64,8 @@ public class User {
         this.sharelocation = sharelocation;
     }
 
+    public void setImage(String base64) { this.image = base64; }
+
     public boolean isAdmin() {
         return isAdmin;
     }

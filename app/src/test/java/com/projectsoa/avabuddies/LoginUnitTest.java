@@ -76,6 +76,11 @@ public class LoginUnitTest {
             public Completable updateProfile(String aboutMe, boolean sharelocation) {
                 return null;
             }
+
+            @Override
+            public Completable updateProfilePicture(String base64) {
+                return null;
+            }
         }));
 
 
@@ -126,6 +131,11 @@ public class LoginUnitTest {
 
             @Override
             public Completable updateProfile(String aboutMe, boolean sharelocation) {
+                return null;
+            }
+
+            @Override
+            public Completable updateProfilePicture(String base64) {
                 return null;
             }
         }));
