@@ -3,8 +3,14 @@ package com.projectsoa.avabuddies.utils;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.projectsoa.avabuddies.screens.main.MainActivity;
+
+import java.security.Permission;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Completable;
 
 @Singleton
 public class Utils {
