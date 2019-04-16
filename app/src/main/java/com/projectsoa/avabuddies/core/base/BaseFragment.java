@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.ButterKnife;
@@ -93,4 +94,8 @@ public abstract class BaseFragment extends DaggerFragment {
         return ViewModelProviders.of(this, viewModelFactory).get(viewModelClass);
     }
 
+    public void runOnUiThread(Runnable action) {
+        if (mActivity == null) return;
+        mActivity.runOnUiThread(action);
+    }
 }

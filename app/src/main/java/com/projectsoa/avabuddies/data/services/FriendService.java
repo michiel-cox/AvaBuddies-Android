@@ -39,5 +39,10 @@ public interface FriendService {
     @FormUrlEncoded
     Single<MessageResponse> doCancelRequest(@Field("friend") String friendId);
 
+    @POST("friend/validaterequest")
+    @FormUrlEncoded
+    Single<MessageResponse> doValidateRequest(@Field("friend") String friendId);
+
+
 
 }
