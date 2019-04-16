@@ -254,8 +254,8 @@ public class ProfileFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         new Thread(() -> {
             if (resultCode == RESULT_OK) {
-                final Uri selectedImageUri = data.getData();
                 if (requestCode == SELECT_IMAGE) {
+                    final Uri selectedImageUri = data.getData();
                     if (null != selectedImageUri) {
                         profile.post(() -> {
                             Bitmap bitmap = null;
