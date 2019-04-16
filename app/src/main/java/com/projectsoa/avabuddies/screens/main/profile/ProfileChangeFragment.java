@@ -57,7 +57,7 @@ public class ProfileChangeFragment extends BaseFragment {
         this.userRepository.update(user).subscribe(() -> {
                     ((MainActivity) getActivity()).loadFragment(new ProfileFragment());
                 },
-                throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
+                throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
     }
 
     public void logout() {
@@ -79,7 +79,7 @@ public class ProfileChangeFragment extends BaseFragment {
                 .setMessage(getString(R.string.confirm_message))
                 .setPositiveButton(getString(R.string.positive_button), (dialogInterface, i) -> {
             userRepository.delete(this.user).subscribe(() -> logout(), throwable -> {
-                getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.errorDeleteUser)));
+                runOnUiThread(() -> utils.showToastError(getString(R.string.errorDeleteUser)));
             });
             dialogInterface.dismiss();
         }).setNegativeButton(getString(R.string.negative_button), (dialogInterface, i) -> {

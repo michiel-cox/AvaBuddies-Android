@@ -13,6 +13,8 @@ import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
 import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
@@ -67,12 +69,20 @@ public class SearchFragment extends BaseFragment implements UsersAdapter.UsersIn
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        User currentUser = loginRepository.getLoggedInUser().getUser();
+
         userRepository.getList().subscribe(users -> {
-            getActivity().runOnUiThread(() -> {
+            runOnUiThread(() -> {
+                Iterator<User> iterator = users.iterator();
+                while(iterator.hasNext()){
+                    if(iterator.next().getId().equals(currentUser.getId())) {
+                        iterator.remove();
+                    }
+                }
                 usersAdapter.setUserList(users);
                 usersAdapter.notifyDataSetChanged();
             });
-        }, throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.error_users))));
+        }, throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.error_users))));
 
         searchView.setOnQueryTextListener(this);
         searchView.setOnClickListener(v -> searchView.setIconified(false));
