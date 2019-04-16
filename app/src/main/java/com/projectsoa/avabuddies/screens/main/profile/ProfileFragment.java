@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -75,7 +77,7 @@ public class ProfileFragment extends BaseFragment {
     private String currentPhotoPath;
     private CharSequence options[];
 
-    
+
 
     @Override
     protected int layoutRes() {
@@ -252,8 +254,8 @@ public class ProfileFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         new Thread(() -> {
             if (resultCode == RESULT_OK) {
+                final Uri selectedImageUri = data.getData();
                 if (requestCode == SELECT_IMAGE) {
-                    final Uri selectedImageUri = data.getData();
                     if (null != selectedImageUri) {
                         profile.post(() -> {
                             Bitmap bitmap = null;
@@ -269,8 +271,24 @@ public class ProfileFragment extends BaseFragment {
                     }
                 }
                 if (requestCode == CAMERA) {
+                    ExifInterface ei = null;
+                    try {
+                        ei = new ExifInterface(selectedImageUri.getPath());
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        return;
+                    }
+                    int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                     profile.post(() -> {
                         Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+                        switch (orientation) {
+                            case ExifInterface.ORIENTATION_ROTATE_90:
+                                bitmap = rotateImage(bitmap, 90);
+                            case ExifInterface.ORIENTATION_ROTATE_180:
+                                bitmap = rotateImage(bitmap, 180);
+                            case ExifInterface.ORIENTATION_ROTATE_270:
+                                bitmap = rotateImage(bitmap, 270);
+                        }
                         profile.setImageBitmap(saveData(bitmap));
                     });
                 }
@@ -281,18 +299,22 @@ public class ProfileFragment extends BaseFragment {
 
     private Bitmap saveData(Bitmap bm) {
         bm = Bitmap.createScaledBitmap(bm, 300, 300, false);
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
         byte[] b = baos.toByteArray();
         String encoded = Base64.encodeToString(b, Base64.DEFAULT);
-
         user.setImage(encoded);
         userRepository.updateProfilePicture(user).subscribe(() -> {
                 },
                 throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
 
         return bm;
+    }
+
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        return Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
     }
 
 }
