@@ -271,23 +271,29 @@ public class ProfileFragment extends BaseFragment {
                     }
                 }
                 if (requestCode == CAMERA) {
-                    ExifInterface ei = null;
-                    try {
-                        ei = new ExifInterface(selectedImageUri.getPath());
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                        return;
-                    }
-                    int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                     profile.post(() -> {
                         Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+
+                        ExifInterface ei;
+                        try {
+                            ei = new ExifInterface(currentPhotoPath);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                            return;
+                        }
+                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                         switch (orientation) {
                             case ExifInterface.ORIENTATION_ROTATE_90:
                                 bitmap = rotateImage(bitmap, 90);
+                                break;
                             case ExifInterface.ORIENTATION_ROTATE_180:
                                 bitmap = rotateImage(bitmap, 180);
+                                break;
                             case ExifInterface.ORIENTATION_ROTATE_270:
                                 bitmap = rotateImage(bitmap, 270);
+                                break;
+                            default:
+                                break;
                         }
                         profile.setImageBitmap(saveData(bitmap));
                     });
