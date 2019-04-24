@@ -3,6 +3,8 @@ package com.projectsoa.avabuddies.data.services;
 import com.projectsoa.avabuddies.data.models.responses.user.ProfileResponse;
 import com.projectsoa.avabuddies.data.models.responses.user.UserListResponse;
 
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.DELETE;
@@ -28,7 +30,7 @@ public interface UserService {
 
     @POST("user/updateprofile")
     @FormUrlEncoded
-    Completable updateProfile(@Field("aboutme") String aboutMe, @Field("sharelocation") boolean sharelocation);
+    Completable updateProfile(@Field("aboutme") String aboutMe, @Field("sharelocation") boolean sharelocation, @Field("tags") List<String> tags);
 
     @POST("user/updateprofilepicture")
     @FormUrlEncoded

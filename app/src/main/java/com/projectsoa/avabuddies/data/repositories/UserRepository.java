@@ -1,5 +1,6 @@
 package com.projectsoa.avabuddies.data.repositories;
 
+import com.projectsoa.avabuddies.data.models.Tag;
 import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.models.responses.user.UserResponse;
 import com.projectsoa.avabuddies.data.services.UserService;
@@ -53,10 +54,15 @@ public class UserRepository {
     }
 
     public Completable update(User user) {
-        return userService.updateProfile(user.getAboutme(), user.isSharelocation());
+        List<String> responseList = new ArrayList<>();
+        for(Tag tag : user.getTags()){
+            responseList.add(tag.get_id());
+        }
+        return userService.updateProfile(user.getAboutme(), user.isSharelocation(), responseList);
     }
 
     public Completable updateProfilePicture(User user) {
         return userService.updateProfilePicture(user.getImage());
     }
+
 }

@@ -5,6 +5,7 @@
     <string name="user_image">User image</string>
     <string name="profile">Profile</string>
     <string name="error_users">Could not load users</string>
+    <string name="error_tags">Could not load tags</string>
     <string name="send_connection_request">Send connection request</string>
     <string name="cancel_connection_request">Cancel connection request</string>
     <string name="something_went_wrong">Something went wrong</string>
@@ -54,4 +55,6 @@
     <string name="qr_error_validated">This friend is already validated.</string>
     <string name="qr_error_accepted">You are already friends.</string>
     <string name="qr_error_received">You shouldn\'t be scanning your own code.</string>
+    <string name="profile_tags">Tags</string>
+    <string name="tagsFragmentSave">Save tags</string>
 </resources>

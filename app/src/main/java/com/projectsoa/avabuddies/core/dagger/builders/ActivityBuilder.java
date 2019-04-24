@@ -10,9 +10,8 @@ import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragmen
 import com.projectsoa.avabuddies.screens.main.qrread.QRReadFragment;
 import com.projectsoa.avabuddies.screens.main.qrshow.QRShowFragment;
 import com.projectsoa.avabuddies.screens.main.search.SearchFragment;
+import com.projectsoa.avabuddies.screens.main.tag.TagsFragment;
 import com.projectsoa.avabuddies.screens.register.RegisterActivity;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -55,6 +54,8 @@ public abstract class ActivityBuilder {
     @ContributesAndroidInjector()
     abstract QRShowFragment contributeQRShowFragment();
 
+    @ContributesAndroidInjector
+    abstract TagsFragment contributeTagsFragment();
 
 
 }

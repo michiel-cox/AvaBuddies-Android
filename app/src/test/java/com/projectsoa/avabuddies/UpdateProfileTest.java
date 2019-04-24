@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
+
 import io.reactivex.Completable;
 
 import static org.junit.Assert.assertNotNull;
@@ -22,6 +24,8 @@ public class UpdateProfileTest extends BaseUnitTest {
     @Mock
     UserService userService;
 
+
+
     @Before
     public void setUp(){
         userRepository = new UserRepository(userService);
@@ -30,18 +34,20 @@ public class UpdateProfileTest extends BaseUnitTest {
     @Test
     public void delete_onSucces(){
         User user = new User("1", "tjgsmole@avans.nl", "Tom");
-        when(userService.updateProfile(user.getAboutme(),user.isSharelocation())).thenReturn(Completable.complete());
+        user.setTags(new ArrayList<>());
+        when(userService.updateProfile(user.getAboutme(),user.isSharelocation(), new ArrayList<>())).thenReturn(Completable.complete());
         Throwable throwable = userRepository.update(user).blockingGet();
         assertNull(throwable);
-        verify(userService, times(1)).updateProfile(user.getAboutme(),user.isSharelocation());
+        verify(userService, times(1)).updateProfile(user.getAboutme(),user.isSharelocation(), new ArrayList<>());
     }
     @Test
     public void delete_onFail(){
         User user = new User("1", "tjgsmole@avans.nl", "Tom");
-        when(userService.updateProfile(user.getAboutme(),user.isSharelocation())).thenReturn(Completable.error(new Exception()));
+        user.setTags(new ArrayList<>());
+        when(userService.updateProfile(user.getAboutme(),user.isSharelocation(),new ArrayList<>())).thenReturn(Completable.error(new Exception()));
         Throwable throwable = userRepository.update(user).blockingGet();
         assertNotNull(throwable);
-        verify(userService, times(1)).updateProfile(user.getAboutme(),user.isSharelocation());
+        verify(userService, times(1)).updateProfile(user.getAboutme(),user.isSharelocation(),new ArrayList<>());
     }
 
     @Test
