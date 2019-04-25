@@ -13,10 +13,13 @@
         android:layout_height="match_parent"
         android:padding="10dp"
         android:text="@string/tagsFragmentSave" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tagList"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/row_tag" />
+        android:layout_height="wrap_content">
+
+        <!-- Chips can be declared here, or added dynamically. -->
+
+    </com.google.android.material.chip.ChipGroup>
 
 </LinearLayout>

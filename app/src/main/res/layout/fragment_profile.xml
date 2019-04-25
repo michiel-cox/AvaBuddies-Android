@@ -72,6 +72,15 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="14sp" />
 
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Chips can be declared here, or added dynamically. -->
+
+            </com.google.android.material.chip.ChipGroup>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

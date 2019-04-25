@@ -17,12 +17,11 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
+import com.projectsoa.avabuddies.data.models.Tag;
 import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
@@ -36,6 +35,9 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -52,6 +54,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Inject
     protected Utils utils;
 
+    @BindView(R.id.chip_group)
+    protected ChipGroup chipGroup;
     @BindView(R.id.name)
     protected TextView name;
     @BindView(R.id.email)
@@ -100,6 +104,15 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         fullName.setText(user.getName());
         email.setText(user.getEmail());
         info.setText(user.getAboutme());
+
+        for (Tag tag : user.getTags()) {
+            Chip chip = new Chip(getContext());
+            chip.setText(tag.getName());
+            chip.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark, null));
+            chip.setChipIcon(null);
+
+            chipGroup.addView(chip);
+        }
 
     }
 
