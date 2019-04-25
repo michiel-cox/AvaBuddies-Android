@@ -50,7 +50,6 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends BaseFragment {
 
     protected User user;
-    protected ProfileViewModel viewModel;
     @Inject
     protected LoginRepository loginRepository;
     @Inject
@@ -119,7 +118,6 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = getViewModel(ProfileViewModel.class);
     }
 
 
