@@ -16,7 +16,6 @@ import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
-import com.projectsoa.avabuddies.screens.main.profile.ProfileChangeFragment;
 import com.projectsoa.avabuddies.screens.main.qrshow.QRShowFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
@@ -115,6 +114,7 @@ public class PublicProfileFragment extends BaseFragment {
 
         name.setText(user.getName());
         email.setText(user.getEmail());
+
         info.setText(user.getAboutme());
 
         friendRepository.getConnectionStatus(user.getId()).subscribe(connectionStatus -> {

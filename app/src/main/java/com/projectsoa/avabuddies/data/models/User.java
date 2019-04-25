@@ -13,6 +13,7 @@ public class User {
     protected String email;
     protected String name;
     protected boolean sharelocation;
+    protected boolean isPrivate;
     protected boolean isAdmin;
     protected String image;
     protected String password;
@@ -28,6 +29,7 @@ public class User {
         email = response.email;
         name = response.name;
         sharelocation = response.sharelocation;
+        isPrivate = response.isPrivate;
         isAdmin = response.isAdmin;
         image = response.image;
         password = response.password;
@@ -73,11 +75,21 @@ public class User {
         return sharelocation;
     }
 
+    public boolean isShareprofile() {
+        return isPrivate;
+    }
+
     public void setSharelocation(boolean sharelocation) {
         this.sharelocation = sharelocation;
     }
 
-    public void setImage(String base64) { this.image = base64; }
+    public void setShareprofile(boolean shareprofile) {
+        this.isPrivate = shareprofile;
+    }
+
+    public void setImage(String base64) {
+        this.image = base64;
+    }
 
     public boolean isAdmin() {
         return isAdmin;
