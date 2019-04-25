@@ -17,6 +17,10 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.projectsoa.avabuddies.R;
@@ -35,9 +39,6 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -110,7 +111,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             chip.setText(tag.getName());
             chip.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark, null));
             chip.setChipIcon(null);
-
             chipGroup.addView(chip);
         }
 

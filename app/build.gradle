@@ -42,9 +42,7 @@ repositories {
     maven {
         url "https://clojars.org/repo/"
     }
-    maven {
-        url = "https://oss.sonatype.org/content/repositories/snapshots/"
-    }
+
     maven { url "https://jitpack.io" }
 }
 
