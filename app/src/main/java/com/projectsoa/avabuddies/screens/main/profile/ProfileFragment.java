@@ -8,10 +8,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -35,19 +40,26 @@ import com.projectsoa.avabuddies.screens.main.tag.TagsFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.content.FileProvider;
 import butterknife.BindView;
 import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfileFragment extends BaseFragment implements View.OnClickListener {
+public class ProfileFragment extends BaseFragment {
 
     protected User user;
-    protected ProfileViewModel viewModel;
     @Inject
     protected LoginRepository loginRepository;
     @Inject
@@ -72,12 +84,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     private static final int SELECT_IMAGE = 1000;
     private static final int CAMERA = 2000;
+
+    private String currentPhotoPath;
     private CharSequence options[];
-    private Bitmap bitmap;
 
 
-    public ProfileFragment() {
-    }
 
     @Override
     protected int layoutRes() {
@@ -95,8 +106,16 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
             profile.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
         }
-
-        profile.setOnClickListener(this);
+        if(Build.VERSION.SDK_INT >= 23) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+        }
+        profile.setOnClickListener((View v) -> {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, SELECT_IMAGE);
+            } else {
+                showDialog();
+            }
+        });
 
         // Set values of user account
         location.setChecked(user.isSharelocation());
@@ -119,7 +138,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = getViewModel(ProfileViewModel.class);
     }
 
 
@@ -141,63 +159,26 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         ((MainActivity) getActivity()).loadFragment(new TagsFragment());
     }
 
-    public void showDialog() {
+    private void showDialog() {
         options = new CharSequence[]{"Gallery", "Camera"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setCancelable(false);
         builder.setTitle("Select your option:");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // the user clicked on options[which]
-                if (options[which] == "Gallery") {
-                    openImageChooser();
-                }
-                if (options[which] == "Camera") {
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA);
-                    } else {
-                        openCamera();
-                    }
+        builder.setItems(options, (dialog, which) -> {
+            // the user clicked on options[which]
+            if (options[which] == "Gallery") {
+                openImageChooser();
+            }
+            if (options[which] == "Camera") {
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA);
+                } else {
+                    dispatchPictureTakerAction();
                 }
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //the user clicked on Cancel
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
-    }
-
-    public void showSettingsAlert() {
-        AlertDialog alertDialog = new AlertDialog.Builder(this.getContext()).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage("App needs access to the storage");
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DON'T ALLOW", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        //user will be redirected to settings on phone
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "SETTINGS", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                openAppSettings(getActivity());
-            }
-        });
-        alertDialog.show();
-    }
-
-    private void openAppSettings(final Activity context) {
-        if (context == null) {
-            return;
-        }
-        startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), SELECT_IMAGE);
     }
 
     private void openImageChooser() {
@@ -205,20 +186,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Image"), SELECT_IMAGE);
-    }
-
-    private void openCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, SELECT_IMAGE);
-        } else {
-            showDialog();
-        }
     }
 
     @Override
@@ -241,58 +208,142 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (resultCode == RESULT_OK) {
-                    if (requestCode == SELECT_IMAGE) {
-                        final Uri selectedImageUri = data.getData();
-                        if (null != selectedImageUri) {
-                            profile.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Bitmap bitmapLocal = null;
-                                    try {
-                                        bitmapLocal = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    saveData(bitmapLocal);
-                                    bitmap = bitmapLocal;
-                                    profile.setImageBitmap(bitmapLocal);
-                                }
-                            });
-                        }
-                    }
-                    if (requestCode == CAMERA) {
-                        profile.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Bitmap bitmap1 = (Bitmap) data.getExtras().get("data");
-                                profile.setImageBitmap(bitmap1);
-                                saveData(bitmap1);
-                                bitmap = bitmap1;
-                            }
+    private void dispatchPictureTakerAction() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (getActivity() != null && takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.d("mylog", "Excep: " + ex.toString());
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getActivity(),
+                        "com.projectsoa.avabuddies.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA);
+            }
+        }
+    }
 
+    private File createImageFile() throws IOException {
+        //create an image file name
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "PNG_" + timestamp + "_";
+        File storageDir = null;
+        if (getActivity() != null) {
+            storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        }
+        File image = File.createTempFile(imageFileName, ".png", storageDir);
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void showSettingsAlert() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this.getContext()).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("App needs access to the storage");
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DON'T ALLOW", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        //user will be redirected to settings on phone
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "SETTINGS", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                openAppSettings(getActivity());
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void openAppSettings(final Activity context) {
+        if (context != null) {
+            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), SELECT_IMAGE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        new Thread(() -> {
+            if (resultCode == RESULT_OK) {
+                if (requestCode == SELECT_IMAGE) {
+                    final Uri selectedImageUri = data.getData();
+                    if (null != selectedImageUri) {
+                        profile.post(() -> {
+                            Bitmap bitmap = null;
+                            try {
+                                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (bitmap != null) {
+                                profile.setImageBitmap(saveData(bitmap));
+                            }
                         });
                     }
+                }
+                if (requestCode == CAMERA) {
+                    profile.post(() -> {
+                        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+
+                        ExifInterface ei;
+                        try {
+                            ei = new ExifInterface(currentPhotoPath);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                            return;
+                        }
+                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                        switch (orientation) {
+                            case ExifInterface.ORIENTATION_ROTATE_90:
+                                bitmap = rotateImage(bitmap, 90);
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_180:
+                                bitmap = rotateImage(bitmap, 180);
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_270:
+                                bitmap = rotateImage(bitmap, 270);
+                                break;
+                            default:
+                                break;
+                        }
+                        profile.setImageBitmap(saveData(bitmap));
+                    });
                 }
             }
         }).start();
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void saveData(Bitmap bm) {
+    private Bitmap saveData(Bitmap bm) {
+        bm = Bitmap.createScaledBitmap(bm, 300, 300, false);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
         byte[] b = baos.toByteArray();
         String encoded = Base64.encodeToString(b, Base64.DEFAULT);
-
         user.setImage(encoded);
         userRepository.updateProfilePicture(user).subscribe(() -> {
                 },
                 throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
+
+        return bm;
     }
+
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        return Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+    }
+
 }
