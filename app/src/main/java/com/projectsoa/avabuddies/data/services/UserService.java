@@ -30,7 +30,7 @@ public interface UserService {
 
     @POST("user/updateprofile")
     @FormUrlEncoded
-    Completable updateProfile(@Field("aboutme") String aboutMe, @Field("sharelocation") boolean sharelocation, @Field("tags") List<String> tags);
+    Completable updateProfile(@Field("aboutme") String aboutMe, @Field("sharelocation") boolean sharelocation, @Field("isPrivate") boolean isPrivate, @Field("tags") List<String> tags);
 
     @POST("user/updateprofilepicture")
     @FormUrlEncoded

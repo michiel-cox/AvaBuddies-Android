@@ -58,7 +58,7 @@ public class UserRepository {
         for(Tag tag : user.getTags()){
             responseList.add(tag.get_id());
         }
-        return userService.updateProfile(user.getAboutme(), user.isSharelocation(), responseList);
+        return userService.updateProfile(user.getAboutme(), user.isSharelocation(), user.isShareprofile(), responseList);
     }
 
     public Completable updateProfilePicture(User user) {

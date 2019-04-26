@@ -15,6 +15,9 @@ public class UserResponse {
     @SerializedName("isAdmin")
     public boolean isAdmin;
 
+    @SerializedName("isPrivate")
+    public boolean isPrivate;
+
     @SerializedName("email")
     public String email;
 

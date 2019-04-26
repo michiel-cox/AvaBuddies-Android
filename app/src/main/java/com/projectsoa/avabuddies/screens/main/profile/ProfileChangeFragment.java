@@ -39,6 +39,8 @@ public class ProfileChangeFragment extends BaseFragment {
     protected EditText aboutme;
     @BindView(R.id.location)
     protected Switch location;
+    @BindView(R.id.privacy)
+    protected Switch privacy;
 
 
     @Override
@@ -47,6 +49,7 @@ public class ProfileChangeFragment extends BaseFragment {
         this.user = loginRepository.getLoggedInUser().getUser();
         aboutme.setText(user.getAboutme());
         location.setChecked(user.isSharelocation());
+        privacy.setChecked(user.isShareprofile());
         viewModel = getViewModel(ProfileChangeViewModel.class);
     }
 
@@ -54,6 +57,7 @@ public class ProfileChangeFragment extends BaseFragment {
     public void updateProfile() {
         this.user.setAboutme(aboutme.getText().toString());
         this.user.setSharelocation(location.isChecked());
+        this.user.setShareprofile(privacy.isChecked());
         this.userRepository.update(user).subscribe(() -> {
                     ((MainActivity) getActivity()).loadFragment(new ProfileFragment());
                 },

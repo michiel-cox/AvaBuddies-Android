@@ -120,6 +120,7 @@ public class PublicProfileFragment extends BaseFragment {
 
         name.setText(user.getName());
         email.setText(user.getEmail());
+
         info.setText(user.getAboutme());
 
         for (Tag tag : user.getTags()) {

@@ -81,6 +81,8 @@ public class ProfileFragment extends BaseFragment {
     protected ImageView profile;
     @BindView(R.id.location)
     protected Switch location;
+    @BindView(R.id.privacy)
+    protected Switch privacy;
 
     private static final int SELECT_IMAGE = 1000;
     private static final int CAMERA = 2000;
@@ -120,6 +122,8 @@ public class ProfileFragment extends BaseFragment {
         // Set values of user account
         location.setChecked(user.isSharelocation());
         location.setClickable(false);
+        privacy.setChecked(user.isShareprofile());
+        privacy.setClickable(false);
         name.setText(user.getName());
         fullName.setText(user.getName());
         email.setText(user.getEmail());
