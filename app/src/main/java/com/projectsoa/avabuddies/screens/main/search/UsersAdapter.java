@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.projectsoa.avabuddies.R;
+import com.projectsoa.avabuddies.data.models.Tag;
 import com.projectsoa.avabuddies.data.models.User;
 
 import java.util.ArrayList;
@@ -86,11 +87,18 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         } else {
             filteredList = new ArrayList<>();
             for (User user : userList) {
-
                 // name match condition. this might differ depending on your requirement
                 // here we are looking for name or phone number match
                 if (user.getName().toLowerCase().contains(charString.toLowerCase()) || user.getEmail().contains(charSequence)) {
                     filteredList.add(user);
+                }else{
+                    if(!user.isPrivate()) {
+                        for (Tag tag : user.getTags()) {
+                            if (tag.getName().toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(user);
+                            }
+                        }
+                    }
                 }
             }
         }

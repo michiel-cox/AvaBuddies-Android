@@ -52,19 +52,19 @@ public class UpdateTagsTest extends BaseUnitTest {
     public void updateTags_onSucces() {
         User user = new User("1", "tjgsmole@avans.nl", "Tom");
         user.setTags(tags);
-        when(userService.updateProfile(user.getAboutme(), user.isSharelocation(), tagsId)).thenReturn(Completable.complete());
+        when(userService.updateProfile(user.getAboutme(), user.isSharelocation(), true,tagsId)).thenReturn(Completable.complete());
         Throwable throwable = userRepository.update(user).blockingGet();
         assertNull(throwable);
-        verify(userService, times(1)).updateProfile(user.getAboutme(), user.isSharelocation(), tagsId);
+        verify(userService, times(1)).updateProfile(user.getAboutme(), user.isSharelocation(),true, tagsId);
     }
 
     @Test
     public void updateTags_onFail() {
         User user = new User("1", "tjgsmole@avans.nl", "Tom");
         user.setTags(tags);
-        when(userService.updateProfile(user.getAboutme(), user.isSharelocation(), tagsId)).thenReturn(Completable.error(new Exception()));
+        when(userService.updateProfile(user.getAboutme(), user.isSharelocation(),true, tagsId)).thenReturn(Completable.error(new Exception()));
         Throwable throwable = userRepository.update(user).blockingGet();
         assertNotNull(throwable);
-        verify(userService, times(1)).updateProfile(user.getAboutme(), user.isSharelocation(), tagsId);
+        verify(userService, times(1)).updateProfile(user.getAboutme(), user.isSharelocation(),true, tagsId);
     }
 }

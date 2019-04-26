@@ -47,6 +47,10 @@ public class User {
         this.tags = tags;
     }
 
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
     public List<Tag> getTags() {
         return tags;
     }
