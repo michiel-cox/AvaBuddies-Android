@@ -7,16 +7,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
+import com.projectsoa.avabuddies.data.models.Tag;
 import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
-import com.projectsoa.avabuddies.screens.main.profile.ProfileChangeFragment;
 import com.projectsoa.avabuddies.screens.main.qrshow.QRShowFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
@@ -24,8 +29,6 @@ import org.parceler.Parcels;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -57,6 +60,8 @@ public class PublicProfileFragment extends BaseFragment {
     @BindView(R.id.button_validate)
     protected Button buttonValidate;
 
+    @BindView(R.id.chip_group)
+    protected ChipGroup chipGroup;
     @BindView(R.id.public_name)
     protected TextView name;
     @BindView(R.id.public_email)
@@ -116,6 +121,14 @@ public class PublicProfileFragment extends BaseFragment {
         name.setText(user.getName());
         email.setText(user.getEmail());
         info.setText(user.getAboutme());
+
+        for (Tag tag : user.getTags()) {
+            Chip chip = new Chip(getContext());
+            chip.setText(tag.getName());
+            chip.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark, null));
+            chip.setChipIcon(null);
+            chipGroup.addView(chip);
+        }
 
         friendRepository.getConnectionStatus(user.getId()).subscribe(connectionStatus -> {
             runOnUiThread(() -> updateFriendRequest(connectionStatus));

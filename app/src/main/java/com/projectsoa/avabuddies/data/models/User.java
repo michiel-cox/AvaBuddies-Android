@@ -4,6 +4,8 @@ import com.projectsoa.avabuddies.data.models.responses.user.UserResponse;
 
 import org.parceler.Parcel;
 
+import java.util.List;
+
 @Parcel
 public class User {
     // Fields needs to be protected to be used as an Parcel
@@ -15,6 +17,8 @@ public class User {
     protected String image;
     protected String password;
     protected String aboutme;
+    protected List<Tag> tags;
+
 
     public User() {
     }
@@ -28,12 +32,21 @@ public class User {
         image = response.image;
         password = response.password;
         aboutme = response.aboutme;
+        tags = response.tags;
     }
 
     public User(String id, String email, String name) {
         _id = id;
         this.email = email;
         this.name = name;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
     }
 
     public String getId() {

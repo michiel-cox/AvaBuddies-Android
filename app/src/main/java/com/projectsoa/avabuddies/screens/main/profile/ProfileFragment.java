@@ -5,30 +5,33 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
+import com.projectsoa.avabuddies.data.models.Tag;
 import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.main.tag.TagsFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -36,9 +39,6 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -55,6 +55,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Inject
     protected Utils utils;
 
+    @BindView(R.id.chip_group)
+    protected ChipGroup chipGroup;
     @BindView(R.id.name)
     protected TextView name;
     @BindView(R.id.email)
@@ -104,6 +106,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         email.setText(user.getEmail());
         info.setText(user.getAboutme());
 
+        for (Tag tag : user.getTags()) {
+            Chip chip = new Chip(getContext());
+            chip.setText(tag.getName());
+            chip.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark, null));
+            chip.setChipIcon(null);
+            chipGroup.addView(chip);
+        }
+
     }
 
     @Override
@@ -124,6 +134,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @OnClick(R.id.updateThisUser)
     public void goToUpdate() {
         ((MainActivity) getActivity()).loadFragment(new ProfileChangeFragment());
+    }
+
+    @OnClick(R.id.tags)
+    public void goToTags() {
+        ((MainActivity) getActivity()).loadFragment(new TagsFragment());
     }
 
     public void showDialog() {
