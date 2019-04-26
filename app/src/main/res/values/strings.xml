@@ -17,6 +17,7 @@
     <string name="received_requests">Received requests</string>
     <string name="errorDeleteUser">Could not delete user</string>
     <string name="locationSharing">I want to share my location</string>
+    <string name="profileSharing">I want to share my profile</string>
     <string name="ProfileText">Profile</string>
     <string name="profileGeneral">General</string>
     <string name="profilePrivacy">Privacy</string>
