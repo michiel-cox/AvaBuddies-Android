@@ -333,6 +333,9 @@ public class ProfileFragment extends BaseFragment {
     private Bitmap saveData(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm = Bitmap.createScaledBitmap(bm, 300, 300, false);
+        Matrix matrix = new Matrix();
+        matrix.postScale(0.5f, 0.5f);
+        bm = Bitmap.createBitmap(bm, 0, 0,300, 300, matrix, false);
         bm.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
         byte[] b = baos.toByteArray();
         String encoded = Base64.encodeToString(b, Base64.DEFAULT);
