@@ -1,5 +1,6 @@
 package com.projectsoa.avabuddies;
 
+import com.projectsoa.avabuddies.data.models.Tag;
 import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.screens.main.search.UsersAdapter;
 
@@ -20,18 +21,25 @@ public class SearchUnitTest {
 
     private UsersAdapter usersAdapter;
     private List<User> users;
+    private List<Tag> tags;
     private User user1, user2, user3;
 
     @Before
     public void setUp(){
         usersAdapter = new UsersAdapter(null, null);
         users = new ArrayList<>();
+        tags = new ArrayList<>();
         user1 = new User("1", "mpjcox@avans.nl", "Michiel Cox");
         user2 = new User("2", "tom.smolenaers@avans.nl", "Tom Smolenaers");
         user3 = new User("2", "peter@bouwers.nl", "Peter Bouwers");
         users.add(user1);
         users.add(user2);
         users.add(user3);
+        this.tags.add(new Tag(){{
+            name = "C++";
+            _id = "3";
+        }});
+        tags.add(new Tag());
         usersAdapter.setUserList(users);
     }
 
@@ -65,6 +73,14 @@ public class SearchUnitTest {
 
 
         assertArrayEquals(actualUsers, expectedUsers);
+    }
+    @Test
+    public void search_onTagName(){
+        User[] expectedUser = new User[]{ user1 };
+
+        User[] actualUser = usersAdapter.filter("alpha").toArray(new User[0]);
+
+        assertArrayEquals(actualUser, expectedUser);
     }
 
 

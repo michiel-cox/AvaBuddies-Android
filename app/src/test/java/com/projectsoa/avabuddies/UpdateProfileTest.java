@@ -35,19 +35,19 @@ public class UpdateProfileTest extends BaseUnitTest {
     public void delete_onSucces(){
         User user = new User("1", "tjgsmole@avans.nl", "Tom");
         user.setTags(new ArrayList<>());
-        when(userService.updateProfile(user.getAboutme(),user.isSharelocation(), new ArrayList<>())).thenReturn(Completable.complete());
+        when(userService.updateProfile(user.getAboutme(),user.isSharelocation(),true, new ArrayList<>())).thenReturn(Completable.complete());
         Throwable throwable = userRepository.update(user).blockingGet();
         assertNull(throwable);
-        verify(userService, times(1)).updateProfile(user.getAboutme(),user.isSharelocation(), new ArrayList<>());
+        verify(userService, times(1)).updateProfile(user.getAboutme(),user.isSharelocation(),true, new ArrayList<>());
     }
     @Test
     public void delete_onFail(){
         User user = new User("1", "tjgsmole@avans.nl", "Tom");
         user.setTags(new ArrayList<>());
-        when(userService.updateProfile(user.getAboutme(),user.isSharelocation(),new ArrayList<>())).thenReturn(Completable.error(new Exception()));
+        when(userService.updateProfile(user.getAboutme(),user.isSharelocation(),true ,new ArrayList<>())).thenReturn(Completable.error(new Exception()));
         Throwable throwable = userRepository.update(user).blockingGet();
         assertNotNull(throwable);
-        verify(userService, times(1)).updateProfile(user.getAboutme(),user.isSharelocation(),new ArrayList<>());
+        verify(userService, times(1)).updateProfile(user.getAboutme(),user.isSharelocation(), true,new ArrayList<>());
     }
 
     @Test
