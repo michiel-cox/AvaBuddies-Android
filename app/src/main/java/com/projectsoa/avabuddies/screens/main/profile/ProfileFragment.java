@@ -42,6 +42,7 @@ import com.projectsoa.avabuddies.utils.Utils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -331,7 +332,20 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private Bitmap saveData(Bitmap bm) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        int scaleFactor = Math.min(photoW/300, photoH/300);
+
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true; //Deprecated API 21
+
+        bm = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+
         int Height = bm.getHeight();
         int Width = bm.getWidth();
         int newHeight = 300;
@@ -341,6 +355,8 @@ public class ProfileFragment extends BaseFragment {
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         bm = Bitmap.createBitmap(bm, 0, 0, Width, Height, matrix, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
         byte[] b = baos.toByteArray();
         String encoded = Base64.encodeToString(b, Base64.DEFAULT);
