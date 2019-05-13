@@ -22,10 +22,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.projectsoa.avabuddies.R;
@@ -39,10 +35,8 @@ import com.projectsoa.avabuddies.screens.main.MainActivity;
 import com.projectsoa.avabuddies.screens.main.tag.TagsFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -51,7 +45,6 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import androidx.core.content.FileProvider;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -331,41 +324,31 @@ public class ProfileFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private Bitmap saveData(Bitmap bm) {
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
+    private Bitmap saveData(Bitmap srcBmp) {
+        Bitmap croppedBmp = null;
+        if (srcBmp.getWidth() >= srcBmp.getHeight()){
 
-        int scaleFactor = Math.min(photoW/300, photoH/300);
+            croppedBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    srcBmp.getWidth()/2 - srcBmp.getHeight()/2,
+                    0,
+                    srcBmp.getHeight(),
+                    srcBmp.getHeight()
+            );
 
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true; //Deprecated API 21
+        }else{
 
-        bm = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+            croppedBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    0,
+                    srcBmp.getHeight()/2 - srcBmp.getWidth()/2,
+                    srcBmp.getWidth(),
+                    srcBmp.getWidth()
+            );
+        }
 
-        int Height = bm.getHeight();
-        int Width = bm.getWidth();
-        int newHeight = 300;
-        int newWidth = 300;
-        float scaleWidth = ((float) newWidth) / Width;
-        float scaleHeight = ((float) newHeight) / Height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        bm = Bitmap.createBitmap(bm, 0, 0, Width, Height, matrix, true);
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
-        byte[] b = baos.toByteArray();
-        String encoded = Base64.encodeToString(b, Base64.DEFAULT);
-        user.setImage(encoded);
-        userRepository.updateProfilePicture(user).subscribe(() -> {
-                },
-                throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
-
-        return bm;
+        croppedBmp = Bitmap.createScaledBitmap(croppedBmp, 300, 300, true);
+        return croppedBmp;
     }
 
     private static Bitmap rotateImage(Bitmap img, int degree) {
