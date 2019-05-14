@@ -35,6 +35,7 @@ import com.projectsoa.avabuddies.screens.main.MainActivity;
 import com.projectsoa.avabuddies.screens.main.tag.TagsFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -286,7 +287,9 @@ public class ProfileFragment extends BaseFragment {
                                 e.printStackTrace();
                             }
                             if (bitmap != null) {
-                                profile.setImageBitmap(saveData(bitmap));
+                                Bitmap resized = cropResizeBitmap(bitmap);
+                                saveBitmap(resized);
+                                profile.setImageBitmap(resized);
                             }
                         });
                     }
@@ -316,7 +319,10 @@ public class ProfileFragment extends BaseFragment {
                             default:
                                 break;
                         }
-                        profile.setImageBitmap(saveData(bitmap));
+
+                        Bitmap resized = cropResizeBitmap(bitmap);
+                        saveBitmap(resized);
+                        profile.setImageBitmap(resized);
                     });
                 }
             }
@@ -324,8 +330,8 @@ public class ProfileFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private Bitmap saveData(Bitmap srcBmp) {
-        Bitmap croppedBmp = null;
+    private Bitmap cropResizeBitmap(Bitmap srcBmp) {
+        Bitmap croppedBmp;
         if (srcBmp.getWidth() >= srcBmp.getHeight()){
 
             croppedBmp = Bitmap.createBitmap(
@@ -349,6 +355,17 @@ public class ProfileFragment extends BaseFragment {
 
         croppedBmp = Bitmap.createScaledBitmap(croppedBmp, 300, 300, true);
         return croppedBmp;
+    }
+
+    private void saveBitmap(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String encoded = Base64.encodeToString(b, Base64.DEFAULT);
+        user.setImage(encoded);
+        userRepository.updateProfilePicture(user).subscribe(() -> {
+                },
+                throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
     }
 
     private static Bitmap rotateImage(Bitmap img, int degree) {
