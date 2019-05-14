@@ -58,4 +58,5 @@
     <string name="qr_error_received">You shouldn\'t be scanning your own code.</string>
     <string name="profile_tags">Tags</string>
     <string name="tagsFragmentSave">Save tags</string>
+    <string name="tagsName">Tags</string>
 </resources>

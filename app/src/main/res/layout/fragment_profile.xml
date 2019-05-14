@@ -72,6 +72,16 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="14sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#eee"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/tagsName"
+                android:textSize="16sp" />
+
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chip_group"
                 android:layout_width="match_parent"

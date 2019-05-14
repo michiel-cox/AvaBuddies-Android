@@ -10,6 +10,9 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.projectsoa.avabuddies.R;
@@ -18,9 +21,6 @@ import com.projectsoa.avabuddies.data.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> implements Filterable {
 
@@ -79,7 +79,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
     public List<User> filter(CharSequence charSequence) {
-
         List<User> filteredList;
         String charString = charSequence.toString();
         if (charString.isEmpty()) {
@@ -102,9 +101,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 }
             }
         }
-
         return filteredList;
-
     }
 
     @Override

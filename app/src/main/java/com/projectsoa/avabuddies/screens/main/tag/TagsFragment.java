@@ -2,9 +2,14 @@ package com.projectsoa.avabuddies.screens.main.tag;
 
 import android.os.Bundle;
 import android.view.View;
+import androidx.appcompat.widget.SearchView;
 
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.Tag;
@@ -19,13 +24,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class TagsFragment extends BaseFragment {
+public class TagsFragment extends BaseFragment implements TagsAdapter.TagsInteractionListener, SearchView.OnQueryTextListener{
 
+    @BindView(R.id.searchTags)
+    protected SearchView searchView;
+    @BindView(R.id.tagList)
+    protected RecyclerView recyclerView;
     @Inject
     protected TagRepository tagRepository;
     @Inject
@@ -35,11 +42,10 @@ public class TagsFragment extends BaseFragment {
     @Inject
     protected Utils utils;
 
-    protected List<Tag> selectedTagList;
     protected TagsAdapter tagsAdapter;
-    protected List<Tag> tagList;
+    protected List<Tag> tagList ;
 
-    public TagsFragment() {
+    public TagsFragment(){
 
     }
 
@@ -66,60 +72,60 @@ public class TagsFragment extends BaseFragment {
             });
         }, throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.error_tags))));
 
-    }
-
-    private void OnAddChip() {
-        for (Tag tag : tagList) {
-            Chip chip = new Chip(getContext());
-            chip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Tag isfound = null;
-                    for (Tag tagInList : selectedTagList) {
-                        if (tagInList.get_id().equals(tag.get_id())) {
-                            isfound = tagInList;
-                        }
-                    }
-
-                    if (isfound != null) {
-                        selectedTagList.remove(isfound);
-                        chip.setChipBackgroundColorResource(R.color.colorGray);
-                    } else {
-                        selectedTagList.add(tag);
-                        chip.setChipBackgroundColorResource(R.color.colorPrimary);
-                    }
-                }
-            });
-            chipGroup.addView(chip);
-
-            chip.setText(tag.getName());
-            chip.setTextColor(getResources().getColor(R.color.colorWhite));
-            chip.setChipBackgroundColorResource(R.color.colorGray);
-
-            for (Tag selectTag : selectedTagList) {
-                if (selectTag.get_id().equals(tag.get_id())) {
-                    chip.setChipBackgroundColorResource(R.color.colorPrimary);
-                }
-            }
-
-            chip.setChipIcon(null);
-
-        }
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnClickListener(v -> searchView.setIconified(false));
     }
 
     @Override
-    protected int layoutRes() {
-        return R.layout.fragment_tags;
+    protected int layoutRes() { return R.layout.fragment_tags; }
+
+    @Override
+    public void onUserListInteract(Tag tag) {
+
+        Tag isfound = null;
+        for(Tag tagInList : tagList){
+            if(tagInList.get_id().equals(tag.get_id())){
+                isfound = tagInList;
+            }
+        }
+
+        if(isfound != null){
+            tagList.remove(isfound);
+        }else{
+            tagList.add(tag);
+        }
+
+        tagsAdapter.notifyDataSetChanged();
+
     }
 
     @OnClick(R.id.btn_saveTags)
-    public void saveTags() {
+    public void saveTags(){
         User user = loginRepository.getLoggedInUser().getUser();
-        user.setTags(selectedTagList);
+        user.setTags(tagList);
         userRepository.update(user).subscribe(() -> {
                 },
                 throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
     }
 
+    @Override
+    public boolean onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return true;
+        }
+        return super.onBackPressed();
+    }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        tagsAdapter.getFilter().filter(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        tagsAdapter.getFilter().filter(query);
+        return false;
+    }
 }
