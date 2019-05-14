@@ -14,6 +14,7 @@ import com.projectsoa.avabuddies.data.repositories.TagRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.utils.Utils;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,8 +26,6 @@ import butterknife.OnClick;
 
 public class TagsFragment extends BaseFragment {
 
-    @BindView(R.id.chip_group)
-    protected ChipGroup chipGroup;
     @Inject
     protected TagRepository tagRepository;
     @Inject
@@ -37,6 +36,7 @@ public class TagsFragment extends BaseFragment {
     protected Utils utils;
 
     protected List<Tag> selectedTagList;
+    protected TagsAdapter tagsAdapter;
     protected List<Tag> tagList;
 
     public TagsFragment() {
@@ -47,13 +47,23 @@ public class TagsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         User user = loginRepository.getLoggedInUser().getUser();
-        this.selectedTagList = user.getTags();
+        tagsAdapter = new TagsAdapter(getContext(), this);
+        tagsAdapter.setSelectedTags(user.getTags());
+        this.tagList = user.getTags();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
+
+        recyclerView.setAdapter(tagsAdapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
         tagRepository.getList().subscribe(tags -> {
             runOnUiThread(() -> {
-                this.tagList = tags;
-                OnAddChip();
+                Iterator<Tag> iterator = tags.iterator();
+                tagsAdapter.setTagList(tags);
+                tagsAdapter.notifyDataSetChanged();
             });
-
         }, throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.error_tags))));
 
     }
