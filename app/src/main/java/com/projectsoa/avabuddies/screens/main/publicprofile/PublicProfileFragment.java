@@ -22,6 +22,7 @@ import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.main.chat.DefaultMessagesActivity;
 import com.projectsoa.avabuddies.screens.main.qrshow.QRShowFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
@@ -50,6 +51,9 @@ public class PublicProfileFragment extends BaseFragment {
     protected Button buttonRequest;
     @BindView(R.id.button_request_cancel)
     protected Button buttonRequestCancel;
+
+    @BindView(R.id.button_chat)
+    protected Button buttonChat;
 
     @BindView(R.id.button_deny)
     protected Button buttonDeny;
@@ -143,6 +147,7 @@ public class PublicProfileFragment extends BaseFragment {
         buttonAccept.setVisibility(View.GONE);
         buttonDeny.setVisibility(View.GONE);
         buttonValidate.setVisibility(View.GONE);
+        // buttonChat.setVisibility(View.GONE);
     }
 
     private void updateFriendRequest(FriendRepository.ConnectionStatus status) {
@@ -160,6 +165,9 @@ public class PublicProfileFragment extends BaseFragment {
             case VALIDATED:
                 buttonDeny.setVisibility(View.VISIBLE);
                 buttonAccept.setVisibility(View.VISIBLE);
+                break;
+            case ACCEPTED:
+                buttonChat.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -208,7 +216,12 @@ public class PublicProfileFragment extends BaseFragment {
     }
 
     @OnClick(R.id.button_validate)
-    public void showQR(){
+    public void showQR() {
         ((MainActivity) getActivity()).loadFragment(QRShowFragment.newInstance(user));
+    }
+
+    @OnClick(R.id.button_chat)
+    public void startChat() {
+        DefaultMessagesActivity.open(getContext());
     }
 }

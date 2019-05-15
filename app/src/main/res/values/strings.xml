@@ -58,4 +58,12 @@
     <string name="qr_error_received">You shouldn\'t be scanning your own code.</string>
     <string name="profile_tags">Tags</string>
     <string name="tagsFragmentSave">Save tags</string>
+
+    <string name="action_delete">Delete</string>
+    <string name="action_copy">Copy</string>
+    <string name="copied_message">Message copied!</string>
+    <string name="go_to_chat">Chat</string>
+    <string name="hint_enter_a_message">Type a message…</string>
+    <string name="start_typing_status">Start typing</string>
+    <string name="stop_typing_status">Stop typing</string>
 </resources>
