@@ -56,8 +56,14 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        Tag tag;
 
-        Tag tag = tagList.get(position);
+        if(tagListFiltered  != null) {
+            tag = tagListFiltered.get(position);
+        }else{
+            tag = tagList.get(position);
+        }
+
         holder.tag = tag;
         holder.name.setText(tag.getName());
         holder.privateName.setText(tag.isPrivate ? "Prive" : "");
@@ -78,7 +84,13 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
 
     @Override
     public int getItemCount() {
-        return tagList == null || tagListFiltered == null ? 0 : tagListFiltered.size();
+        if(tagListFiltered != null){
+            return tagListFiltered.size();
+        }else if(tagList != null){
+            return tagList.size();
+        }else{
+            return 0;
+        }
     }
 
     public List<Tag> filter(CharSequence charSequence){
