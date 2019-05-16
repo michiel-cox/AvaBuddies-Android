@@ -15,6 +15,10 @@
         android:title="@string/search"
         android:onClick="onClickSearch"
         android:icon="@drawable/icon_search"/>
+    <item android:id="@+id/btn_chat"
+        android:title="@string/chat"
+        android:onClick="onClickChat"
+        android:icon="@drawable/icon_chat"/>
     <item android:id="@+id/btn_profile"
         android:title="@string/profile"
         android:onClick="onClickProfile"

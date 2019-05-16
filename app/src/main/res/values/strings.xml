@@ -66,4 +66,5 @@
     <string name="hint_enter_a_message">Type a message…</string>
     <string name="start_typing_status">Start typing</string>
     <string name="stop_typing_status">Stop typing</string>
+    <string name="chat">Chat</string>
 </resources>

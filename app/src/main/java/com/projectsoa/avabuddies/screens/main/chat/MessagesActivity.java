@@ -1,72 +1,133 @@
 package com.projectsoa.avabuddies.screens.main.chat;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.data.models.Message;
-import com.stfalcon.chatkit.messages.MessageInput;
-import com.stfalcon.chatkit.messages.MessagesList;
+import com.projectsoa.avabuddies.screens.main.chat.Temp.MessagesFixtures;
+import com.projectsoa.avabuddies.utils.Utils;
+import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
-public class MessagesActivity extends DemoMessagesActivity
-        implements MessageInput.InputListener,
-        MessageInput.AttachmentsListener,
-        MessageInput.TypingListener {
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
-    public static void open(Context context) {
-        context.startActivity(new Intent(context, DefaultMessagesActivity.class));
-    }
+/*
+ * Created by troy379 on 04.04.17.
+ */
+public abstract class MessagesActivity extends AppCompatActivity
+        implements MessagesListAdapter.SelectionListener,
+        MessagesListAdapter.OnLoadMoreListener {
 
-    private MessagesList messagesList;
+    private static final int TOTAL_MESSAGES_COUNT = 100;
+
+    protected final String senderId = "0";
+    protected ImageLoader imageLoader;
+    protected MessagesListAdapter<Message> messagesAdapter;
+
+    private Menu menu;
+    private int selectionCount;
+    private Date lastLoadedDate;
+    private Utils utils;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        utils = new Utils(getBaseContext());
 
-        this.messagesList = (MessagesList) findViewById(R.id.messagesList);
-        initAdapter();
-
-        MessageInput input = (MessageInput) findViewById(R.id.input);
-        input.setInputListener(this);
-        input.setTypingListener(this);
-        input.setAttachmentsListener(this);
+        /*imageLoader = new ImageLoader() {
+            @Override
+            public void loadImage(ImageView imageView, String url, Object payload) {
+                Picasso.with(DemoMessagesActivity.this).load(url).into(imageView);
+            }
+        };*/
     }
 
     @Override
-    public boolean onSubmit(CharSequence input) {
+    protected void onStart() {
+        super.onStart();
+        messagesAdapter.addToStart(MessagesFixtures.getTextMessage(), true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.chat_actions_menu, menu);
+        onSelectionChanged(0);
         return true;
     }
 
     @Override
-    public void onAddAttachments() {
-    }
-
-    private void initAdapter() {
-        super.messagesAdapter = new MessagesListAdapter<>(super.senderId, super.imageLoader);
-        super.messagesAdapter.enableSelectionMode(this);
-        super.messagesAdapter.setLoadMoreListener(this);
-        super.messagesAdapter.registerViewClickListener(R.id.messageUserAvatar,
-                new MessagesListAdapter.OnMessageViewClickListener<Message>() {
-                    @Override
-                    public void onMessageViewClick(View view, Message message) {
-                    }
-                });
-        this.messagesList.setAdapter(super.messagesAdapter);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                messagesAdapter.deleteSelectedMessages();
+                break;
+            case R.id.action_copy:
+                messagesAdapter.copySelectedMessagesText(this, getMessageStringFormatter(), true);
+                utils.showToastMessage(getString(R.string.copied_message));
+                break;
+        }
+        return true;
     }
 
     @Override
-    public void onStartTyping() {
-        Log.v("Typing listener", getString(R.string.start_typing_status));
+    public void onBackPressed() {
+        if (selectionCount == 0) {
+            super.onBackPressed();
+        } else {
+            messagesAdapter.unselectAllItems();
+        }
     }
 
     @Override
-    public void onStopTyping() {
-        Log.v("Typing listener", getString(R.string.stop_typing_status));
+    public void onLoadMore(int page, int totalItemsCount) {
+        Log.i("TAG", "onLoadMore: " + page + " " + totalItemsCount);
+        if (totalItemsCount < TOTAL_MESSAGES_COUNT) {
+            loadMessages();
+        }
+    }
+
+    @Override
+    public void onSelectionChanged(int count) {
+        this.selectionCount = count;
+        menu.findItem(R.id.action_delete).setVisible(count > 0);
+        menu.findItem(R.id.action_copy).setVisible(count > 0);
+    }
+
+    protected void loadMessages() {
+        new Handler().postDelayed(new Runnable() { //imitation of internet connection
+            @Override
+            public void run() {
+                ArrayList<Message> messages = MessagesFixtures.getMessages(lastLoadedDate);
+                lastLoadedDate = messages.get(messages.size() - 1).getCreatedAt();
+                messagesAdapter.addToEnd(messages, false);
+            }
+        }, 1000);
+    }
+
+    private MessagesListAdapter.Formatter<Message> getMessageStringFormatter() {
+        return new MessagesListAdapter.Formatter<Message>() {
+            @Override
+            public String format(Message message) {
+                String createdAt = new SimpleDateFormat("MMM d, EEE 'at' h:mm a", Locale.getDefault())
+                        .format(message.getCreatedAt());
+
+                String text = message.getText();
+                if (text == null) text = "[attachment]";
+
+                return String.format(Locale.getDefault(), "%s: %s (%s)",
+                        message.getUser().getName(), text, createdAt);
+            }
+        };
     }
 }
-

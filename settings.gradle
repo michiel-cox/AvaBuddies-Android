@@ -1,1 +1,1 @@
-include ':app', ':chatkit', ':chatkitModule'
+include ':app', ':chatkit'

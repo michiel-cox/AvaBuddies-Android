@@ -2,7 +2,8 @@ package com.projectsoa.avabuddies.core.dagger.builders;
 
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
-import com.projectsoa.avabuddies.screens.main.chat.MessagesActivity;
+import com.projectsoa.avabuddies.screens.main.chat.ChatFragment;
+import com.projectsoa.avabuddies.screens.main.chat.ChatListFragment;
 import com.projectsoa.avabuddies.screens.main.nearby.NearbyFragment;
 import com.projectsoa.avabuddies.screens.main.nearby.list.NearbyListFragment;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileChangeFragment;
@@ -59,7 +60,10 @@ public abstract class ActivityBuilder {
     abstract TagsFragment contributeTagsFragment();
 
     @ContributesAndroidInjector
-    abstract MessagesActivity contributemessagesActivity();
+    abstract ChatListFragment contributeChatListFragment();
+
+    @ContributesAndroidInjector
+    abstract ChatFragment contributeChatFragment();
 
 
 }

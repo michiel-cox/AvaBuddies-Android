@@ -22,7 +22,6 @@ import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
-import com.projectsoa.avabuddies.screens.main.chat.DefaultMessagesActivity;
 import com.projectsoa.avabuddies.screens.main.qrshow.QRShowFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
@@ -218,10 +217,5 @@ public class PublicProfileFragment extends BaseFragment {
     @OnClick(R.id.button_validate)
     public void showQR() {
         ((MainActivity) getActivity()).loadFragment(QRShowFragment.newInstance(user));
-    }
-
-    @OnClick(R.id.button_chat)
-    public void startChat() {
-        DefaultMessagesActivity.open(getContext());
     }
 }

@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".screens.main.MainActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".screens.main.chat.DefaultMessagesActivity" android:screenOrientation="portrait"></activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.projectsoa.avabuddies.fileprovider"
