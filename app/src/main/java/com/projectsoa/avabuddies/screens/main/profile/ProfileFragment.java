@@ -22,10 +22,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.projectsoa.avabuddies.R;
@@ -50,7 +46,6 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import androidx.core.content.FileProvider;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -292,7 +287,9 @@ public class ProfileFragment extends BaseFragment {
                                 e.printStackTrace();
                             }
                             if (bitmap != null) {
-                                profile.setImageBitmap(saveData(bitmap));
+                                Bitmap resized = cropResizeBitmap(bitmap);
+                                saveBitmap(resized);
+                                profile.setImageBitmap(resized);
                             }
                         });
                     }
@@ -322,7 +319,10 @@ public class ProfileFragment extends BaseFragment {
                             default:
                                 break;
                         }
-                        profile.setImageBitmap(saveData(bitmap));
+
+                        Bitmap resized = cropResizeBitmap(bitmap);
+                        saveBitmap(resized);
+                        profile.setImageBitmap(resized);
                     });
                 }
             }
@@ -330,18 +330,42 @@ public class ProfileFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private Bitmap saveData(Bitmap bm) {
-        bm = Bitmap.createScaledBitmap(bm, 300, 300, false);
+    private Bitmap cropResizeBitmap(Bitmap srcBmp) {
+        Bitmap croppedBmp;
+        if (srcBmp.getWidth() >= srcBmp.getHeight()){
+
+            croppedBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    srcBmp.getWidth()/2 - srcBmp.getHeight()/2,
+                    0,
+                    srcBmp.getHeight(),
+                    srcBmp.getHeight()
+            );
+
+        }else{
+
+            croppedBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    0,
+                    srcBmp.getHeight()/2 - srcBmp.getWidth()/2,
+                    srcBmp.getWidth(),
+                    srcBmp.getWidth()
+            );
+        }
+
+        croppedBmp = Bitmap.createScaledBitmap(croppedBmp, 300, 300, true);
+        return croppedBmp;
+    }
+
+    private void saveBitmap(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
         String encoded = Base64.encodeToString(b, Base64.DEFAULT);
         user.setImage(encoded);
         userRepository.updateProfilePicture(user).subscribe(() -> {
                 },
                 throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
-
-        return bm;
     }
 
     private static Bitmap rotateImage(Bitmap img, int degree) {
