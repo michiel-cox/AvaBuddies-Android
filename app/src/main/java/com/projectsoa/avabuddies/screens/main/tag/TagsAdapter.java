@@ -75,7 +75,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
             }
         }
         if(isSelected){
-            holder.name.setBackgroundColor(Color.BLUE);
+            holder.name.setBackgroundColor(Color.GRAY);
         }else{
             holder.name.setBackgroundColor(Color.TRANSPARENT);
         }
