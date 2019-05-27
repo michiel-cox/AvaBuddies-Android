@@ -26,12 +26,14 @@ public class Tag {
     public Tag (TagResponse response){
         _id = response._id;
         name = response.name;
+        isPrivate = response.isPrivate;
     }
 
     public TagResponse tagToRespone(){
         TagResponse response = new TagResponse();
         response.name = name;
         response._id = _id;
+        response.isPrivate = isPrivate;
         return response;
     }
 
