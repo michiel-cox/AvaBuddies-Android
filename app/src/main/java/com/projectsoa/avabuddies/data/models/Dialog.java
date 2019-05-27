@@ -1,28 +1,31 @@
 package com.projectsoa.avabuddies.data.models;
 
+import com.projectsoa.avabuddies.data.models.responses.chat.DialogResponse;
+import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.stfalcon.chatkit.commons.models.IDialog;
 
-import java.util.ArrayList;
+import javax.inject.Inject;
 
 public class Dialog implements IDialog<Message> {
 
+    @Inject
+    protected LoginRepository loginRepository;
+
     private String id;
-    private String dialogPhoto;
-    private String dialogName;
-    private ArrayList<Author> users;
-    private Message lastMessage;
+    private User user1;
+    private User user2;
 
-    private int unreadCount;
+    public Dialog(String _id, User user1, User user2) {
 
-    public Dialog(String id, String name, String photo,
-                  ArrayList<Author> users, Message lastMessage, int unreadCount) {
+        this.id = _id;
+        this.user1 = user1;
+        this.user2 = user2;
+    }
 
-        this.id = id;
-        this.dialogName = name;
-        this.dialogPhoto = photo;
-        this.users = users;
-        this.lastMessage = lastMessage;
-        this.unreadCount = unreadCount;
+    public Dialog(DialogResponse dialog) {
+        id = dialog._id;
+        user1 = dialog.user1;
+        user2 = dialog.user2;
     }
 
     @Override
@@ -31,36 +34,12 @@ public class Dialog implements IDialog<Message> {
     }
 
     @Override
-    public String getDialogPhoto() {
-        return dialogPhoto;
-    }
-
-    @Override
-    public String getDialogName() {
-        return dialogName;
-    }
-
-    @Override
-    public ArrayList<Author> getUsers() {
-        return users;
-    }
-
-    @Override
-    public Message getLastMessage() {
-        return lastMessage;
-    }
-
-    @Override
-    public void setLastMessage(Message lastMessage) {
-        this.lastMessage = lastMessage;
-    }
-
-    @Override
-    public int getUnreadCount() {
-        return unreadCount;
-    }
-
-    public void setUnreadCount(int unreadCount) {
-        this.unreadCount = unreadCount;
+    public Object getOtherUser() {
+        if(loginRepository.getLoggedInUser().getUser().equals(user1)){
+            return  user2;
+        }
+        else{
+            return  user1;
+        }
     }
 }

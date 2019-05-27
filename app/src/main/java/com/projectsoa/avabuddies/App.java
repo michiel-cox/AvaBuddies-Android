@@ -2,6 +2,7 @@ package com.projectsoa.avabuddies;
 
 
 import com.projectsoa.avabuddies.core.dagger.components.DaggerAppComponent;
+import com.projectsoa.avabuddies.data.repositories.DialogRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.data.services.AuthService;
@@ -22,6 +23,9 @@ public class App extends DaggerApplication {
 
     @Inject
     protected UserRepository userRepository;
+
+    @Inject
+    protected DialogRepository dialogRepository;
 
     public static synchronized App getInstance() {
         return instance;

@@ -9,32 +9,49 @@ import androidx.annotation.Nullable;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.Dialog;
+import com.projectsoa.avabuddies.data.repositories.DialogRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
-import com.projectsoa.avabuddies.screens.main.chat.Temp.DialogsFixtures;
 import com.projectsoa.avabuddies.utils.Utils;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+
 public class ChatListFragment extends BaseFragment
         implements DialogsListAdapter.OnDialogClickListener<Dialog>,
         DialogsListAdapter.OnDialogLongClickListener<Dialog> {
 
+    @Inject
+    protected DialogRepository dialogRepository;
+    @BindView(R.id.dialogsList)
     private DialogsList dialogsList;
     protected ImageLoader imageLoader;
     protected DialogsListAdapter<Dialog> dialogsAdapter;
     protected Utils utils;
+    protected List<Dialog> dialogList;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        dialogsList = view.findViewById(R.id.dialogsList);
+        super.onViewCreated(view, savedInstanceState);
         utils = new Utils(getContext());
-        initAdapter();
+        dialogsAdapter = new DialogsListAdapter<>(imageLoader);
+        dialogRepository.getList().subscribe(dialogs -> {
+            runOnUiThread(() -> {
+                this.dialogList = dialogs;
+                initAdapter();
+            });
+
+        }, throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.error_chats))));
     }
 
     @Override
     public void onDialogLongClick(Dialog dialog) {
-        utils.showToastMessage(dialog.getDialogName());
+        //utils.showToastMessage(dialog.getDialogName());
     }
 
     @Override
@@ -43,8 +60,7 @@ public class ChatListFragment extends BaseFragment
     }
 
     private void initAdapter() {
-        dialogsAdapter = new DialogsListAdapter<>(imageLoader);
-        dialogsAdapter.setItems(DialogsFixtures.getDialogs());
+        dialogsAdapter.setItems(dialogList);
 
         dialogsAdapter.setOnDialogClickListener(this);
         dialogsAdapter.setOnDialogLongClickListener(this);

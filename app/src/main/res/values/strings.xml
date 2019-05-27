@@ -6,6 +6,7 @@
     <string name="profile">Profile</string>
     <string name="error_users">Could not load users</string>
     <string name="error_tags">Could not load tags</string>
+    <string name="error_chats">Could not load chats</string>
     <string name="send_connection_request">Send connection request</string>
     <string name="cancel_connection_request">Cancel connection request</string>
     <string name="something_went_wrong">Something went wrong</string>

@@ -33,7 +33,6 @@ import com.stfalcon.chatkit.R;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.commons.ViewHolder;
 import com.stfalcon.chatkit.commons.models.IDialog;
-import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.utils.DateFormatter;
 
 import java.lang.reflect.Constructor;
@@ -307,7 +306,7 @@ public class DialogsListAdapter<DIALOG extends IDialog>
      * @return false if dialog doesn't exist.
      */
     @SuppressWarnings("unchecked")
-    public boolean updateDialogWithMessage(String dialogId, IMessage message) {
+   /* public boolean updateDialogWithMessage(String dialogId, IMessage message) {
         boolean dialogExist = false;
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getId().equals(dialogId)) {
@@ -322,12 +321,12 @@ public class DialogsListAdapter<DIALOG extends IDialog>
             }
         }
         return dialogExist;
-    }
+    }*/
 
     /**
      * Sort dialog by last message date
      */
-    public void sortByLastMessageDate() {
+   /* public void sortByLastMessageDate() {
         Collections.sort(items, new Comparator<DIALOG>() {
             @Override
             public int compare(DIALOG o1, DIALOG o2) {
@@ -339,7 +338,7 @@ public class DialogsListAdapter<DIALOG extends IDialog>
             }
         });
         notifyDataSetChanged();
-    }
+    }*/
 
     /**
      * Sort items with rules of comparator
@@ -634,7 +633,7 @@ public class DialogsListAdapter<DIALOG extends IDialog>
 
         @Override
         public void onBind(final DIALOG dialog) {
-            if (dialog.getUnreadCount() > 0) {
+           /* if (dialog.getUnreadCount() > 0) {
                 applyUnreadStyle();
             } else {
                 applyDefaultStyle();
@@ -680,7 +679,7 @@ public class DialogsListAdapter<DIALOG extends IDialog>
             tvBubble.setText(String.valueOf(dialog.getUnreadCount()));
             tvBubble.setVisibility(dialogStyle.isDialogUnreadBubbleEnabled() &&
                     dialog.getUnreadCount() > 0 ? VISIBLE : GONE);
-
+*/
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
