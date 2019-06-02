@@ -29,6 +29,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     private List<User> userList;
     private List<User> userListFiltered;
     private String foundItem;
+
     public UsersAdapter(Context context, UsersInteractionListener listener) {
         this.context = context;
         this.listener = listener;
@@ -38,6 +39,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         this.userList = userList;
         this.userListFiltered = userList;
     }
+
 
 
     @NonNull

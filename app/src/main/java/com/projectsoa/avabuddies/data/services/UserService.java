@@ -16,16 +16,16 @@ import retrofit2.http.Path;
 
 public interface UserService {
 
-    @GET("user/{profile}")
+    @GET("user/profile")
     Single<ProfileResponse> fetchProfile();
 
-    @GET("user/{id}")
+    @GET("user/user/{id}")
     Single<ProfileResponse> fetchUser(@Path("id") String id);
 
-    @GET("user/")
+    @GET("user/list")
     Single<UserListResponse> fetchList();
 
-    @DELETE("destroy/{id}")
+    @DELETE("user/destroy/{id}")
     Completable deleteUser(@Path("id") String id);
 
     @POST("user/updateprofile")
