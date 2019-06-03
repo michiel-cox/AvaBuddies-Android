@@ -22,6 +22,11 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.projectsoa.avabuddies.R;
@@ -32,6 +37,7 @@ import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.main.friends.FriendsFragment;
 import com.projectsoa.avabuddies.screens.main.tag.TagsFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
@@ -43,10 +49,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -147,6 +149,10 @@ public class ProfileFragment extends BaseFragment {
         startActivity(intent);
     }
 
+    @OnClick(R.id.showFriends)
+    public void goToFriends(){
+        ((MainActivity) getActivity()).loadFragment(new FriendsFragment());
+    }
 
     @OnClick(R.id.updateThisUser)
     public void goToUpdate() {

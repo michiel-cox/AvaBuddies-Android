@@ -10,4 +10,7 @@ public class TagResponse {
     @SerializedName("_id")
     public String _id;
 
+    @SerializedName("isPrivate")
+    public Boolean isPrivate;
+
 }

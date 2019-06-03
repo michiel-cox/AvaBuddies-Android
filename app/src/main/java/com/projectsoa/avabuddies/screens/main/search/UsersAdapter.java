@@ -28,6 +28,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     private final UsersInteractionListener listener;
     private List<User> userList;
     private List<User> userListFiltered;
+    private String foundItem;
 
     public UsersAdapter(Context context, UsersInteractionListener listener) {
         this.context = context;
@@ -38,6 +39,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         this.userList = userList;
         this.userListFiltered = userList;
     }
+
 
 
     @NonNull
@@ -53,8 +55,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         User user = userListFiltered.get(position);
         holder.user = user;
         holder.name.setText(user.getName());
-        holder.detail.setText(user.getEmail());
-
+        if(this.foundItem == null) {
+            holder.detail.setText(user.getEmail());
+        }else{
+            holder.detail.setText(this.foundItem);
+            foundItem = null;
+        }
         boolean hasImage = false;
         if (!user.getImage().isEmpty()) {
             try {
@@ -78,7 +84,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         return userList == null || userListFiltered == null ? 0 : userListFiltered.size();
     }
 
-    public List<User> filter(CharSequence charSequence) {
+    public List<User> filter(CharSequence charSequence){
         List<User> filteredList;
         String charString = charSequence.toString();
         if (charString.isEmpty()) {
@@ -94,6 +100,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                     if(!user.isPrivate()) {
                         for (Tag tag : user.getTags()) {
                             if (tag.getName().toLowerCase().contains(charString.toLowerCase())) {
+                                this.foundItem = tag.getName();
                                 filteredList.add(user);
                             }
                         }
@@ -116,6 +123,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
                 userListFiltered = (ArrayList<User>) filterResults.values;
                 notifyDataSetChanged();
             }

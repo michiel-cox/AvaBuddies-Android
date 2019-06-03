@@ -1,4 +1,4 @@
-package com.projectsoa.avabuddies.screens.main.search;
+package com.projectsoa.avabuddies.screens.main.friends;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.User;
+import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
 import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragment;
+import com.projectsoa.avabuddies.screens.main.search.UsersAdapter;
 import com.projectsoa.avabuddies.utils.Utils;
 
 import java.util.Iterator;
@@ -26,7 +28,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class SearchFragment extends BaseFragment implements UsersAdapter.UsersInteractionListener, SearchView.OnQueryTextListener {
+public class FriendsFragment extends BaseFragment implements UsersAdapter.UsersInteractionListener, SearchView.OnQueryTextListener {
 
     @BindView(R.id.search)
     protected SearchView searchView;
@@ -35,14 +37,14 @@ public class SearchFragment extends BaseFragment implements UsersAdapter.UsersIn
     @Inject
     protected UserRepository userRepository;
     @Inject
+    protected FriendRepository friendRepository;
+    @Inject
     protected LoginRepository loginRepository;
     @Inject
     protected Utils utils;
     protected UsersAdapter usersAdapter;
 
-    public SearchFragment() {
 
-    }
 
     @Override
     protected int layoutRes() {
@@ -72,8 +74,7 @@ public class SearchFragment extends BaseFragment implements UsersAdapter.UsersIn
 
         User currentUser = loginRepository.getLoggedInUser().getUser();
 
-
-        userRepository.getList().subscribe(users -> {
+        friendRepository.getFriends().subscribe(users -> {
             runOnUiThread(() -> {
                 Iterator<User> iterator = users.iterator();
                 while(iterator.hasNext()){
