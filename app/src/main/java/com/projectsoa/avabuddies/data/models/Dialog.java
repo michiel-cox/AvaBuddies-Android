@@ -34,7 +34,7 @@ public class Dialog implements IDialog<Message> {
     }
 
     @Override
-    public Object getOtherUser() {
+    public User getOtherUser() {
         if(loginRepository.getLoggedInUser().getUser().equals(user1)){
             return  user2;
         }

@@ -1,7 +1,7 @@
 package com.projectsoa.avabuddies;
 
 
-import com.projectsoa.avabuddies.core.dagger.components.DaggerAppComponent;
+import com.projectsoa.avabuddies.core.dagger.components.*;
 import com.projectsoa.avabuddies.data.repositories.DialogRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;

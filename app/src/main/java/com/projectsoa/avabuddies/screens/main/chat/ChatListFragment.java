@@ -29,7 +29,7 @@ public class ChatListFragment extends BaseFragment
     @Inject
     protected DialogRepository dialogRepository;
     @BindView(R.id.dialogsList)
-    private DialogsList dialogsList;
+    protected DialogsList dialogsList;
     protected ImageLoader imageLoader;
     protected DialogsListAdapter<Dialog> dialogsAdapter;
     protected Utils utils;
@@ -70,7 +70,7 @@ public class ChatListFragment extends BaseFragment
 
     @Override
     public void onDialogClick(Dialog dialog) {
-        ChatFragment fragment = ChatFragment.newInstance();
+        ChatFragment fragment = ChatFragment.newInstance(dialog);
         ((MainActivity) getActivity()).loadFragment(fragment);
     }
 }

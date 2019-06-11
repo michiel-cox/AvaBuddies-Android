@@ -3,10 +3,12 @@ package com.projectsoa.avabuddies.core.dagger.builders;
 import com.projectsoa.avabuddies.data.repositories.DialogRepository;
 import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
+import com.projectsoa.avabuddies.data.repositories.MessageRepository;
 import com.projectsoa.avabuddies.data.repositories.TagRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.data.services.DialogService;
 import com.projectsoa.avabuddies.data.services.FriendService;
+import com.projectsoa.avabuddies.data.services.MessageService;
 import com.projectsoa.avabuddies.data.services.TagService;
 import com.projectsoa.avabuddies.data.services.UserService;
 
@@ -46,6 +48,12 @@ public class RepositoryBuilder {
     @Provides
     static DialogRepository dialogRepository(DialogService dialogService) {
         return new DialogRepository(dialogService);
+    }
+
+    @Singleton
+    @Provides
+    static MessageRepository messageRepository(MessageService messageService) {
+        return new MessageRepository(messageService);
     }
 
 }

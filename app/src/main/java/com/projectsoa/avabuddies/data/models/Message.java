@@ -1,5 +1,6 @@
 package com.projectsoa.avabuddies.data.models;
 
+import com.projectsoa.avabuddies.data.models.responses.chat.MessageResponse;
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.MessageContentType;
 
@@ -25,6 +26,12 @@ public class Message implements IMessage,
         this.text = text;
         this.user = user;
         this.createdAt = createdAt;
+    }
+
+    public Message(MessageResponse message){
+        this.id = message.id;
+        this.text = message.message;
+        this.createdAt = message.dateTime;
     }
 
     @Override

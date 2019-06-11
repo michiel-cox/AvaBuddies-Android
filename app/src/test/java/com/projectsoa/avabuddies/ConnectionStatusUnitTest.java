@@ -2,33 +2,18 @@ package com.projectsoa.avabuddies;
 
 import com.projectsoa.avabuddies.data.models.LoggedInUser;
 import com.projectsoa.avabuddies.data.models.User;
-import com.projectsoa.avabuddies.data.models.responses.MessageResponse;
-import com.projectsoa.avabuddies.data.models.responses.auth.LoginResponse;
-import com.projectsoa.avabuddies.data.models.responses.auth.SignupResponse;
 import com.projectsoa.avabuddies.data.models.responses.friend.ConnectionsResponse;
 import com.projectsoa.avabuddies.data.models.responses.friend.FriendResponse;
-import com.projectsoa.avabuddies.data.models.responses.friend.FriendsResponse;
-import com.projectsoa.avabuddies.data.models.responses.friend.RequestsResponse;
-import com.projectsoa.avabuddies.data.models.responses.user.ProfileResponse;
-import com.projectsoa.avabuddies.data.models.responses.user.UserListResponse;
-import com.projectsoa.avabuddies.data.models.responses.user.UserResponse;
 import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
-import com.projectsoa.avabuddies.data.services.AuthService;
 import com.projectsoa.avabuddies.data.services.FriendService;
-import com.projectsoa.avabuddies.data.services.UserService;
-import com.projectsoa.avabuddies.screens.main.search.UsersAdapter;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoRule;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Single;
 

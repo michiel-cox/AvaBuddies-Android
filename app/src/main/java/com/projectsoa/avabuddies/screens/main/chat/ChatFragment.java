@@ -10,41 +10,70 @@ import androidx.annotation.Nullable;
 
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
+import com.projectsoa.avabuddies.data.models.Dialog;
 import com.projectsoa.avabuddies.data.models.Message;
+import com.projectsoa.avabuddies.data.models.User;
+import com.projectsoa.avabuddies.data.repositories.DialogRepository;
+import com.projectsoa.avabuddies.data.repositories.MessageRepository;
 import com.projectsoa.avabuddies.screens.main.chat.Temp.MessagesFixtures;
+import com.projectsoa.avabuddies.utils.Utils;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
 
 public class ChatFragment extends BaseFragment implements MessagesListAdapter.OnLoadMoreListener{
 
-    private static final int TOTAL_MESSAGES_COUNT = 100;
+    private static final String ARG_CHAT = "dialog";
 
-    protected final String senderId = "0";
     protected ImageLoader imageLoader;
     protected MessagesListAdapter<Message> messagesAdapter;
+    protected Utils utils;
 
+    @Inject
+    protected MessageRepository messageRepository;
     private Date lastLoadedDate;
-    private MessagesList messagesList;
-    private MessageInput input;
+    @BindView(R.id.messagesList)
+    protected MessagesList messagesList;
+    @BindView(R.id.input)
+    protected MessageInput input;
+    protected List<Message> messageList;
+    private Dialog chat;
 
-    public static ChatFragment newInstance() {
+    public static ChatFragment newInstance(Dialog chat) {
         ChatFragment fragment = new ChatFragment();
         Bundle args = new Bundle();
+        args.putParcelable(ARG_CHAT, Parcels.wrap(chat));
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            chat = Parcels.unwrap(getArguments().getParcelable(ARG_CHAT));
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        this.input = view.findViewById(R.id.input);
-        this.messagesList = view.findViewById(R.id.messagesList);
-        initAdapter();
-        messagesAdapter.addToStart(MessagesFixtures.getTextMessage(), true);
+        utils = new Utils(getContext());
+        messagesAdapter = new MessagesListAdapter<>(chat.getOtherUser().getId(), imageLoader);
+        messagesAdapter.setLoadMoreListener(this);
+
+        loadMessages();
+
         // input.setInputListener(this);
         // input.setTypingListener(this);
         // input.setAttachmentsListener(this);
@@ -56,31 +85,29 @@ public class ChatFragment extends BaseFragment implements MessagesListAdapter.On
     }
 
     private void initAdapter() {
-        messagesAdapter = new MessagesListAdapter<>(senderId, imageLoader);
-        messagesAdapter.setLoadMoreListener(this);
+
+
+        lastLoadedDate = messageList.get(messageList.size() - 1).getCreatedAt();
+        messagesAdapter.addToEnd(messageList, false);
+
         this.messagesList.setAdapter(messagesAdapter);
-    }
-
-    public void onAddAttachments() {
-
     }
 
     public void onLoadMore(int page, int totalItemsCount) {
         Log.i("TAG", "onLoadMore: " + page + " " + totalItemsCount);
-        if (totalItemsCount < TOTAL_MESSAGES_COUNT) {
             loadMessages();
-        }
     }
 
     protected void loadMessages() {
-        new Handler().postDelayed(new Runnable() { //imitation of internet connection
-            @Override
-            public void run() {
-                ArrayList<Message> messages = MessagesFixtures.getMessages(lastLoadedDate);
-                lastLoadedDate = messages.get(messages.size() - 1).getCreatedAt();
-                messagesAdapter.addToEnd(messages, false);
-            }
-        }, 1000);
+
+        messageRepository.getList().subscribe(messages -> {
+            runOnUiThread(() -> {
+                this.messageList = messages;
+                initAdapter();
+            });
+
+        }, throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.error_chats))));
+
     }
 
     public boolean onSubmit(CharSequence input) {

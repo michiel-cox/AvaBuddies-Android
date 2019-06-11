@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class MessageReponse {
+public class MessageResponse {
     @SerializedName("id")
     public String id;
 

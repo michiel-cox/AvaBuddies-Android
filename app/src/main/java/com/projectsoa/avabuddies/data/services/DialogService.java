@@ -6,6 +6,6 @@ import io.reactivex.Single;
 import retrofit2.http.GET;
 
 public interface DialogService {
-    @GET("chat/")
+    @GET("chats")
     Single<DialogListResponse> fetchList();
 }
