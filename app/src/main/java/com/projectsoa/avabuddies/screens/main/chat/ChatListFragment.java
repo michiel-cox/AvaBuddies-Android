@@ -11,6 +11,7 @@ import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.Dialog;
 import com.projectsoa.avabuddies.data.repositories.DialogRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.main.profile.ProfileChangeFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
