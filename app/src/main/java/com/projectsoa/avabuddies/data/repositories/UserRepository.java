@@ -20,7 +20,7 @@ public class UserRepository {
     }
 
     public Single<User> getProfile() {
-        return userService.fetchProfile().map(profileResponse -> new User(profileResponse.user));
+        return userService.fetchProfile().map(profileResponse -> new User(profileResponse));
     }
 
     // This is temporary.

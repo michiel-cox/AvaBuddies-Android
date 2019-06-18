@@ -10,23 +10,24 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface FriendService {
 
-    @GET("friend/requests")
+    @GET("friends/")
     Single<RequestsResponse> fetchRequests();
 
-    @GET("friend/allconnections")
+    @GET("friends/allconnections")
     Single<ConnectionsResponse> fetchConnections();
 
-    @POST("friend/request")
+    @POST("friends")
     @FormUrlEncoded
     Single<MessageResponse> doRequest(@Field("friend") String friendId);
 
     @GET("friend/friends")
     Single<FriendsResponse> fetchFriends();
 
-    @POST("friend/acceptrequest")
+    @PUT("friend")
     @FormUrlEncoded
     Single<MessageResponse> doAcceptRequest(@Field("friend") String friendId);
 
