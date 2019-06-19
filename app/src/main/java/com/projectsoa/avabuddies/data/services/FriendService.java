@@ -34,11 +34,9 @@ public interface FriendService {
     Single<MessageResponse> doAcceptRequest(@Path("id") String friendId, @Field("type") String type);
 
     @DELETE("friends/{id}")
-    @FormUrlEncoded
     Single<MessageResponse> doDenyRequest(@Path("id") String id);
 
     @DELETE("friends/{id}")
-    @FormUrlEncoded
     Single<MessageResponse> doCancelRequest(@Path("id") String id);
 
     @PUT("friends/{id}")

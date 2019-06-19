@@ -1,6 +1,7 @@
 package com.projectsoa.avabuddies.core.dagger.builders;
 
 import com.projectsoa.avabuddies.data.services.AuthService;
+import com.projectsoa.avabuddies.data.services.ChallengeService;
 import com.projectsoa.avabuddies.data.services.FriendService;
 import com.projectsoa.avabuddies.data.services.TagService;
 import com.projectsoa.avabuddies.data.services.UserService;
@@ -31,5 +32,7 @@ public class ServiceBuilder {
     TagService getTagService(Retrofit retroFit) {
         return retroFit.create(TagService.class);
     }
+    @Provides
+    ChallengeService getChallengeService(Retrofit retrofit){ return retrofit.create(ChallengeService.class);}
 
 }

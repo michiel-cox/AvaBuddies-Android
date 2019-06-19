@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class ChallengeResponse {
 
     @SerializedName("title")
-    public String name;
+    public String title;
 
     @SerializedName("_id")
     public String _id;

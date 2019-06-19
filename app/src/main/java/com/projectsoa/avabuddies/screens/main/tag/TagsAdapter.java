@@ -36,7 +36,6 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
         this.listener = listener;
     }
 
-
     public void setTagList(List<Tag> tagList) {
         this.tagList = tagList;
     }
@@ -138,7 +137,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> im
 
         public ViewHolder(View view) {
             super(view);
-            name = view.findViewById(R.id.textName);
+            name = view.findViewById(R.id.challengeName);
             privateName = view.findViewById(R.id.privateName);
 
             if (listener != null) {

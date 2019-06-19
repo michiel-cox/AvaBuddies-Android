@@ -22,7 +22,7 @@ public class Challenge {
     }
     public Challenge(ChallengeResponse challengeResponse){
         this._id = challengeResponse._id;
-        this.title = challengeResponse.name;
+        this.title = challengeResponse.title;
         this.description = challengeResponse.description;
         this.image = challengeResponse.image;
     }

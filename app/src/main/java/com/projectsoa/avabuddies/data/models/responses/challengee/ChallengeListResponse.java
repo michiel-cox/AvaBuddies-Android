@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ChallengeListResponse {
 
-    @SerializedName("Challanges")
+    @SerializedName("challenges")
     public List<ChallengeResponse> Challenges;
 
 }

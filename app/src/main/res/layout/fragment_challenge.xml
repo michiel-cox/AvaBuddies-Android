@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/challengeImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:srcCompat="@tools:sample/backgrounds/scenic[1]" />
@@ -24,20 +24,21 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/challengeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textAlignment="center"
             android:textColor="#00000000"
             android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/editText"
+        <TextView
+            android:id="@+id/challengeDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine" />
+            android:textAlignment="center"
+            android:gravity="start|top" />
     </LinearLayout>
 
 </LinearLayout>

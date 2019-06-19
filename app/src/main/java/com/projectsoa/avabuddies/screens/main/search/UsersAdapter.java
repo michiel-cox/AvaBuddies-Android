@@ -62,7 +62,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             foundItem = null;
         }
         boolean hasImage = false;
-        if (!user.getImage().isEmpty()) {
+        if (user.getImage() != null && !user.getImage().isEmpty()) {
             try {
                 byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
                 Glide.with(context)
@@ -145,7 +145,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         public ViewHolder(View view) {
             super(view);
-            name = view.findViewById(R.id.textName);
+            name = view.findViewById(R.id.challengeName);
             detail = view.findViewById(R.id.textDetail);
             thumbnail = view.findViewById(R.id.imageThumbnail);
 
