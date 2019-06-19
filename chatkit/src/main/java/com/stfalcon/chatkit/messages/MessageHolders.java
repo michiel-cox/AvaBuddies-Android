@@ -19,6 +19,7 @@ import com.stfalcon.chatkit.R;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.commons.ViewHolder;
 import com.stfalcon.chatkit.commons.models.IMessage;
+import com.stfalcon.chatkit.commons.models.IUser;
 import com.stfalcon.chatkit.commons.models.MessageContentType;
 import com.stfalcon.chatkit.utils.DateFormatter;
 import com.stfalcon.chatkit.utils.RoundedImageView;
@@ -603,7 +604,7 @@ public class MessageHolders {
 
         if (item instanceof IMessage) {
             IMessage message = (IMessage) item;
-            isOutcoming = message.getUser().getId().contentEquals(senderId);
+            isOutcoming = message.getUser().contentEquals(senderId);
             viewType = getContentViewType(message);
 
         } else viewType = VIEW_TYPE_DATE_HEADER;
@@ -1062,7 +1063,7 @@ public class MessageHolders {
                 time.setText(DateFormatter.format(message.getCreatedAt(), DateFormatter.Template.TIME));
             }
 
-            if (userAvatar != null) {
+        /*    if (userAvatar != null) {
                 boolean isAvatarExists = imageLoader != null
                         && message.getUser().getAvatar() != null
                         && !message.getUser().getAvatar().isEmpty();
@@ -1071,7 +1072,7 @@ public class MessageHolders {
                 if (isAvatarExists) {
                     imageLoader.loadImage(userAvatar, message.getUser().getAvatar(), null);
                 }
-            }
+            }*/
         }
 
         @Override
@@ -1091,7 +1092,7 @@ public class MessageHolders {
 
         private void init(View itemView) {
             time = (TextView) itemView.findViewById(R.id.messageTime);
-            userAvatar = (ImageView) itemView.findViewById(R.id.messageUserAvatar);
+           // userAvatar = (ImageView) itemView.findViewById(R.id.messageUserAvatar);
         }
     }
 

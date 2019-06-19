@@ -13,18 +13,14 @@ public class Message implements IMessage,
     private String id;
     private String text;
     private Date createdAt;
-    private Author user;
+    private String userId;
     private Image image;
     private Voice voice;
 
-    public Message(String id, Author user, String text) {
-        this(id, user, text, new Date());
-    }
-
-    public Message(String id, Author user, String text, Date createdAt) {
+    public Message(String id, String userId, String text, Date createdAt) {
         this.id = id;
         this.text = text;
-        this.user = user;
+        this.userId = userId;
         this.createdAt = createdAt;
     }
 
@@ -32,6 +28,7 @@ public class Message implements IMessage,
         this.id = message.id;
         this.text = message.message;
         this.createdAt = message.dateTime;
+        this.userId = message.senderId;
     }
 
     @Override
@@ -50,8 +47,8 @@ public class Message implements IMessage,
     }
 
     @Override
-    public Author getUser() {
-        return this.user;
+    public String getUser() {
+        return this.userId;
     }
 
     @Override

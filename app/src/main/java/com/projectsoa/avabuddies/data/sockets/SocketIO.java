@@ -1,6 +1,7 @@
 package com.projectsoa.avabuddies.data.sockets;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.projectsoa.avabuddies.Constants;
@@ -40,29 +41,7 @@ public class SocketIO {
             return;
         }
 
-        mSocket.emit(message);
+        mSocket.emit(event, message);
     }
 
-    public Emitter.Listener onNewMessage = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                  /*  String username;
-                    String message;
-                    try {
-                        username = data.getString("username");
-                        message = data.getString("message");
-                    } catch (JSONException e) {
-                        return;
-                    }
-
-                    // add the message to view
-                    addMessage(username, message);*/
-                }
-            };
-        }
-    };
 }

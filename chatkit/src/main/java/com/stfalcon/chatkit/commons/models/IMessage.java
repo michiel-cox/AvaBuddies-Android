@@ -42,7 +42,7 @@ public interface IMessage {
      *
      * @return the message author
      */
-    IUser getUser();
+    String getUser();
 
     /**
      * Returns message creation date

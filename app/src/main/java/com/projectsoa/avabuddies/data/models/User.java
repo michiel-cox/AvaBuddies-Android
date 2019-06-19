@@ -1,13 +1,14 @@
 package com.projectsoa.avabuddies.data.models;
 
 import com.projectsoa.avabuddies.data.models.responses.user.UserResponse;
+import com.stfalcon.chatkit.commons.models.IUser;
 
 import org.parceler.Parcel;
 
 import java.util.List;
 
 @Parcel
-public class User {
+public class User implements IUser {
     // Fields needs to be protected to be used as an Parcel
     protected String _id;
     protected String email;
@@ -100,6 +101,10 @@ public class User {
     }
 
     public String getImage() {
+        return image;
+    }
+
+    public String getAvatar() {
         return image;
     }
 

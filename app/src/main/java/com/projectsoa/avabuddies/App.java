@@ -1,6 +1,8 @@
 package com.projectsoa.avabuddies;
 
 
+import android.content.Context;
+
 import com.projectsoa.avabuddies.core.dagger.components.*;
 import com.projectsoa.avabuddies.data.repositories.DialogRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
@@ -14,6 +16,7 @@ import dagger.android.support.DaggerApplication;
 
 public class App extends DaggerApplication {
     private static App instance;
+    private static Context context;
 
     @Inject
     protected AuthService authService;
@@ -37,10 +40,15 @@ public class App extends DaggerApplication {
         instance = this;
         loginRepository.setAuthService(authService);
         loginRepository.setUserRepository(userRepository);
+        App.context = getApplicationContext();
     }
 
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
         return DaggerAppComponent.builder().create(this);
+    }
+
+    public static Context getAppContext() {
+        return App.context;
     }
 }

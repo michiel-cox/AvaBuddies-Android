@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.data.models.Message;
-import com.projectsoa.avabuddies.screens.main.chat.Temp.MessagesFixtures;
 import com.projectsoa.avabuddies.utils.Utils;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
@@ -55,7 +54,6 @@ public abstract class MessagesActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        messagesAdapter.addToStart(MessagesFixtures.getTextMessage(), true);
     }
 
     @Override
@@ -108,9 +106,9 @@ public abstract class MessagesActivity extends AppCompatActivity
         new Handler().postDelayed(new Runnable() { //imitation of internet connection
             @Override
             public void run() {
-                ArrayList<Message> messages = MessagesFixtures.getMessages(lastLoadedDate);
+               /* ArrayList<Message> messages = MessagesFixtures.getMessages(lastLoadedDate);
                 lastLoadedDate = messages.get(messages.size() - 1).getCreatedAt();
-                messagesAdapter.addToEnd(messages, false);
+                messagesAdapter.addToEnd(messages, false);*/
             }
         }, 1000);
     }
@@ -126,7 +124,7 @@ public abstract class MessagesActivity extends AppCompatActivity
                 if (text == null) text = "[attachment]";
 
                 return String.format(Locale.getDefault(), "%s: %s (%s)",
-                        message.getUser().getName(), text, createdAt);
+                        "", text, createdAt);
             }
         };
     }

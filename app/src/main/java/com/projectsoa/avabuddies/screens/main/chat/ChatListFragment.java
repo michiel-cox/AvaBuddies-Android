@@ -2,6 +2,7 @@ package com.projectsoa.avabuddies.screens.main.chat;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,6 +11,7 @@ import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.Dialog;
 import com.projectsoa.avabuddies.data.repositories.DialogRepository;
+import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileChangeFragment;
 import com.projectsoa.avabuddies.utils.Utils;
@@ -27,6 +29,8 @@ public class ChatListFragment extends BaseFragment
         implements DialogsListAdapter.OnDialogClickListener<Dialog>,
         DialogsListAdapter.OnDialogLongClickListener<Dialog> {
 
+    @Inject
+    protected LoginRepository loginRepository;
     @Inject
     protected DialogRepository dialogRepository;
     @BindView(R.id.dialogsList)
@@ -61,6 +65,11 @@ public class ChatListFragment extends BaseFragment
     }
 
     private void initAdapter() {
+        for (Dialog dialog : dialogList
+        ) {
+            dialog.setLoginRepository(loginRepository);
+        }
+
         dialogsAdapter.setItems(dialogList);
 
         dialogsAdapter.setOnDialogClickListener(this);

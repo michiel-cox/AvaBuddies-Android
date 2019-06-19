@@ -31,6 +31,10 @@ public class Author implements IUser {
         return avatar;
     }
 
+    public String getUser() {
+        return null;
+    }
+
     public boolean isOnline() {
         return online;
     }

@@ -1,5 +1,6 @@
 package com.projectsoa.avabuddies.core.dagger.builders;
 
+import com.projectsoa.avabuddies.data.repositories.ChatMessageRepository;
 import com.projectsoa.avabuddies.data.repositories.DialogRepository;
 import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
@@ -54,6 +55,12 @@ public class RepositoryBuilder {
     @Provides
     static MessageRepository messageRepository(MessageService messageService) {
         return new MessageRepository(messageService);
+    }
+
+    @Singleton
+    @Provides
+    static ChatMessageRepository chatMessageRepository() {
+        return new ChatMessageRepository();
     }
 
 }

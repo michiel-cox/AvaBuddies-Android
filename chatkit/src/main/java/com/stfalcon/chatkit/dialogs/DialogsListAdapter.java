@@ -33,6 +33,7 @@ import com.stfalcon.chatkit.R;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.commons.ViewHolder;
 import com.stfalcon.chatkit.commons.models.IDialog;
+import com.stfalcon.chatkit.commons.models.IUser;
 import com.stfalcon.chatkit.utils.DateFormatter;
 
 import java.lang.reflect.Constructor;
@@ -216,8 +217,9 @@ public class DialogsListAdapter<DIALOG extends IDialog>
 
     /**
      * Move an item
+     *
      * @param fromPosition the actual position of the item
-     * @param toPosition the new position of the item
+     * @param toPosition   the new position of the item
      */
     public void moveItem(int fromPosition, int toPosition) {
         DIALOG dialog = items.remove(fromPosition);
@@ -443,15 +445,15 @@ public class DialogsListAdapter<DIALOG extends IDialog>
     }
 
     /**
-    * @return the position of a dialog in the dialogs list.
-    */
+     * @return the position of a dialog in the dialogs list.
+     */
     public int getDialogPosition(DIALOG dialog) {
         return this.items.indexOf(dialog);
     }
 
     /*
-    * LISTENERS
-    * */
+     * LISTENERS
+     * */
     public interface OnDialogClickListener<DIALOG extends IDialog> {
         void onDialogClick(DIALOG dialog);
     }
@@ -469,8 +471,8 @@ public class DialogsListAdapter<DIALOG extends IDialog>
     }
 
     /*
-    * HOLDERS
-    * */
+     * HOLDERS
+     * */
     public abstract static class BaseDialogViewHolder<DIALOG extends IDialog>
             extends ViewHolder<DIALOG> {
 
@@ -528,11 +530,11 @@ public class DialogsListAdapter<DIALOG extends IDialog>
             root = (ViewGroup) itemView.findViewById(R.id.dialogRootLayout);
             container = (ViewGroup) itemView.findViewById(R.id.dialogContainer);
             tvName = (TextView) itemView.findViewById(R.id.dialogName);
-            tvDate = (TextView) itemView.findViewById(R.id.dialogDate);
-            tvLastMessage = (TextView) itemView.findViewById(R.id.dialogLastMessage);
-            tvBubble = (TextView) itemView.findViewById(R.id.dialogUnreadBubble);
-            ivLastMessageUser = (ImageView) itemView.findViewById(R.id.dialogLastMessageUserAvatar);
-            ivAvatar = (ImageView) itemView.findViewById(R.id.dialogAvatar);
+            // tvDate = (TextView) itemView.findViewById(R.id.dialogDate);
+            //tvLastMessage = (TextView) itemView.findViewById(R.id.dialogLastMessage);
+            //tvBubble = (TextView) itemView.findViewById(R.id.dialogUnreadBubble);
+            //ivLastMessageUser = (ImageView) itemView.findViewById(R.id.dialogLastMessageUserAvatar);
+            // ivAvatar = (ImageView) itemView.findViewById(R.id.dialogAvatar);
             dividerContainer = (ViewGroup) itemView.findViewById(R.id.dialogDividerContainer);
             divider = itemView.findViewById(R.id.dialogDivider);
 
@@ -633,53 +635,19 @@ public class DialogsListAdapter<DIALOG extends IDialog>
 
         @Override
         public void onBind(final DIALOG dialog) {
-           /* if (dialog.getUnreadCount() > 0) {
-                applyUnreadStyle();
-            } else {
-                applyDefaultStyle();
-            }
-
             //Set Name
-            tvName.setText(dialog.getDialogName());
+            IUser user = (IUser) dialog.getOtherUser();
+            tvName.setText(user.getName());
 
             //Set Date
             String formattedDate = null;
 
-            if (dialog.getLastMessage() != null) {
-                Date lastMessageDate = dialog.getLastMessage().getCreatedAt();
-                if (datesFormatter != null) formattedDate = datesFormatter.format(lastMessageDate);
-                tvDate.setText(formattedDate == null
-                        ? getDateString(lastMessageDate)
-                        : formattedDate);
-            } else {
-                tvDate.setText(null);
-            }
 
             //Set Dialog avatar
             if (imageLoader != null) {
-                imageLoader.loadImage(ivAvatar, dialog.getDialogPhoto(), null);
+                imageLoader.loadImage(ivAvatar, user.getAvatar(), null);
             }
 
-            //Set Last message user avatar with check if there is last message
-            if (imageLoader != null && dialog.getLastMessage() != null) {
-                imageLoader.loadImage(ivLastMessageUser, dialog.getLastMessage().getUser().getAvatar(), null);
-            }
-            ivLastMessageUser.setVisibility(dialogStyle.isDialogMessageAvatarEnabled()
-                    && dialog.getUsers().size() > 1
-                    && dialog.getLastMessage() != null ? VISIBLE : GONE);
-
-            //Set Last message text
-            if (dialog.getLastMessage() != null) {
-                tvLastMessage.setText(dialog.getLastMessage().getText());
-            } else {
-                tvLastMessage.setText(null);
-            }
-
-            //Set Unread message count bubble
-            tvBubble.setText(String.valueOf(dialog.getUnreadCount()));
-            tvBubble.setVisibility(dialogStyle.isDialogUnreadBubbleEnabled() &&
-                    dialog.getUnreadCount() > 0 ? VISIBLE : GONE);
-*/
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
