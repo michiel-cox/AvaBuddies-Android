@@ -45,7 +45,7 @@ public class ChatMessageRepository {
         }.execute();
     }
 
-    public LiveData<List<ChatMessageModel>> getTask(String id) {
+    public List<ChatMessageModel> getTask(String id) {
         return appDatabase.chatMessageDAO().getAllById(id);
     }
 }

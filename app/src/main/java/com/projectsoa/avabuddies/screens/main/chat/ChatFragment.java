@@ -1,5 +1,6 @@
 package com.projectsoa.avabuddies.screens.main.chat;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +63,6 @@ public class ChatFragment extends BaseFragment implements MessageInput.InputList
 
     private Dialog chat;
 
-    protected List<Message> messageList;
     protected ImageLoader imageLoader;
     protected MessagesListAdapter<Message> messagesAdapter;
     protected Utils utils;
@@ -92,7 +93,7 @@ public class ChatFragment extends BaseFragment implements MessageInput.InputList
         messagesAdapter = new MessagesListAdapter<>(user.getId(), imageLoader);
         messagesAdapter.setLoadMoreListener(this);
 
-        loadMessages();
+        loadLocalMessages();
 
         MessageInput input = view.findViewById(R.id.input);
         input.setInputListener(this);
@@ -104,8 +105,8 @@ public class ChatFragment extends BaseFragment implements MessageInput.InputList
         return R.layout.fragment_chat;
     }
 
-    private void initAdapter() {
-        messagesAdapter.addToEnd(messageList, false);
+    private void initAdapter(List<Message> messageList) {
+        messagesAdapter.addToEnd(messageList, true);
         this.messagesList.setAdapter(messagesAdapter);
     }
 
@@ -114,15 +115,29 @@ public class ChatFragment extends BaseFragment implements MessageInput.InputList
         //loadMessages();
     }
 
-    protected void loadMessages() {
-        chatMessageRepository.getTask(chat.getId()).observe(this, chatMessageModels -> {
-            messageList = new ArrayList<>();
-            for (ChatMessageModel messageModel : chatMessageModels
-            ) {
-                messageList.add(new Message(messageModel.id, messageModel.userId, messageModel.text, new Date(messageModel.createdAt)));
-                initAdapter();
+    protected void loadLocalMessages() {
+        List<Message> messageList = new ArrayList<>();
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                List<ChatMessageModel> chatMessageModels = chatMessageRepository.getTask(chat.getId());
+                for (ChatMessageModel messageModel : chatMessageModels) {
+                    messageList.add(new Message(messageModel.id, messageModel.userId, messageModel.text, new Date(messageModel.createdAt)));
+                }
+                return null;
             }
-        });
+
+            @Override
+            protected void onPostExecute(Void v) {
+                initAdapter(messageList);
+            }
+        }.execute();
+    }
+
+    protected void loadMessage(Message message) {
+        messagesAdapter.addToStart(message, true);
+        this.messagesList.setAdapter(messagesAdapter);
     }
 
     public boolean onSubmit(CharSequence input) {
@@ -130,27 +145,19 @@ public class ChatFragment extends BaseFragment implements MessageInput.InputList
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         Date date = new Date();
         String randomId = Long.toString(UUID.randomUUID().getLeastSignificantBits());
-        Message message = new Message(randomId, loginRepository.getLoggedInUser().getUser().getId(), input.toString(), date);
 
+        Message message = new Message(randomId, loginRepository.getLoggedInUser().getUser().getId(), input.toString(), date);
         MessageResponse messageResponse = new MessageResponse();
+
         messageResponse.id = message.getId();
         messageResponse.chatId = chat.getId();
         messageResponse.senderId = loginRepository.getLoggedInUser().getUser().getId();
         messageResponse.message = message.getText();
         messageResponse.dateTime = date;
+
         socketIO.sendMessage(chat.getId(), gson.toJson(messageResponse));
-
-        messagesAdapter.addToStart(message, true);
-        this.messagesList.setAdapter(messagesAdapter);
-
-        ChatMessageModel chatMessageModel = new ChatMessageModel();
-        chatMessageModel.id = randomId;
-        chatMessageModel.userId = loginRepository.getLoggedInUser().getUser().getId();
-        chatMessageModel.chatId = chat.getId();
-        chatMessageModel.createdAt = date.toString();
-        chatMessageModel.text = message.getText();
-
-        chatMessageRepository.insertTask(chatMessageModel);
+        chatMessageRepository.insertTask(chat.getId(), loginRepository.getLoggedInUser().getUser().getId(), randomId, input.toString(), date);
+        loadMessage(message);
 
         return true;
     }
@@ -165,25 +172,16 @@ public class ChatFragment extends BaseFragment implements MessageInput.InputList
 
     private Emitter.Listener onNewMessage = args -> {
         getActivity().runOnUiThread(() -> {
-            messageList = new ArrayList<>();
-
             Gson gson = new Gson();
-            MessageResponse response = gson.fromJson(String.valueOf(args[0]), MessageResponse.class);
-            messageList.add(new Message(response));
-
             String randomId = Long.toString(UUID.randomUUID().getLeastSignificantBits());
-            ChatMessageModel chatMessageModel = new ChatMessageModel();
-            chatMessageModel.id = randomId;
-            chatMessageModel.userId = response.senderId;
-            chatMessageModel.chatId = chat.getId();
-            chatMessageModel.createdAt = response.dateTime.toString();
-            chatMessageModel.text = response.message;
 
-            chatMessageRepository.insertTask(chatMessageModel);
+            MessageResponse response = gson.fromJson(String.valueOf(args[0]), MessageResponse.class);
+            Message message = new Message(response);
 
-            initAdapter();
-            // add the message to view
-            //addMessage(username, message);
+            chatMessageRepository.insertTask(chat.getId(), response.senderId, randomId, response.message, response.dateTime);
+            socketIO.getmSocket().emit("messageAcked", response.id);
+
+            loadMessage(message);
         });
     };
 
