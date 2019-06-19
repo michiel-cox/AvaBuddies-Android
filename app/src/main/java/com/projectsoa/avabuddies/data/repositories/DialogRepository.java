@@ -24,4 +24,10 @@ public class DialogRepository {
             return dialogs;
         });
     }
+
+    public Single<Dialog> addChat(String id){
+        return  dialogService.addChat(id).map(DialogResponse -> {
+            return  new Dialog(DialogResponse);
+        });
+    }
 }

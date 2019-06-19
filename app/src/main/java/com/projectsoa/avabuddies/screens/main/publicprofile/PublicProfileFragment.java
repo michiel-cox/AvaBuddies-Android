@@ -18,6 +18,7 @@ import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.Tag;
 import com.projectsoa.avabuddies.data.models.User;
+import com.projectsoa.avabuddies.data.repositories.DialogRepository;
 import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
@@ -43,6 +44,9 @@ public class PublicProfileFragment extends BaseFragment {
 
     @Inject
     protected FriendRepository friendRepository;
+
+    @Inject
+    protected DialogRepository dialogRepository;
 
 
     protected PublicProfileViewModel viewModel;
@@ -146,7 +150,10 @@ public class PublicProfileFragment extends BaseFragment {
         buttonAccept.setVisibility(View.GONE);
         buttonDeny.setVisibility(View.GONE);
         buttonValidate.setVisibility(View.GONE);
-        // buttonChat.setVisibility(View.GONE);
+    }
+
+    private void hideChatButton(){
+        buttonChat.setVisibility(View.GONE);
     }
 
     private void updateFriendRequest(FriendRepository.ConnectionStatus status) {
@@ -217,5 +224,11 @@ public class PublicProfileFragment extends BaseFragment {
     @OnClick(R.id.button_validate)
     public void showQR() {
         ((MainActivity) getActivity()).loadFragment(QRShowFragment.newInstance(user));
+    }
+
+    @OnClick(R.id.button_chat)
+    public void addChat() {
+        hideChatButton();
+        dialogRepository.addChat(user.getId());
     }
 }
