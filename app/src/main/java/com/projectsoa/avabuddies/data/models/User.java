@@ -1,5 +1,7 @@
 package com.projectsoa.avabuddies.data.models;
 
+import android.media.Image;
+
 import com.projectsoa.avabuddies.data.models.responses.user.UserResponse;
 
 import org.parceler.Parcel;
@@ -32,6 +34,23 @@ public class User {
         isPrivate = response.isPrivate;
         isAdmin = response.isAdmin;
         image = response.image;
+        password = response.password;
+        aboutme = response.aboutme;
+        tags = response.tags;
+    }
+
+    public User(UserResponse response, String photo) {
+        _id = response._id;
+        email = response.email;
+        name = response.name;
+        sharelocation = response.sharelocation;
+        isPrivate = response.isPrivate;
+        isAdmin = response.isAdmin;
+        if (response.image == null || response.image.isEmpty()){
+            image = photo;
+        } else {
+            image = response.image;
+        }
         password = response.password;
         aboutme = response.aboutme;
         tags = response.tags;

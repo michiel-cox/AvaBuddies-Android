@@ -4,19 +4,27 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.Task;
 import com.microsoft.aad.adal.ADALError;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
@@ -29,20 +37,28 @@ import com.microsoft.aad.adal.Telemetry;
 import com.microsoft.aad.adal.UserInfo;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseActivity;
+import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
+import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
 import com.projectsoa.avabuddies.screens.register.RegisterActivity;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import com.projectsoa.avabuddies.utils.Utils;
+
 
 import javax.inject.Inject;
 
 import butterknife.OnClick;
+
+import static android.graphics.Bitmap.Config.ARGB_8888;
+import static android.graphics.Bitmap.Config.RGB_565;
 
 public class LoginActivity extends BaseActivity {
 
@@ -72,6 +88,11 @@ public class LoginActivity extends BaseActivity {
     /* Boolean variable to ensure invocation of interactive sign-in only once in case of multiple  acquireTokenSilent call failures */
     private static AtomicBoolean sIntSignInInvoked = new AtomicBoolean();
 
+    private static final String DEFAULT_PHOTO = "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";
+
+    @Inject
+    protected Utils utils;
+
     /* Telemetry dispatcher registration */
     static {
         Telemetry.getInstance().registerDispatcher(new IDispatcher() {
@@ -94,6 +115,8 @@ public class LoginActivity extends BaseActivity {
     /* Handler to do an interactive sign in and acquire token */
     private Handler mAcquireTokenHandler;
 
+    private boolean registered = false;
+
     @OnClick(R.id.btn_login)
     public void login() {
         onCallGraphClicked();
@@ -110,6 +133,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void register(String email, String name) {
+        registered = true;
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("email", email);
         intent.putExtra("name", name);
@@ -224,6 +248,8 @@ public class LoginActivity extends BaseActivity {
             }
         };
 
+
+
         Log.d(TAG, "Adding HTTP GET to Queue, Request: " + request.toString());
         request.setRetryPolicy(new DefaultRetryPolicy(
                 3000,
@@ -298,6 +324,8 @@ public class LoginActivity extends BaseActivity {
                 /* call graph */
                 callGraphAPI();
 
+                setMicrosoftPhoto();
+
                 /* update the UI to post call graph state */
                 runOnUiThread(new Runnable() {
                     @Override
@@ -370,12 +398,16 @@ public class LoginActivity extends BaseActivity {
                 /* Store the auth result */
                 mAuthResult = authenticationResult;
 
+                setMicrosoftPhoto();
+
                 /* Store User id to SharedPreferences to use it to acquire token silently later */
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 preferences.edit().putString(USER_ID, authenticationResult.getUserInfo().getUserId()).apply();
 
                 /* call graph */
                 callGraphAPI();
+
+
 
                 /* update the UI to post call graph state */
                 runOnUiThread(() -> onLogin());
@@ -411,5 +443,33 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
+    }
+
+    private void setMicrosoftPhoto() {
+        final String url = "https://graph.microsoft.com/beta/me/photo/$value";
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        final ImageRequest imageRequest = new ImageRequest(url, response -> {
+            if (response == null) {
+                //doe iets
+            }
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            response.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] b = baos.toByteArray();
+            String encoded = Base64.encodeToString(b, Base64.DEFAULT);
+
+            loginRepository.getUserRepository().updateMicrosoftProfilePicture(encoded);
+        }, 300, 300, ImageView.ScaleType.CENTER_CROP, RGB_565, error-> {
+            //set default
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "BEARER " + mAuthResult.getAccessToken());
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+        queue.add(imageRequest);
     }
 }
