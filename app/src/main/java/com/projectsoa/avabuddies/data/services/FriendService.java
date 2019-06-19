@@ -6,43 +6,44 @@ import com.projectsoa.avabuddies.data.models.responses.friend.FriendsResponse;
 import com.projectsoa.avabuddies.data.models.responses.friend.RequestsResponse;
 
 import io.reactivex.Single;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface FriendService {
 
-    @GET("friends/")
-    Single<RequestsResponse> fetchRequests();
+    @GET("friends/{id}")
+    Single<RequestsResponse> fetchRequests(@Path("id") String id);
 
-    @GET("friends/allconnections")
+    @GET("friends/")
     Single<ConnectionsResponse> fetchConnections();
 
-    @POST("friends")
+    @POST("friends/")
     @FormUrlEncoded
-    Single<MessageResponse> doRequest(@Field("friend") String friendId);
+    Single<MessageResponse> doRequest(@Field("id") String friendId);
 
-    @GET("friend/friends")
+    @GET("friends/")
     Single<FriendsResponse> fetchFriends();
 
-    @PUT("friend")
+    @PUT("friends/{id}")
     @FormUrlEncoded
-    Single<MessageResponse> doAcceptRequest(@Field("friend") String friendId);
+    Single<MessageResponse> doAcceptRequest(@Path("id") String friendId, @Field("type") String type);
 
-
-    @POST("friend/denyrequest")
+    @DELETE("friends/{id}")
     @FormUrlEncoded
-    Single<MessageResponse> doDenyRequest(@Field("friend") String friendId);
+    Single<MessageResponse> doDenyRequest(@Path("id") String id);
 
-    @POST("friend/cancelrequest")
+    @DELETE("friends/{id}")
     @FormUrlEncoded
-    Single<MessageResponse> doCancelRequest(@Field("friend") String friendId);
+    Single<MessageResponse> doCancelRequest(@Path("id") String id);
 
-    @POST("friend/validaterequest")
+    @PUT("friends/{id}")
     @FormUrlEncoded
-    Single<MessageResponse> doValidateRequest(@Field("friend") String friendId);
+    Single<MessageResponse> doValidateRequest(@Path("id") String friendId, @Field("type") String type);
 
 
 

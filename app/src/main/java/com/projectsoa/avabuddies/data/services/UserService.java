@@ -25,14 +25,14 @@ public interface UserService {
     @GET("users/")
     Single<UserListResponse> fetchList();
 
-    @DELETE("users/{id}")
-    Completable deleteUser(@Path("id") String id);
+    @DELETE("users/profile")
+    Completable deleteUser();
 
-    @PUT("users/{id}")
+    @PUT("users/profile")
     @FormUrlEncoded
     Completable updateProfile(@Field("aboutme") String aboutMe, @Field("sharelocation") boolean sharelocation, @Field("isPrivate") boolean isPrivate, @Field("tags") List<String> tags);
 
-    @PUT("users/{id}")
+    @PUT("users/profile")
     @FormUrlEncoded
     Completable updateProfilePicture(@Field("image") String base64);
 
