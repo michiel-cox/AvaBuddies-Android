@@ -13,6 +13,8 @@ import com.projectsoa.avabuddies.data.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -87,7 +89,12 @@ public class RegisterUnitTest {
             }
 
             @Override
-            public Completable updateProfile(String aboutMe, boolean sharelocation) {
+            public Completable updateProfile(String aboutMe, boolean sharelocation, List<String> tags) {
+                return null;
+            }
+
+            @Override
+            public Completable updateProfilePicture(String base64) {
                 return null;
             }
         }));
@@ -144,7 +151,12 @@ public class RegisterUnitTest {
             }
 
             @Override
-            public Completable updateProfile(String aboutMe, boolean sharelocation) {
+            public Completable updateProfile(String aboutMe, boolean sharelocation, List<String> tags) {
+                return null;
+            }
+
+            @Override
+            public Completable updateProfilePicture(String base64) {
                 return null;
             }
         }));

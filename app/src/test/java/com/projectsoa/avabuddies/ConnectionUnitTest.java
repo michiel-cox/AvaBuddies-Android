@@ -2,9 +2,6 @@ package com.projectsoa.avabuddies;
 
 import com.projectsoa.avabuddies.data.models.LoggedInUser;
 import com.projectsoa.avabuddies.data.models.User;
-import com.projectsoa.avabuddies.data.models.responses.MessageResponse;
-import com.projectsoa.avabuddies.data.models.responses.friend.ConnectionsResponse;
-import com.projectsoa.avabuddies.data.models.responses.friend.FriendResponse;
 import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
@@ -17,7 +14,6 @@ import org.mockito.Mock;
 import java.util.ArrayList;
 
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;

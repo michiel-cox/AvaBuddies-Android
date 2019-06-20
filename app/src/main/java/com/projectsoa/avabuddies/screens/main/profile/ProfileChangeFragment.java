@@ -39,6 +39,8 @@ public class ProfileChangeFragment extends BaseFragment {
     protected EditText aboutme;
     @BindView(R.id.location)
     protected Switch location;
+    @BindView(R.id.privacy)
+    protected Switch privacy;
 
 
     @Override
@@ -47,6 +49,7 @@ public class ProfileChangeFragment extends BaseFragment {
         this.user = loginRepository.getLoggedInUser().getUser();
         aboutme.setText(user.getAboutme());
         location.setChecked(user.isSharelocation());
+        privacy.setChecked(user.isShareprofile());
         viewModel = getViewModel(ProfileChangeViewModel.class);
     }
 
@@ -54,10 +57,11 @@ public class ProfileChangeFragment extends BaseFragment {
     public void updateProfile() {
         this.user.setAboutme(aboutme.getText().toString());
         this.user.setSharelocation(location.isChecked());
+        this.user.setShareprofile(privacy.isChecked());
         this.userRepository.update(user).subscribe(() -> {
                     ((MainActivity) getActivity()).loadFragment(new ProfileFragment());
                 },
-                throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
+                throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
     }
 
     public void logout() {
@@ -79,7 +83,7 @@ public class ProfileChangeFragment extends BaseFragment {
                 .setMessage(getString(R.string.confirm_message))
                 .setPositiveButton(getString(R.string.positive_button), (dialogInterface, i) -> {
             userRepository.delete(this.user).subscribe(() -> logout(), throwable -> {
-                getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.errorDeleteUser)));
+                runOnUiThread(() -> utils.showToastError(getString(R.string.errorDeleteUser)));
             });
             dialogInterface.dismiss();
         }).setNegativeButton(getString(R.string.negative_button), (dialogInterface, i) -> {

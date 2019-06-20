@@ -2,10 +2,20 @@ package com.projectsoa.avabuddies.core.dagger.builders;
 
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.main.chat.ChatFragment;
+import com.projectsoa.avabuddies.screens.main.chat.ChatListFragment;
+import com.projectsoa.avabuddies.screens.main.challenge.ChallengeFragment;
+import com.projectsoa.avabuddies.screens.main.challenge.ChallengeInformationFragment;
+import com.projectsoa.avabuddies.screens.main.friends.FriendsFragment;
+import com.projectsoa.avabuddies.screens.main.nearby.NearbyFragment;
+import com.projectsoa.avabuddies.screens.main.nearby.list.NearbyListFragment;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileChangeFragment;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
 import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragment;
+import com.projectsoa.avabuddies.screens.main.qrread.QRReadFragment;
+import com.projectsoa.avabuddies.screens.main.qrshow.QRShowFragment;
 import com.projectsoa.avabuddies.screens.main.search.SearchFragment;
+import com.projectsoa.avabuddies.screens.main.tag.TagsFragment;
 import com.projectsoa.avabuddies.screens.register.RegisterActivity;
 
 import dagger.Module;
@@ -37,6 +47,34 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector()
     abstract ProfileChangeFragment contributeProfileChangeFragment();
+    @ContributesAndroidInjector()
+    abstract NearbyFragment contributeNearbyFragment();
 
+    @ContributesAndroidInjector()
+    abstract NearbyListFragment contributeNearbyListFragment();
+
+    @ContributesAndroidInjector()
+    abstract QRReadFragment contributeQRReadFragment();
+
+    @ContributesAndroidInjector()
+    abstract QRShowFragment contributeQRShowFragment();
+
+    @ContributesAndroidInjector
+    abstract TagsFragment contributeTagsFragment();
+
+    @ContributesAndroidInjector
+    abstract ChatListFragment contributeChatListFragment();
+
+    @ContributesAndroidInjector
+    abstract ChatFragment contributeChatFragment();
+
+    @ContributesAndroidInjector
+    abstract FriendsFragment contributeFriendsFragment();
+
+    @ContributesAndroidInjector
+    abstract ChallengeFragment contributeChallengeFragment();
+
+    @ContributesAndroidInjector
+    abstract ChallengeInformationFragment contributeChallengeInformationFragment();
 
 }

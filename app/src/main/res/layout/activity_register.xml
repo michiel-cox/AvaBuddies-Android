@@ -95,13 +95,6 @@
                 android:layout_weight="1"
                 android:text="@string/i_accept_that_avabuddies_uses_my_location_in_the_background" />
 
-            <Switch
-                android:id="@+id/switch_terms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/i_accept_these_terms_and_conditions" />
-
         </LinearLayout>
 
         <Button

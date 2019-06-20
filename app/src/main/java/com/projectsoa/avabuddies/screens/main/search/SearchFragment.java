@@ -3,6 +3,13 @@ package com.projectsoa.avabuddies.screens.main.search;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.User;
@@ -13,14 +20,10 @@ import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
 import com.projectsoa.avabuddies.screens.main.publicprofile.PublicProfileFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 public class SearchFragment extends BaseFragment implements UsersAdapter.UsersInteractionListener, SearchView.OnQueryTextListener {
@@ -67,12 +70,21 @@ public class SearchFragment extends BaseFragment implements UsersAdapter.UsersIn
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        User currentUser = loginRepository.getLoggedInUser().getUser();
+
+
         userRepository.getList().subscribe(users -> {
-            getActivity().runOnUiThread(() -> {
+            runOnUiThread(() -> {
+                Iterator<User> iterator = users.iterator();
+                while(iterator.hasNext()){
+                    if(iterator.next().getId().equals(currentUser.getId())) {
+                        iterator.remove();
+                    }
+                }
                 usersAdapter.setUserList(users);
                 usersAdapter.notifyDataSetChanged();
             });
-        }, throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.error_users))));
+        }, throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.error_users))));
 
         searchView.setOnQueryTextListener(this);
         searchView.setOnClickListener(v -> searchView.setIconified(false));

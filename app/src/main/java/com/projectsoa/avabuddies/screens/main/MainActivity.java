@@ -10,14 +10,17 @@ import com.projectsoa.avabuddies.core.base.BaseActivity;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
+import com.projectsoa.avabuddies.screens.main.chat.ChatListFragment;
+import com.projectsoa.avabuddies.screens.main.nearby.NearbyFragment;
 import com.projectsoa.avabuddies.screens.main.profile.ProfileFragment;
+import com.projectsoa.avabuddies.screens.main.qrread.QRReadFragment;
 import com.projectsoa.avabuddies.screens.main.search.SearchFragment;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity  {
 
     @Inject
     protected LoginRepository loginRepository;
@@ -69,4 +72,12 @@ public class MainActivity extends BaseActivity {
     public void onClickSearch(MenuItem item) {
         loadFragment(new SearchFragment());
     }
+
+    public void onClickNearby(MenuItem item) {
+        loadFragment(new NearbyFragment());
+    }
+    public void onClickQR(MenuItem item) {
+        loadFragment(new QRReadFragment());
+    }
+    public void onClickChat(MenuItem item) { loadFragment(new ChatListFragment());}
 }

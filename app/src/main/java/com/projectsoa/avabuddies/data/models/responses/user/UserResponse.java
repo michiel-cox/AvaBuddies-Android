@@ -1,6 +1,9 @@
 package com.projectsoa.avabuddies.data.models.responses.user;
 
 import com.google.gson.annotations.SerializedName;
+import com.projectsoa.avabuddies.data.models.Tag;
+
+import java.util.List;
 
 public class UserResponse {
     @SerializedName("name")
@@ -11,6 +14,9 @@ public class UserResponse {
 
     @SerializedName("isAdmin")
     public boolean isAdmin;
+
+    @SerializedName("isPrivate")
+    public boolean isPrivate;
 
     @SerializedName("email")
     public String email;
@@ -26,4 +32,9 @@ public class UserResponse {
 
     @SerializedName("aboutme")
     public String aboutme;
+
+    @SerializedName("tags")
+    public List<Tag> tags;
+
+
 }

@@ -10,16 +10,17 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.projectsoa.avabuddies.R;
+import com.projectsoa.avabuddies.data.models.Tag;
 import com.projectsoa.avabuddies.data.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> implements Filterable {
 
@@ -27,6 +28,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     private final UsersInteractionListener listener;
     private List<User> userList;
     private List<User> userListFiltered;
+    private String foundItem;
 
     public UsersAdapter(Context context, UsersInteractionListener listener) {
         this.context = context;
@@ -37,6 +39,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         this.userList = userList;
         this.userListFiltered = userList;
     }
+
 
 
     @NonNull
@@ -52,10 +55,14 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         User user = userListFiltered.get(position);
         holder.user = user;
         holder.name.setText(user.getName());
-        holder.detail.setText(user.getEmail());
-
+        if(this.foundItem == null) {
+            holder.detail.setText(user.getEmail());
+        }else{
+            holder.detail.setText(this.foundItem);
+            foundItem = null;
+        }
         boolean hasImage = false;
-        if (!user.getImage().isEmpty()) {
+        if (user.getImage() != null && !user.getImage().isEmpty()) {
             try {
                 byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
                 Glide.with(context)
@@ -77,8 +84,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         return userList == null || userListFiltered == null ? 0 : userListFiltered.size();
     }
 
-    public List<User> filter(CharSequence charSequence) {
-
+    public List<User> filter(CharSequence charSequence){
         List<User> filteredList;
         String charString = charSequence.toString();
         if (charString.isEmpty()) {
@@ -86,17 +92,23 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         } else {
             filteredList = new ArrayList<>();
             for (User user : userList) {
-
                 // name match condition. this might differ depending on your requirement
                 // here we are looking for name or phone number match
                 if (user.getName().toLowerCase().contains(charString.toLowerCase()) || user.getEmail().contains(charSequence)) {
                     filteredList.add(user);
+                }else{
+                    if(!user.isPrivate()) {
+                        for (Tag tag : user.getTags()) {
+                            if (tag.getName().toLowerCase().contains(charString.toLowerCase())) {
+                                this.foundItem = tag.getName();
+                                filteredList.add(user);
+                            }
+                        }
+                    }
                 }
             }
         }
-
         return filteredList;
-
     }
 
     @Override
@@ -111,6 +123,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
                 userListFiltered = (ArrayList<User>) filterResults.values;
                 notifyDataSetChanged();
             }
@@ -132,7 +145,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         public ViewHolder(View view) {
             super(view);
-            name = view.findViewById(R.id.textName);
+            name = view.findViewById(R.id.challengeName);
             detail = view.findViewById(R.id.textDetail);
             thumbnail = view.findViewById(R.id.imageThumbnail);
 
