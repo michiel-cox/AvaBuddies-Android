@@ -16,6 +16,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
+import com.projectsoa.avabuddies.data.models.LoggedInUser;
 import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
@@ -132,7 +133,7 @@ public class QRReadFragment extends BaseFragment {
                 if(!cameraEnabled) return;
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 for (int i = 0; i < barcodes.size(); i++) {
-                    boolean success = tryQRCode(barcodes.valueAt(0));
+                    boolean success = tryQRCode(loginRepository.getLoggedInUser().getUser(),barcodes.valueAt(0));
                     if (success || !cameraEnabled) return;
                 }
             }
@@ -140,13 +141,13 @@ public class QRReadFragment extends BaseFragment {
     }
 
 
-    private boolean tryQRCode(Barcode barcode) {
+    private boolean tryQRCode(User loggedInUser,Barcode barcode) {
         try {
             JSONObject jsonObject = new JSONObject(barcode.rawValue);
             String dateTimeString = jsonObject.getString("dateTime");
             String friendId = jsonObject.getString("id");
             Date dateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(dateTimeString);
-            validate(friendId, dateTime);
+            validate(loggedInUser,friendId, dateTime);
             return true;
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
@@ -154,7 +155,7 @@ public class QRReadFragment extends BaseFragment {
         }
     }
 
-    public void validate(String friendId, Date dateTime){
+    public void validate(User loggedInUser, String friendId, Date dateTime){
         cameraEnabled = false;
 
         // Receive ConnectionStatus with friend, after that validate
@@ -164,7 +165,7 @@ public class QRReadFragment extends BaseFragment {
             .subscribe(
                 connectionStatus -> {
                     if(validConnectionStatus(connectionStatus)){
-                        validateAndReturnUser(friendId, dateTime).subscribe(user -> {
+                        validateAndReturnUser(loggedInUser, friendId, dateTime).subscribe(user -> {
                             showSuccess(user);
                         }, throwable -> {
                             cameraEnabled = true;
@@ -204,9 +205,9 @@ public class QRReadFragment extends BaseFragment {
     // Tries to validate the request,
     // on success: showSuccess,
     // else it will show an error.
-    private Single<User> validateAndReturnUser(String friendId, Date dateTime){
+    private Single<User> validateAndReturnUser(User loggedInUser, String friendId, Date dateTime){
         return friendRepository
-            .isValidRequest(friendId, dateTime, new Date())
+            .isValidRequest(loggedInUser, friendId, dateTime, new Date())
             .andThen(friendRepository.validateRequest(friendId))
             .andThen(userRepository.getUser(friendId))
             .subscribeOn(Schedulers.newThread())

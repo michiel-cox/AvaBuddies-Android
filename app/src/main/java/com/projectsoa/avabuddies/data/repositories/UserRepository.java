@@ -20,7 +20,7 @@ public class UserRepository {
     }
 
     public Single<User> getProfile() {
-        return userService.fetchProfile().map(profileResponse -> new User(profileResponse.user));
+        return userService.fetchProfile().map(User::new);
     }
 
     // This is temporary.
@@ -50,7 +50,7 @@ public class UserRepository {
     }
 
     public Completable delete(User user) {
-        return userService.deleteUser(user.getId());
+        return userService.deleteUser();
     }
 
     public Completable update(User user) {

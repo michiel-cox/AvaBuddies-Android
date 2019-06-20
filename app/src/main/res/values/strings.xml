@@ -6,6 +6,7 @@
     <string name="profile">Profile</string>
     <string name="error_users">Could not load users</string>
     <string name="error_tags">Could not load tags</string>
+    <string name="error_challenges">Could not load challenges</string>
     <string name="send_connection_request">Send connection request</string>
     <string name="cancel_connection_request">Cancel connection request</string>
     <string name="something_went_wrong">Something went wrong</string>
@@ -22,10 +23,10 @@
     <string name="profileGeneral">General</string>
     <string name="profilePrivacy">Privacy</string>
     <string name="profileConnections">Connections</string>
-    <string name="profileShowFriends">Show Friends</string>
+    <string name="profileShowFriends">Friends</string>
     <string name="profileRemoveAccount">remove my account</string>
     <string name="profileActions">Actions</string>
-    <string name="profileUpdate">Update this user</string>
+    <string name="profileUpdate">Update</string>
     <string name="error_terms_and_conditions">You need to accept the terms and conditions to use AvaBuddies.</string>
     <string name="update">Update</string>
     <string name="logout">Logout</string>
@@ -59,4 +60,5 @@
     <string name="profile_tags">Tags</string>
     <string name="tagsFragmentSave">Save tags</string>
     <string name="tagsName">Tags</string>
+    <string name="challenges">Challenges</string>
 </resources>

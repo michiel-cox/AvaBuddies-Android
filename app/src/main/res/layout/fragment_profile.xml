@@ -160,6 +160,12 @@
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:text="@string/profile_tags" />
+            <Button
+                android:id="@+id/challenges"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="@string/challenges" />
 
             <Button
                 android:id="@+id/btn_logout"
