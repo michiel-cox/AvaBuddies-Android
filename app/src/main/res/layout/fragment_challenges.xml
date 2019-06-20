@@ -7,14 +7,6 @@
     tools:context=".screens.main.challenge.ChallengeFragment"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search"
-        style="@style/Widget.AppCompat.SearchView.ActionBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-    </androidx.appcompat.widget.SearchView>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"

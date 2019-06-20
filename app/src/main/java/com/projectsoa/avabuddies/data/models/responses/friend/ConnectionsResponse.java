@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ConnectionsResponse extends MessageResponse {
 
-    @SerializedName("connections")
+    @SerializedName("friends")
     public List<FriendResponse> connections;
 
 }

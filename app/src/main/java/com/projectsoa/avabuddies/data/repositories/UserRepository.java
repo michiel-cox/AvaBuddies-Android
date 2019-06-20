@@ -51,7 +51,7 @@ public class UserRepository {
     }
 
     public Completable delete(User user) {
-        return userService.deleteUser(user.getId());
+        return userService.deleteUser();
     }
 
     public Completable update(User user) {

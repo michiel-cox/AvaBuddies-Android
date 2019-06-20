@@ -37,6 +37,7 @@ import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.main.challenge.ChallengeFragment;
 import com.projectsoa.avabuddies.screens.main.friends.FriendsFragment;
 import com.projectsoa.avabuddies.screens.main.tag.TagsFragment;
 import com.projectsoa.avabuddies.utils.Utils;
@@ -156,6 +157,10 @@ public class ProfileFragment extends BaseFragment {
     @OnClick(R.id.showFriends)
     public void goToFriends(){
         ((MainActivity) getActivity()).loadFragment(new FriendsFragment());
+    }
+    @OnClick(R.id.challenges)
+    public void goToChallenges(){
+        ((MainActivity) getActivity()).loadFragment(new ChallengeFragment());
     }
 
     @OnClick(R.id.updateThisUser)
