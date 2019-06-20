@@ -4,19 +4,27 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.Task;
 import com.microsoft.aad.adal.ADALError;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
@@ -29,20 +37,28 @@ import com.microsoft.aad.adal.Telemetry;
 import com.microsoft.aad.adal.UserInfo;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseActivity;
+import com.projectsoa.avabuddies.data.models.User;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
+import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
 import com.projectsoa.avabuddies.screens.register.RegisterActivity;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import com.projectsoa.avabuddies.utils.Utils;
+
 
 import javax.inject.Inject;
 
 import butterknife.OnClick;
+
+import static android.graphics.Bitmap.Config.ARGB_8888;
+import static android.graphics.Bitmap.Config.RGB_565;
 
 public class LoginActivity extends BaseActivity {
 
@@ -72,6 +88,9 @@ public class LoginActivity extends BaseActivity {
     /* Boolean variable to ensure invocation of interactive sign-in only once in case of multiple  acquireTokenSilent call failures */
     private static AtomicBoolean sIntSignInInvoked = new AtomicBoolean();
 
+    @Inject
+    protected Utils utils;
+
     /* Telemetry dispatcher registration */
     static {
         Telemetry.getInstance().registerDispatcher(new IDispatcher() {
@@ -94,6 +113,8 @@ public class LoginActivity extends BaseActivity {
     /* Handler to do an interactive sign in and acquire token */
     private Handler mAcquireTokenHandler;
 
+    private boolean registered = false;
+
     @OnClick(R.id.btn_login)
     public void login() {
         onCallGraphClicked();
@@ -110,6 +131,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void register(String email, String name) {
+        registered = true;
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("email", email);
         intent.putExtra("name", name);
@@ -224,6 +246,8 @@ public class LoginActivity extends BaseActivity {
             }
         };
 
+
+
         Log.d(TAG, "Adding HTTP GET to Queue, Request: " + request.toString());
         request.setRetryPolicy(new DefaultRetryPolicy(
                 3000,
@@ -298,6 +322,8 @@ public class LoginActivity extends BaseActivity {
                 /* call graph */
                 callGraphAPI();
 
+                setMicrosoftPhoto();
+
                 /* update the UI to post call graph state */
                 runOnUiThread(new Runnable() {
                     @Override
@@ -370,12 +396,16 @@ public class LoginActivity extends BaseActivity {
                 /* Store the auth result */
                 mAuthResult = authenticationResult;
 
+                setMicrosoftPhoto();
+
                 /* Store User id to SharedPreferences to use it to acquire token silently later */
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 preferences.edit().putString(USER_ID, authenticationResult.getUserInfo().getUserId()).apply();
 
                 /* call graph */
                 callGraphAPI();
+
+
 
                 /* update the UI to post call graph state */
                 runOnUiThread(() -> onLogin());
@@ -411,5 +441,34 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
+    }
+
+    private void setMicrosoftPhoto() {
+        loginRepository.getUserRepository().resetMicrosoftProfilePicture();
+        final String url = "https://graph.microsoft.com/beta/me/photo/$value";
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        final ImageRequest imageRequest = new ImageRequest(url, response -> {
+            if (response == null) {
+                //doe iets
+            }
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            response.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] b = baos.toByteArray();
+            String encoded = Base64.encodeToString(b, Base64.DEFAULT);
+
+            loginRepository.getUserRepository().updateMicrosoftProfilePicture(encoded);
+        }, 300, 300, ImageView.ScaleType.CENTER_CROP, RGB_565, error-> {
+            //set default
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "BEARER " + mAuthResult.getAccessToken());
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+        queue.add(imageRequest);
     }
 }
