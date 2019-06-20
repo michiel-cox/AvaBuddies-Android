@@ -8,6 +8,7 @@ import com.projectsoa.avabuddies.data.services.DialogService;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class DialogRepository {
@@ -25,9 +26,7 @@ public class DialogRepository {
         });
     }
 
-    public Single<Dialog> addChat(String id){
-        return  dialogService.addChat(id).map(DialogResponse -> {
-            return  new Dialog(DialogResponse);
-        });
+    public Completable addChat(String id){
+        return dialogService.addChat(id);
     }
 }
