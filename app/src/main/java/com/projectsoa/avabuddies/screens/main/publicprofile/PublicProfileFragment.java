@@ -140,7 +140,15 @@ public class PublicProfileFragment extends BaseFragment {
 
         friendRepository.getConnectionStatus(user.getId()).subscribe(connectionStatus -> {
             runOnUiThread(() -> updateFriendRequest(connectionStatus));
-        }, throwable -> runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
+        }, throwable ->
+                {
+            throwable.printStackTrace();
+            runOnUiThread(() ->
+                {
+                    utils.showToastError(getString(R.string.something_went_wrong));
+                }
+            ); }
+        );
     }
 
 

@@ -65,11 +65,11 @@ public class FriendRepository {
         return getUsersFromIds(getIdsFromFriends(friendService.fetchFriends().map(friendsResponse -> friendsResponse.friends)));
     }
 
-    public Single<List<User>> getReceivedRequests(){
-        return getUsersFromIds(getIdsFromFriends(friendService.fetchRequests().map(requestsResponse -> requestsResponse.requests)));
+    public Single<List<User>> getReceivedRequests(User user){
+        return getUsersFromIds(getIdsFromFriends(friendService.fetchRequests(user.getId()).map(requestsResponse -> requestsResponse.requests)));
     }
-    public Single<List<User>> getSendRequests(){
-        return getUsersFromIds(getIdsFromFriends(friendService.fetchRequests().map(requestsResponse -> requestsResponse.ownRequests)));
+    public Single<List<User>> getSendRequests(User user){
+        return getUsersFromIds(getIdsFromFriends(friendService.fetchRequests(user.getId()).map(requestsResponse -> requestsResponse.ownRequests)));
     }
 
     public Single<ConnectionStatus> getConnectionStatus(String friendId){
@@ -100,7 +100,7 @@ public class FriendRepository {
     }
 
     public Completable validateRequest(String friendId){
-        return friendService.doValidateRequest(friendId).ignoreElement();
+        return friendService.doValidateRequest(friendId, "validate").ignoreElement();
     }
 
     public Completable denyRequest(String friendId){
@@ -108,10 +108,10 @@ public class FriendRepository {
     }
 
     public Completable acceptRequest(String friendId){
-        return friendService.doAcceptRequest(friendId).ignoreElement();
+        return friendService.doAcceptRequest(friendId, "accept").ignoreElement();
     }
 
-    public Completable isValidRequest(String friendId, Date dateTime, Date now) {
+    public Completable isValidRequest(User loggedInUser,String friendId, Date dateTime, Date now) {
 
         // Validate Time
         long msNow = now.getTime();
@@ -122,7 +122,7 @@ public class FriendRepository {
         }
 
         // Validate user
-        return getSendRequests().map(users -> {
+        return getSendRequests(loggedInUser).map(users -> {
             for (User user : users) {
                 if(user.getId().equals(friendId)) return user;
             }

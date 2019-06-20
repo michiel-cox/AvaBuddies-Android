@@ -14,13 +14,14 @@ import io.reactivex.Single;
 public class UserRepository {
 
     private UserService userService;
+    private String microsoftPhoto;
 
     public UserRepository(UserService userService) {
         this.userService = userService;
     }
 
     public Single<User> getProfile() {
-        return userService.fetchProfile().map(profileResponse -> new User(profileResponse.user));
+        return userService.fetchProfile().map(profileResponse -> new User(profileResponse, microsoftPhoto));
     }
 
     // This is temporary.
@@ -50,7 +51,7 @@ public class UserRepository {
     }
 
     public Completable delete(User user) {
-        return userService.deleteUser(user.getId());
+        return userService.deleteUser();
     }
 
     public Completable update(User user) {
@@ -65,4 +66,13 @@ public class UserRepository {
         return userService.updateProfilePicture(user.getImage());
     }
 
+    public Completable updateProfilePictureFromMicrosoft( ) {
+        return userService.updateProfilePicture(microsoftPhoto);
+    }
+    public void updateMicrosoftProfilePicture(String image) {
+        microsoftPhoto = image;
+    }
+    public void resetMicrosoftProfilePicture() {
+        microsoftPhoto = null;
+    }
 }

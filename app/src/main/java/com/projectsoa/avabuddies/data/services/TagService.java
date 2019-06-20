@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 
 public interface TagService {
 
-    @GET("tag/list")
+    @GET("tags/")
     Single<TagListResponse> fetchList();
 
 }

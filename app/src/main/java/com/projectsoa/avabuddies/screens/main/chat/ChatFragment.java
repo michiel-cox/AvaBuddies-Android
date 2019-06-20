@@ -12,6 +12,7 @@ import androidx.room.Room;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.LocalStorage.AppDatabase;
@@ -34,6 +35,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,7 +125,16 @@ public class ChatFragment extends BaseFragment implements MessageInput.InputList
             protected Void doInBackground(Void... voids) {
                 List<ChatMessageModel> chatMessageModels = chatMessageRepository.getTask(chat.getId());
                 for (ChatMessageModel messageModel : chatMessageModels) {
-                    messageList.add(new Message(messageModel.id, messageModel.userId, messageModel.text, new Date(messageModel.createdAt)));
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'z'");
+                    Date date = new Date();
+
+                    try {
+                        date = format.parse(messageModel.createdAt);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    messageList.add(new Message(messageModel.id, messageModel.userId, messageModel.text, date));
                 }
                 return null;
             }
@@ -141,8 +152,7 @@ public class ChatFragment extends BaseFragment implements MessageInput.InputList
     }
 
     public boolean onSubmit(CharSequence input) {
-        Gson gson = new Gson();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'z'").create();
         Date date = new Date();
         String randomId = Long.toString(UUID.randomUUID().getLeastSignificantBits());
 

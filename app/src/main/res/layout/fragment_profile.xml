@@ -31,7 +31,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:minHeight="200dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="200dp"
+                android:maxHeight="200dp"
+                android:scaleType="fitCenter"
                 android:contentDescription="@string/ProfileText"
                 tools:src="@tools:sample/avatars" />
 
@@ -72,6 +75,16 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="14sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#eee"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/tagsName"
+                android:textSize="16sp" />
+
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chip_group"
                 android:layout_width="match_parent"
@@ -98,14 +111,14 @@
                 android:textSize="14sp" />
             <Switch
                 android:id="@+id/location"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/locationSharing"
                 android:textSize="14sp"/>
             <Switch
                 android:id="@+id/privacy"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/profileSharing"
@@ -147,6 +160,12 @@
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:text="@string/profile_tags" />
+            <Button
+                android:id="@+id/challenges"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="@string/challenges" />
 
             <Button
                 android:id="@+id/btn_logout"

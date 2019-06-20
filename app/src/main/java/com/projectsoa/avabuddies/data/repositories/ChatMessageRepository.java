@@ -10,6 +10,8 @@ import com.projectsoa.avabuddies.App;
 import com.projectsoa.avabuddies.data.LocalStorage.AppDatabase;
 import com.projectsoa.avabuddies.data.LocalStorage.ChatMessageModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -24,13 +26,13 @@ public class ChatMessageRepository {
     }
 
     public void insertTask(String chatId, String userId, String id, String text, Date date) {
-
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'z'");
         ChatMessageModel message = new ChatMessageModel();
         message.chatId = chatId;
         message.userId = userId;
         message.id = id;
         message.text = text;
-        message.createdAt = date.toString();
+        message.createdAt = format.format(date);
 
         insertTask(message);
     }

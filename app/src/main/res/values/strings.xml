@@ -7,6 +7,7 @@
     <string name="error_users">Could not load users</string>
     <string name="error_tags">Could not load tags</string>
     <string name="error_chats">Could not load chats</string>
+    <string name="error_challenges">Could not load challenges</string>
     <string name="send_connection_request">Send connection request</string>
     <string name="cancel_connection_request">Cancel connection request</string>
     <string name="something_went_wrong">Something went wrong</string>
@@ -23,17 +24,17 @@
     <string name="profileGeneral">General</string>
     <string name="profilePrivacy">Privacy</string>
     <string name="profileConnections">Connections</string>
-    <string name="profileShowFriends">Show Friends</string>
+    <string name="profileShowFriends">Friends</string>
     <string name="profileRemoveAccount">remove my account</string>
     <string name="profileActions">Actions</string>
-    <string name="profileUpdate">Update this user</string>
+    <string name="profileUpdate">Update</string>
     <string name="error_terms_and_conditions">You need to accept the terms and conditions to use AvaBuddies.</string>
     <string name="update">Update</string>
     <string name="logout">Logout</string>
     <string name="name">Name</string>
     <string name="welcome_to_navabuddies">Welcome to AvaBuddies</string>
     <string name="welcome_to_avabuddies">Welcome to AvaBuddies!</string>
-    <string name="before_we_can_create_your_profile_you_have_to_accept_our_terms_and_conditions">Before we can create your profile, you have to accept our terms and conditions.</string>
+    <string name="before_we_can_create_your_profile_you_have_to_accept_our_terms_and_conditions">Before we can create your profile, you can choose to share your location.</string>
     <string name="i_accept_that_avabuddies_uses_my_location_in_the_background">I accept that AvaBuddies uses my location in the background.</string>
     <string name="i_accept_these_terms_and_conditions">I accept these terms and conditions</string>
     <string name="message_continue">Continue</string>
@@ -59,6 +60,8 @@
     <string name="qr_error_received">You shouldn\'t be scanning your own code.</string>
     <string name="profile_tags">Tags</string>
     <string name="tagsFragmentSave">Save tags</string>
+    <string name="tagsName">Tags</string>
+    <string name="challenges">Challenges</string>
 
     <string name="action_delete">Delete</string>
     <string name="action_copy">Copy</string>

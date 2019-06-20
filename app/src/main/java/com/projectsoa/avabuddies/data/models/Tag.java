@@ -9,12 +9,14 @@ public class Tag {
 
     protected String _id;
     protected String name;
+    public Boolean isPrivate = true;
 
     public Tag(){}
 
-    public Tag(String id, String name) {
+    public Tag(String id, String name, Boolean isPrivate) {
         _id = id;
-        name = name;
+        this.name = name;
+        this.isPrivate = isPrivate;
     }
 
     public String get_id() {
@@ -24,12 +26,14 @@ public class Tag {
     public Tag (TagResponse response){
         _id = response._id;
         name = response.name;
+        isPrivate = response.isPrivate;
     }
 
     public TagResponse tagToRespone(){
         TagResponse response = new TagResponse();
         response.name = name;
         response._id = _id;
+        response.isPrivate = isPrivate;
         return response;
     }
 
@@ -37,4 +41,5 @@ public class Tag {
     public String getName() {
         return name;
     }
+    public Boolean getPrivate() { return isPrivate; }
 }

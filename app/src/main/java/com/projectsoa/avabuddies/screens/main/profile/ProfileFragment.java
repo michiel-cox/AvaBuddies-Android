@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -36,6 +37,8 @@ import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.main.challenge.ChallengeFragment;
+import com.projectsoa.avabuddies.screens.main.friends.FriendsFragment;
 import com.projectsoa.avabuddies.screens.main.tag.TagsFragment;
 import com.projectsoa.avabuddies.utils.Utils;
 
@@ -47,11 +50,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
-import androidx.core.content.FileProvider;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -104,8 +102,12 @@ public class ProfileFragment extends BaseFragment {
 
         profile = view.findViewById(R.id.profile);
 
-        if (!user.getImage().isEmpty()) {
+        if (user.getImage() != null && !user.getImage().isEmpty()) {
             byte[] imageByteArray = Base64.decode(user.getImage(), Base64.DEFAULT);
+            profile.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
+        } else {
+            byte[] imageByteArray = Base64.decode("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"
+, Base64.DEFAULT);
             profile.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
         }
         if(Build.VERSION.SDK_INT >= 23) {
@@ -152,6 +154,14 @@ public class ProfileFragment extends BaseFragment {
         startActivity(intent);
     }
 
+    @OnClick(R.id.showFriends)
+    public void goToFriends(){
+        ((MainActivity) getActivity()).loadFragment(new FriendsFragment());
+    }
+    @OnClick(R.id.challenges)
+    public void goToChallenges(){
+        ((MainActivity) getActivity()).loadFragment(new ChallengeFragment());
+    }
 
     @OnClick(R.id.updateThisUser)
     public void goToUpdate() {
@@ -292,7 +302,9 @@ public class ProfileFragment extends BaseFragment {
                                 e.printStackTrace();
                             }
                             if (bitmap != null) {
-                                profile.setImageBitmap(saveData(bitmap));
+                                Bitmap resized = cropResizeBitmap(bitmap);
+                                saveBitmap(resized);
+                                profile.setImageBitmap(resized);
                             }
                         });
                     }
@@ -322,7 +334,10 @@ public class ProfileFragment extends BaseFragment {
                             default:
                                 break;
                         }
-                        profile.setImageBitmap(saveData(bitmap));
+
+                        Bitmap resized = cropResizeBitmap(bitmap);
+                        saveBitmap(resized);
+                        profile.setImageBitmap(resized);
                     });
                 }
             }
@@ -330,18 +345,42 @@ public class ProfileFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private Bitmap saveData(Bitmap bm) {
-        bm = Bitmap.createScaledBitmap(bm, 300, 300, false);
+    private Bitmap cropResizeBitmap(Bitmap srcBmp) {
+        Bitmap croppedBmp;
+        if (srcBmp.getWidth() >= srcBmp.getHeight()){
+
+            croppedBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    srcBmp.getWidth()/2 - srcBmp.getHeight()/2,
+                    0,
+                    srcBmp.getHeight(),
+                    srcBmp.getHeight()
+            );
+
+        }else{
+
+            croppedBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    0,
+                    srcBmp.getHeight()/2 - srcBmp.getWidth()/2,
+                    srcBmp.getWidth(),
+                    srcBmp.getWidth()
+            );
+        }
+
+        croppedBmp = Bitmap.createScaledBitmap(croppedBmp, 300, 300, true);
+        return croppedBmp;
+    }
+
+    private void saveBitmap(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
         String encoded = Base64.encodeToString(b, Base64.DEFAULT);
         user.setImage(encoded);
         userRepository.updateProfilePicture(user).subscribe(() -> {
                 },
                 throwable -> getActivity().runOnUiThread(() -> utils.showToastError(getString(R.string.something_went_wrong))));
-
-        return bm;
     }
 
     private static Bitmap rotateImage(Bitmap img, int degree) {

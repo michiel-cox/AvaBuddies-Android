@@ -26,8 +26,6 @@ public class RegisterActivity extends BaseActivity {
     protected Utils utils;
     @BindView(R.id.switch_location)
     protected Switch switchLocation;
-    @BindView(R.id.switch_terms)
-    protected Switch switchTerms;
     private LoginViewModel viewModel;
     private String email;
     private String name;
@@ -47,10 +45,6 @@ public class RegisterActivity extends BaseActivity {
 
     @OnClick(R.id.btn_register)
     public void register() {
-        if (!switchTerms.isChecked()) {
-            utils.showToastError(getString(R.string.error_terms_and_conditions));
-            return;
-        }
         loginRepository.register(email, name, switchLocation.isChecked()).subscribe(() -> {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
