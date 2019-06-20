@@ -72,5 +72,7 @@ public class UserRepository {
     public void updateMicrosoftProfilePicture(String image) {
         microsoftPhoto = image;
     }
-
+    public void resetMicrosoftProfilePicture() {
+        microsoftPhoto = null;
+    }
 }
