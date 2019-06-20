@@ -21,7 +21,7 @@ public class UserRepository {
     }
 
     public Single<User> getProfile() {
-        return userService.fetchProfile().map(profileResponse -> new User(profileResponse.user, microsoftPhoto));
+        return userService.fetchProfile().map(profileResponse -> new User(profileResponse, microsoftPhoto));
     }
 
     // This is temporary.

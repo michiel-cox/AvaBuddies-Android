@@ -1,0 +1,46 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@id/dialogRootLayout"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@id/dialogContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground">
+
+
+
+        <TextView
+            android:id="@id/dialogName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="19dp"
+            android:ellipsize="end"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:includeFontPadding="false"
+            android:maxLines="1"/>
+
+
+        <FrameLayout
+            android:id="@id/dialogDividerContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="@dimen/dialog_divider_margin_left"
+            android:paddingStart="@dimen/dialog_divider_margin_left">
+
+            <View
+                android:id="@id/dialogDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dialog_divider"/>
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

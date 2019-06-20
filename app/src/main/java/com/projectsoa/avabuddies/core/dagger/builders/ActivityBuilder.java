@@ -2,6 +2,8 @@ package com.projectsoa.avabuddies.core.dagger.builders;
 
 import com.projectsoa.avabuddies.screens.login.LoginActivity;
 import com.projectsoa.avabuddies.screens.main.MainActivity;
+import com.projectsoa.avabuddies.screens.main.chat.ChatFragment;
+import com.projectsoa.avabuddies.screens.main.chat.ChatListFragment;
 import com.projectsoa.avabuddies.screens.main.challenge.ChallengeFragment;
 import com.projectsoa.avabuddies.screens.main.challenge.ChallengeInformationFragment;
 import com.projectsoa.avabuddies.screens.main.friends.FriendsFragment;
@@ -59,6 +61,12 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector
     abstract TagsFragment contributeTagsFragment();
+
+    @ContributesAndroidInjector
+    abstract ChatListFragment contributeChatListFragment();
+
+    @ContributesAndroidInjector
+    abstract ChatFragment contributeChatFragment();
 
     @ContributesAndroidInjector
     abstract FriendsFragment contributeFriendsFragment();

@@ -18,6 +18,7 @@ import com.projectsoa.avabuddies.R;
 import com.projectsoa.avabuddies.core.base.BaseFragment;
 import com.projectsoa.avabuddies.data.models.Tag;
 import com.projectsoa.avabuddies.data.models.User;
+import com.projectsoa.avabuddies.data.repositories.DialogRepository;
 import com.projectsoa.avabuddies.data.repositories.FriendRepository;
 import com.projectsoa.avabuddies.data.repositories.LoginRepository;
 import com.projectsoa.avabuddies.data.repositories.UserRepository;
@@ -44,12 +45,18 @@ public class PublicProfileFragment extends BaseFragment {
     @Inject
     protected FriendRepository friendRepository;
 
+    @Inject
+    protected DialogRepository dialogRepository;
+
 
     protected PublicProfileViewModel viewModel;
     @BindView(R.id.button_request)
     protected Button buttonRequest;
     @BindView(R.id.button_request_cancel)
     protected Button buttonRequestCancel;
+
+    @BindView(R.id.button_chat)
+    protected Button buttonChat;
 
     @BindView(R.id.button_deny)
     protected Button buttonDeny;
@@ -153,6 +160,10 @@ public class PublicProfileFragment extends BaseFragment {
         buttonValidate.setVisibility(View.GONE);
     }
 
+    private void hideChatButton(){
+        buttonChat.setVisibility(View.GONE);
+    }
+
     private void updateFriendRequest(FriendRepository.ConnectionStatus status) {
         switch (status) {
             case SEND:
@@ -168,6 +179,9 @@ public class PublicProfileFragment extends BaseFragment {
             case VALIDATED:
                 buttonDeny.setVisibility(View.VISIBLE);
                 buttonAccept.setVisibility(View.VISIBLE);
+                break;
+            case ACCEPTED:
+                buttonChat.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -216,7 +230,13 @@ public class PublicProfileFragment extends BaseFragment {
     }
 
     @OnClick(R.id.button_validate)
-    public void showQR(){
+    public void showQR() {
         ((MainActivity) getActivity()).loadFragment(QRShowFragment.newInstance(user));
+    }
+
+    @OnClick(R.id.button_chat)
+    public void addChat() {
+        hideChatButton();
+        dialogRepository.addChat(user.getId());
     }
 }

@@ -115,6 +115,16 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/cancel_connection_request" />
 
+            <Button
+                android:id="@+id/button_chat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/go_to_chat"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="8dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
